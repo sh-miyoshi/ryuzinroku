@@ -9,10 +9,10 @@ import (
 
 // Player ...
 type Player struct {
-	x, y     int
+	x, y     int32
 	count    int
 	imgCount int
-	images   []int
+	images   []int32
 }
 
 // New ...
@@ -22,10 +22,10 @@ func New(img common.ImageInfo) (*Player, error) {
 	}
 
 	res := Player{
-		x: 100,
-		y: 100,
+		x: common.ScreenX / 2,
+		y: common.ScreenY * 3 / 4,
 	}
-	res.images = make([]int, img.AllNum)
+	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images)
 	if r != 0 {
 		return nil, fmt.Errorf("Failed to load player image")
@@ -37,6 +37,10 @@ func New(img common.ImageInfo) (*Player, error) {
 // Draw ...
 func (p *Player) Draw() {
 	dxlib.DrawGraph(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
-	// TODO set this after fix library bug
-	//dxlib.DrawRotaGraph(p.x, p.y, 1, 0, p.images[p.imgCount], dxlib.TRUE, dxlib.FALSE)
+}
+
+// Process ...
+func (p *Player) Process() {
+	p.count++
+	p.imgCount = (p.count / 6) % 4
 }

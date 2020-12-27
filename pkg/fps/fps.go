@@ -11,14 +11,14 @@ const (
 )
 
 var (
-	baseTime   int
-	count      int
+	baseTime   int32
+	count      int32
 	currentFPS float32
 )
 
 // Wait ...
 func Wait() {
-	wait := 0
+	wait := int32(0)
 	if count == 0 {
 		baseTime = dxlib.GetNowCount()
 	} else {
@@ -40,6 +40,6 @@ func Wait() {
 }
 
 // Draw ...
-func Draw(x int, y int) {
+func Draw(x int32, y int32) {
 	dxlib.DrawFormatString(x, y, dxlib.GetColor(255, 0, 0), "[%.1f]", currentFPS)
 }

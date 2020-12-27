@@ -28,11 +28,16 @@ func main() {
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
+		plyr.Process()
 		fps.Wait()
 
 		// 描画関係
 		plyr.Draw()
 		fps.Draw(common.ScreenX-60, 10)
+
+		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
+			break
+		}
 	}
 
 	dxlib.DxLib_End()
