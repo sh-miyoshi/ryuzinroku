@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/fps"
 )
 
 func main() {
@@ -15,6 +16,9 @@ func main() {
 	dxlib.SetDrawScreen(dxlib.DX_SCREEN_BACK)
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
+		fps.Wait()
+		fps.Draw(640-60, 10)
+
 		dxlib.DrawString(10, 10, "Hello, world", dxlib.GetColor(255, 255, 255))
 	}
 
