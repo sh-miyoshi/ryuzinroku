@@ -7,7 +7,7 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/fps"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 )
 
@@ -39,13 +39,12 @@ func main() {
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
+		inputs.KeyStateUpdate()
 		plyr.Process()
-		fps.Wait()
 
 		// 描画関係
 		bg.Draw()
 		plyr.Draw()
-		fps.Draw(common.ScreenX-60, 10)
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break
