@@ -1,25 +1,38 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/fps"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 )
 
 func main() {
 	dxlib.Init("DxLib.dll")
 
 	dxlib.ChangeWindowMode(dxlib.TRUE)
-	dxlib.SetGraphMode(640, 480, 16)
+	dxlib.SetGraphMode(common.ScreenX, common.ScreenY, 16)
 	dxlib.SetOutApplicationLogValidFlag(dxlib.TRUE)
 
 	dxlib.DxLib_Init()
 	dxlib.SetDrawScreen(dxlib.DX_SCREEN_BACK)
 
-	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
-		fps.Wait()
-		fps.Draw(640-60, 10)
+	plyr, err := player.New(common.ImageInfo{FileName: "data/image/char/player.png", AllNum: 12, XNum: 4, YNum: 3, XSize: 73, YSize: 73})
+	if err != nil {
+		fmt.Printf("Failed to init player: %v\n", err)
+		os.Exit(1)
+	}
 
-		dxlib.DrawString(10, 10, "Hello, world", dxlib.GetColor(255, 255, 255))
+	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
+		// 処理関係
+		fps.Wait()
+
+		// 描画関係
+		plyr.Draw()
+		fps.Draw(common.ScreenX-60, 10)
 	}
 
 	dxlib.DxLib_End()
