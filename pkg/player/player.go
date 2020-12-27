@@ -5,6 +5,7 @@ import (
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 )
 
 // Player ...
@@ -48,4 +49,10 @@ func (p *Player) Draw() {
 func (p *Player) Process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
+
+	if inputs.CheckKey(dxlib.KEY_INPUT_LEFT) > 0 {
+		p.imgCount += 4 * 2
+	} else if inputs.CheckKey(dxlib.KEY_INPUT_RIGHT) > 0 {
+		p.imgCount += 4 * 1
+	}
 }
