@@ -2,6 +2,7 @@ package player
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
@@ -50,9 +51,36 @@ func (p *Player) Process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
 
+	// Check left and right moves
+	moveX := 0
 	if inputs.CheckKey(dxlib.KEY_INPUT_LEFT) > 0 {
 		p.imgCount += 4 * 2
+		moveX = -4
 	} else if inputs.CheckKey(dxlib.KEY_INPUT_RIGHT) > 0 {
 		p.imgCount += 4 * 1
+		moveX = 4
+	}
+
+	// Check up and down moves
+	moveY := 0
+	if inputs.CheckKey(dxlib.KEY_INPUT_UP) > 0 {
+		moveY = -4
+	} else if inputs.CheckKey(dxlib.KEY_INPUT_DOWN) > 0 {
+		moveY = 4
+	}
+
+	if moveX != 0 || moveY != 0 {
+		if moveX != 0 && moveY != 0 {
+			// 斜め移動
+			moveX = int(float64(moveX) / math.Sqrt(2))
+			moveY = int(float64(moveY) / math.Sqrt(2))
+		}
+
+		mx := int(p.x) + moveX
+		my := int(p.y) + moveY
+		if common.MoveOK(mx, my) {
+			p.x = int32(mx)
+			p.y = int32(my)
+		}
 	}
 }
