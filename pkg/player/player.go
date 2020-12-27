@@ -9,10 +9,11 @@ import (
 
 // Player ...
 type Player struct {
-	x, y     int32
-	count    int
-	imgCount int
-	images   []int32
+	x, y               int32
+	imgSizeX, imgSizeY int32
+	count              int
+	imgCount           int
+	images             []int32
 }
 
 // New ...
@@ -22,8 +23,10 @@ func New(img common.ImageInfo) (*Player, error) {
 	}
 
 	res := Player{
-		x: common.ScreenX / 2,
-		y: common.ScreenY * 3 / 4,
+		x:        common.ScreenX / 2,
+		y:        common.ScreenY * 3 / 4,
+		imgSizeX: img.XSize,
+		imgSizeY: img.YSize,
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images)
@@ -36,7 +39,9 @@ func New(img common.ImageInfo) (*Player, error) {
 
 // Draw ...
 func (p *Player) Draw() {
-	dxlib.DrawGraph(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
+	centerX := p.x - p.imgSizeX/2
+	centerY := p.y - p.imgSizeY/2
+	dxlib.DrawGraph(centerX, centerY, p.images[p.imgCount], dxlib.TRUE)
 }
 
 // Process ...
