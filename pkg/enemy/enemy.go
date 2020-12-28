@@ -19,15 +19,23 @@ type enemy struct {
 	imgCount int
 	count    int
 	dead     bool
+	direct   common.Direct
 }
 
 // Process ...
 func (e *enemy) Process() {
 	e.count++
+	e.imgCount = (e.count / 6) % 3
+	switch e.direct {
+	case common.DirectFront:
+		e.imgCount += 3
+	case common.DirectRight:
+		e.imgCount += 6
+	}
+
 	switch e.MovePattern {
 	case 0:
 		act0(e)
-		break
 	default:
 		panic("Invalid move pattern")
 	}
