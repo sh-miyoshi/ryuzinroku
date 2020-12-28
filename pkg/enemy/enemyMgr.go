@@ -77,11 +77,14 @@ func StoryEnd() {
 func MgrProcess() {
 	for _, e := range storyInfo.Enemies {
 		if e.ApperCount == count {
-			e.images = enemyImgInfo[e.Type].images
-			e.imgSizeX = enemyImgInfo[e.Type].info.XSize
-			e.imgSizeY = enemyImgInfo[e.Type].info.YSize
-			e.imgCount = 0
-			enemies = append(enemies, &e)
+			enemy := e
+			enemy.images = enemyImgInfo[e.Type].images
+			enemy.imgSizeX = enemyImgInfo[e.Type].info.XSize
+			enemy.imgSizeY = enemyImgInfo[e.Type].info.YSize
+			enemy.imgCount = 0
+			enemy.dead = false
+			enemy.direct = common.DirectFront
+			enemies = append(enemies, &enemy)
 		}
 	}
 
