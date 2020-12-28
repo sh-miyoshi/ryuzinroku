@@ -28,7 +28,7 @@ var (
 	}
 
 	storyInfo story
-	enemies   []enemy
+	enemies   []*enemy
 	count     int
 )
 
@@ -73,27 +73,32 @@ func StoryEnd() {
 	// delete enemies, storyInfo
 }
 
-// Process ...
-func Process() {
+// MgrProcess ...
+func MgrProcess() {
 	for _, e := range storyInfo.Enemies {
 		if e.ApperCount == count {
 			e.images = enemyImgInfo[e.Type].images
 			e.imgSizeX = enemyImgInfo[e.Type].info.XSize
 			e.imgSizeY = enemyImgInfo[e.Type].info.YSize
 			e.imgCount = 0
-			enemies = append(enemies, e)
+			enemies = append(enemies, &e)
 		}
 	}
 
+	newEnemies := []*enemy{}
 	for _, e := range enemies {
 		e.Process()
+		if !e.dead {
+			newEnemies = append(newEnemies, e)
+		}
 	}
+	enemies = newEnemies
 
 	count++
 }
 
-// Draw ...
-func Draw() {
+// MgrDraw ...
+func MgrDraw() {
 	for _, e := range enemies {
 		e.Draw()
 	}

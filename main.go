@@ -46,12 +46,12 @@ func main() {
 		// 処理関係
 		inputs.KeyStateUpdate()
 		plyr.Process()
-		enemy.Process()
+		enemy.MgrProcess()
 
 		// 描画関係
 		bg.Draw()
 		plyr.Draw()
-		enemy.Draw()
+		enemy.MgrDraw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break
