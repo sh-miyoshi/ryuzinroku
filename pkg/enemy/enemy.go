@@ -5,6 +5,10 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 )
 
+var (
+	acts = []func(*enemy){act0, act1}
+)
+
 type enemy struct {
 	ApperCount  int   `yaml:"appearCount"`
 	MovePattern int   `yaml:"movePattern"`
@@ -12,6 +16,7 @@ type enemy struct {
 	X           int32 `yaml:"x"`
 	Y           int32 `yaml:"y"`
 	HP          int   `yaml:"hp"`
+	Wait        int   `yaml:"wait"`
 
 	images   []int32
 	imgSizeX int32
@@ -20,10 +25,13 @@ type enemy struct {
 	count    int
 	dead     bool
 	direct   common.Direct
+	vx, vy   float64
 }
 
 // Process ...
 func (e *enemy) Process() {
+	acts[e.MovePattern](e)
+
 	e.count++
 	e.imgCount = (e.count / 6) % 3
 	switch e.direct {
@@ -33,12 +41,8 @@ func (e *enemy) Process() {
 		e.imgCount += 6
 	}
 
-	switch e.MovePattern {
-	case 0:
-		act0(e)
-	default:
-		panic("Invalid move pattern")
-	}
+	e.X = int32(float64(e.X) + e.vx)
+	e.Y = int32(float64(e.Y) + e.vy)
 
 	if e.HP <= 0 {
 		e.dead = true
