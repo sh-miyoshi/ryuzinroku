@@ -7,6 +7,7 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 )
@@ -36,15 +37,21 @@ func main() {
 		fmt.Printf("Failed to init back ground: %v\n", err)
 		os.Exit(1)
 	}
+	if err := enemy.StoryInit("data/story/story.yaml"); err != nil {
+		fmt.Printf("Failed to init enemy: %v\n", err)
+		os.Exit(1)
+	}
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
 		inputs.KeyStateUpdate()
 		plyr.Process()
+		enemy.Process()
 
 		// 描画関係
 		bg.Draw()
 		plyr.Draw()
+		enemy.Draw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break
