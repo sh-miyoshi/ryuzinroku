@@ -27,7 +27,7 @@ func main() {
 		fmt.Printf("Failed to init player: %v\n", err)
 		os.Exit(1)
 	}
-	bg, err := background.New(
+	board, err := background.NewBoard(
 		"data/image/background/board_top.png",
 		"data/image/background/board_bottom.png",
 		"data/image/background/board_left.png",
@@ -49,9 +49,9 @@ func main() {
 		enemy.MgrProcess()
 
 		// 描画関係
-		bg.Draw()
 		plyr.Draw()
 		enemy.MgrDraw()
+		board.Draw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break

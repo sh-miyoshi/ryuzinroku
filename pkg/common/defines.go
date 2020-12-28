@@ -5,4 +5,13 @@ const (
 	ScreenX = 640
 	// ScreenY is y size of screen
 	ScreenY = 480
+
+	// FieldTopX ...
+	FieldTopX = 32
+	// FiledTopY ...
+	FiledTopY = 16
+	// FiledSizeX ...
+	FiledSizeX = 384
+	// FiledSizeY ...
+	FiledSizeY = 448
 )

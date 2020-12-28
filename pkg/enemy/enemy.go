@@ -36,7 +36,7 @@ func (e *enemy) Process() {
 		e.dead = true
 		return
 	}
-	if e.X < -50 || e.X > common.ScreenX+50 || e.Y < -50 || e.Y > common.ScreenY+50 {
+	if e.X < -50 || e.X > common.FiledSizeX+50 || e.Y < -50 || e.Y > common.FiledSizeY+50 {
 		e.dead = true
 		return
 	}
@@ -44,7 +44,5 @@ func (e *enemy) Process() {
 
 // Draw ...
 func (e *enemy) Draw() {
-	centerX := e.X - e.imgSizeX/2
-	centerY := e.Y - e.imgSizeY/2
-	dxlib.DrawGraph(centerX, centerY, e.images[e.imgCount], dxlib.TRUE)
+	common.CharDraw(e.X, e.Y, e.imgSizeX, e.imgSizeY, e.images[e.imgCount], dxlib.TRUE)
 }

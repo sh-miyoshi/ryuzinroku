@@ -25,8 +25,8 @@ func New(img common.ImageInfo) (*Player, error) {
 	}
 
 	res := Player{
-		x:        common.ScreenX / 2,
-		y:        common.ScreenY * 3 / 4,
+		x:        common.FiledSizeX / 2,
+		y:        common.FiledSizeY * 3 / 4,
 		imgSizeX: img.XSize,
 		imgSizeY: img.YSize,
 	}
@@ -41,9 +41,7 @@ func New(img common.ImageInfo) (*Player, error) {
 
 // Draw ...
 func (p *Player) Draw() {
-	centerX := p.x - p.imgSizeX/2
-	centerY := p.y - p.imgSizeY/2
-	dxlib.DrawGraph(centerX, centerY, p.images[p.imgCount], dxlib.TRUE)
+	common.CharDraw(p.x, p.y, p.imgSizeX, p.imgSizeY, p.images[p.imgCount], dxlib.TRUE)
 }
 
 // Process ...

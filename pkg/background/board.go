@@ -6,17 +6,17 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 )
 
-// Background ...
-type Background struct {
+// Board ...
+type Board struct {
 	imgTop    int32
 	imgBottom int32
 	imgLeft   int32
 	imgRight  int32
 }
 
-// New ...
-func New(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Background, error) {
-	res := Background{
+// NewBoard ...
+func NewBoard(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Board, error) {
+	res := Board{
 		imgTop:    dxlib.LoadGraph(imgTopFile),
 		imgBottom: dxlib.LoadGraph(imtBottomFile),
 		imgLeft:   dxlib.LoadGraph(imgLeftFile),
@@ -39,7 +39,7 @@ func New(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Backgrou
 }
 
 // Draw ...
-func (b *Background) Draw() {
+func (b *Board) Draw() {
 	dxlib.DrawGraph(0, 0, b.imgTop, dxlib.FALSE)
 	dxlib.DrawGraph(0, 16, b.imgLeft, dxlib.FALSE)
 	dxlib.DrawGraph(0, 464, b.imgBottom, dxlib.FALSE)
