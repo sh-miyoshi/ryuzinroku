@@ -3,6 +3,7 @@ package enemy
 import (
 	"math"
 
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 )
 
@@ -15,15 +16,16 @@ func shotAct0(s *shot) {
 		}
 		// register bullet
 		b := s.BulletInfo
-		b.x = float64(e.X)
-		b.y = float64(e.Y)
+		b.ShotID = s.id
+		b.X = float64(e.X)
+		b.Y = float64(e.Y)
 		px, py := player.GetPlayerPos()
-		b.angle = math.Atan2(float64(py)-b.y, float64(px)-b.x)
-		b.speed = 3
-		s.bullets = append(s.bullets, &b)
+		b.Angle = math.Atan2(float64(py)-b.Y, float64(px)-b.X)
+		b.Speed = 3
+		bullet.Register(b)
 	}
 
-	if !s.finished && len(s.bullets) == 0 {
+	if !s.finished && !bullet.Exists(s.id) {
 		s.finished = true
 	}
 }

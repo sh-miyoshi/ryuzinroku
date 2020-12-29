@@ -6,6 +6,7 @@ import (
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
@@ -36,8 +37,8 @@ func main() {
 		fmt.Printf("Failed to init enemy: %v\n", err)
 		os.Exit(1)
 	}
-	if err := enemy.ShotInit(); err != nil {
-		fmt.Printf("Failed to init enemy shot: %v\n", err)
+	if err := bullet.Init(); err != nil {
+		fmt.Printf("Failed to init bullet: %v\n", err)
 		os.Exit(1)
 	}
 	if err := player.Init(); err != nil {
@@ -50,10 +51,12 @@ func main() {
 		inputs.KeyStateUpdate()
 		player.MgrProcess()
 		enemy.MgrProcess()
+		bullet.MgrProcess()
 
 		// 描画関係
 		player.MgrDraw()
 		enemy.MgrDraw()
+		bullet.MgrDraw()
 		board.Draw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {

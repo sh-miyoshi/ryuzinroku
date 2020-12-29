@@ -13,6 +13,6 @@ func MoveOK(x, y int) bool {
 // CharDraw ...
 func CharDraw(x int32, y int32, imgSizeX int32, imgSizeY int32, grHandle int32, transFlag int32) {
 	centerX := x - imgSizeX/2 + FieldTopX
-	centerY := y - imgSizeY/2 + FiledTopY
+	centerY := y - imgSizeY/2 + FieldTopY
 	dxlib.DrawGraph(centerX, centerY, grHandle, transFlag)
 }

@@ -109,8 +109,6 @@ func MgrDraw() {
 	for _, e := range enemies {
 		e.Draw()
 	}
-
-	shotMgrDraw()
 }
 
 func getEnemy(id string) (*enemy, error) {
