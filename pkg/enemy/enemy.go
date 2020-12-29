@@ -17,7 +17,9 @@ type enemy struct {
 	Y           int32 `yaml:"y"`
 	HP          int   `yaml:"hp"`
 	Wait        int   `yaml:"wait"`
+	Shot        shot  `yaml:"shot"`
 
+	id       string
 	images   []int32
 	imgSizeX int32
 	imgSizeY int32
@@ -51,6 +53,10 @@ func (e *enemy) Process() {
 	if e.X < -50 || e.X > common.FiledSizeX+50 || e.Y < -50 || e.Y > common.FiledSizeY+50 {
 		e.dead = true
 		return
+	}
+
+	if e.count == e.Shot.StartCount {
+		shotRegister(e.id, e.Shot)
 	}
 }
 

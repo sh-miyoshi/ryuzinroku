@@ -1,5 +1,9 @@
+github.com/google/uuid v1.1.2 h1:EVhdT+1Kseyi1/pUmXKaFxYsDNy9RQYkMWRH68J/W7Y=
+github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/sh-miyoshi/dxlib v0.0.1 h1:JnMRNEbv7hjkCCnyWQMc84crxti2TB+SoLFu1ohN3VE=
 github.com/sh-miyoshi/dxlib v0.0.1/go.mod h1:eYlq0yASGJkyLgQoEa7kqqpvuOi0uJg7E8UXckDHwOo=
+github.com/sh-miyoshi/dxlib v0.0.2 h1:o5RvLXTiRq6KvIlH4HCXwLsFznsFhJ1VjKhbsE97MSg=
+github.com/sh-miyoshi/dxlib v0.0.2/go.mod h1:eYlq0yASGJkyLgQoEa7kqqpvuOi0uJg7E8UXckDHwOo=
 golang.org/x/text v0.3.4 h1:0YWbFKbhXG/wIiuHDSKpS0Iy7FSA+u45VtBMfQcFTTc=
 golang.org/x/text v0.3.4/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
 golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=

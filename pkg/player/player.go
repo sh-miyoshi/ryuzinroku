@@ -9,8 +9,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 )
 
-// Player ...
-type Player struct {
+type player struct {
 	x, y               int32
 	imgSizeX, imgSizeY int32
 	count              int
@@ -18,13 +17,12 @@ type Player struct {
 	images             []int32
 }
 
-// New ...
-func New(img common.ImageInfo) (*Player, error) {
+func create(img common.ImageInfo) (*player, error) {
 	if img.AllNum <= 0 {
 		return nil, fmt.Errorf("image num must be positive integer, but got %d", img.AllNum)
 	}
 
-	res := Player{
+	res := player{
 		x:        common.FiledSizeX / 2,
 		y:        common.FiledSizeY * 3 / 4,
 		imgSizeX: img.XSize,
@@ -39,13 +37,11 @@ func New(img common.ImageInfo) (*Player, error) {
 	return &res, nil
 }
 
-// Draw ...
-func (p *Player) Draw() {
+func (p *player) draw() {
 	common.CharDraw(p.x, p.y, p.imgSizeX, p.imgSizeY, p.images[p.imgCount], dxlib.TRUE)
 }
 
-// Process ...
-func (p *Player) Process() {
+func (p *player) process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
 

@@ -22,11 +22,6 @@ func main() {
 	dxlib.DxLib_Init()
 	dxlib.SetDrawScreen(dxlib.DX_SCREEN_BACK)
 
-	plyr, err := player.New(common.ImageInfo{FileName: "data/image/char/player.png", AllNum: 12, XNum: 4, YNum: 3, XSize: 73, YSize: 73})
-	if err != nil {
-		fmt.Printf("Failed to init player: %v\n", err)
-		os.Exit(1)
-	}
 	board, err := background.NewBoard(
 		"data/image/background/board_top.png",
 		"data/image/background/board_bottom.png",
@@ -41,15 +36,23 @@ func main() {
 		fmt.Printf("Failed to init enemy: %v\n", err)
 		os.Exit(1)
 	}
+	if err := enemy.ShotInit(); err != nil {
+		fmt.Printf("Failed to init enemy shot: %v\n", err)
+		os.Exit(1)
+	}
+	if err := player.Init(); err != nil {
+		fmt.Printf("Failed to init player: %v\n", err)
+		os.Exit(1)
+	}
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
 		inputs.KeyStateUpdate()
-		plyr.Process()
+		player.MgrProcess()
 		enemy.MgrProcess()
 
 		// 描画関係
-		plyr.Draw()
+		player.MgrDraw()
 		enemy.MgrDraw()
 		board.Draw()
 
