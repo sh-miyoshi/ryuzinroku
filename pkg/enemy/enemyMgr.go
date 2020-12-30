@@ -81,8 +81,6 @@ func MgrProcess() {
 			enemy := e
 			enemy.id = uuid.New().String()
 			enemy.images = enemyImgInfo[e.Type].images
-			enemy.imgSizeX = enemyImgInfo[e.Type].info.XSize
-			enemy.imgSizeY = enemyImgInfo[e.Type].info.YSize
 			enemy.imgCount = 0
 			enemy.dead = false
 			enemy.direct = common.DirectFront

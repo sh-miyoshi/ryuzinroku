@@ -11,8 +11,6 @@ func MoveOK(x, y int) bool {
 }
 
 // CharDraw ...
-func CharDraw(x int32, y int32, imgSizeX int32, imgSizeY int32, grHandle int32, transFlag int32) {
-	centerX := x - imgSizeX/2 + FieldTopX
-	centerY := y - imgSizeY/2 + FieldTopY
-	dxlib.DrawGraph(centerX, centerY, grHandle, transFlag)
+func CharDraw(x float64, y float64, grHandle int32, transFlag int32) {
+	dxlib.DrawRotaGraph(int32(x)+FieldTopX, int32(y)+FieldTopY, 1, 0, grHandle, transFlag, dxlib.FALSE, dxlib.FALSE)
 }

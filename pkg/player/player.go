@@ -10,11 +10,10 @@ import (
 )
 
 type player struct {
-	x, y               int32
-	imgSizeX, imgSizeY int32
-	count              int
-	imgCount           int
-	images             []int32
+	x, y     float64
+	count    int
+	imgCount int
+	images   []int32
 }
 
 func create(img common.ImageInfo) (*player, error) {
@@ -23,10 +22,8 @@ func create(img common.ImageInfo) (*player, error) {
 	}
 
 	res := player{
-		x:        common.FiledSizeX / 2,
-		y:        common.FiledSizeY * 3 / 4,
-		imgSizeX: img.XSize,
-		imgSizeY: img.YSize,
+		x: common.FiledSizeX / 2,
+		y: common.FiledSizeY * 3 / 4,
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images)
@@ -38,7 +35,7 @@ func create(img common.ImageInfo) (*player, error) {
 }
 
 func (p *player) draw() {
-	common.CharDraw(p.x, p.y, p.imgSizeX, p.imgSizeY, p.images[p.imgCount], dxlib.TRUE)
+	common.CharDraw(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
 }
 
 func (p *player) process() {
@@ -73,8 +70,8 @@ func (p *player) process() {
 		mx := int(p.x) + moveX
 		my := int(p.y) + moveY
 		if common.MoveOK(mx, my) {
-			p.x = int32(mx)
-			p.y = int32(my)
+			p.x = float64(mx)
+			p.y = float64(my)
 		}
 	}
 }

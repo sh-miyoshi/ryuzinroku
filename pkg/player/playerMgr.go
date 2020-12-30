@@ -26,7 +26,7 @@ func MgrDraw() {
 }
 
 // GetPlayerPos ...
-func GetPlayerPos() (x, y int32) {
+func GetPlayerPos() (x, y float64) {
 	if plyr != nil {
 		return plyr.x, plyr.y
 	}

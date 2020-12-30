@@ -20,7 +20,7 @@ func shotAct0(s *shot) {
 		b.X = float64(e.X)
 		b.Y = float64(e.Y)
 		px, py := player.GetPlayerPos()
-		b.Angle = math.Atan2(float64(py)-b.Y, float64(px)-b.X)
+		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
 	}
