@@ -11,11 +11,12 @@ type Shot struct {
 	id         string
 	finished   bool
 	count      int
+	baseAngle  float64
 	bulletInfo bullet.Bullet
 }
 
 var (
-	shotActs = []func(float64, float64, *Shot){shotAct0}
+	shotActs = []func(float64, float64, *Shot){shotAct0, shotAct1, shotAct2, shotAct3, shotAct4, shotAct5, shotAct6}
 )
 
 // New ...

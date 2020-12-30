@@ -13,15 +13,17 @@ type Bullet struct {
 	Color int `yaml:"color"`
 	Type  int `yaml:"type"`
 
-	ShotID string
-	X, Y   float64
-	Speed  float64
-	Angle  float64
+	ShotID  string
+	X, Y    float64
+	Speed   float64
+	Angle   float64
+	ActType int
 }
 
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
+	bulletActs = []func(*Bullet){bulletAct0, bulletAct1}
 )
 
 // Init ...
@@ -82,6 +84,8 @@ func MgrProcess() {
 	for _, b := range bullets {
 		b.X += math.Cos(b.Angle) * b.Speed
 		b.Y += math.Sin(b.Angle) * b.Speed
+
+		bulletActs[b.ActType](b)
 
 		if b.X < -50 || b.X > common.FiledSizeX+50 || b.Y < -50 || b.Y > common.FiledSizeY+50 {
 			continue
