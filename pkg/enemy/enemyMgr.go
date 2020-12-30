@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	yaml "gopkg.in/yaml.v2"
@@ -79,7 +78,6 @@ func MgrProcess() {
 	for _, e := range storyInfo.Enemies {
 		if e.ApperCount == count {
 			enemy := e
-			enemy.id = uuid.New().String()
 			enemy.images = enemyImgInfo[e.Type].images
 			enemy.imgCount = 0
 			enemy.dead = false
@@ -97,8 +95,6 @@ func MgrProcess() {
 	}
 	enemies = newEnemies
 
-	shotMgrProcess()
-
 	count++
 }
 
@@ -107,15 +103,6 @@ func MgrDraw() {
 	for _, e := range enemies {
 		e.Draw()
 	}
-}
-
-func getEnemy(id string) (*enemy, error) {
-	for _, e := range enemies {
-		if e.id == id {
-			return e, nil
-		}
-	}
-	return nil, fmt.Errorf("enemy %s is not exists", id)
 }
 
 func load(no int) error {

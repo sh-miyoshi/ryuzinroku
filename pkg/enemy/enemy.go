@@ -2,30 +2,38 @@ package enemy
 
 import (
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
 )
 
 var (
 	acts = []func(*enemy){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
 )
 
-type enemy struct {
-	ApperCount  int     `yaml:"appearCount"`
-	MovePattern int     `yaml:"movePattern"`
-	Type        int     `yaml:"type"`
-	X           float64 `yaml:"x"`
-	Y           float64 `yaml:"y"`
-	HP          int     `yaml:"hp"`
-	Wait        int     `yaml:"wait"`
-	Shot        shot    `yaml:"shot"`
+type enemyShot struct {
+	Type       int           `yaml:"type"`
+	StartCount int           `yaml:"startCount"`
+	BulletInfo bullet.Bullet `yaml:"bullet"`
+}
 
-	id       string
+type enemy struct {
+	ApperCount  int       `yaml:"appearCount"`
+	MovePattern int       `yaml:"movePattern"`
+	Type        int       `yaml:"type"`
+	X           float64   `yaml:"x"`
+	Y           float64   `yaml:"y"`
+	HP          int       `yaml:"hp"`
+	Wait        int       `yaml:"wait"`
+	Shot        enemyShot `yaml:"shot"`
+
 	images   []int32
 	imgCount int
 	count    int
 	dead     bool
 	direct   common.Direct
 	vx, vy   float64
+	shotProc *shot.Shot
 }
 
 // Process ...
@@ -53,8 +61,15 @@ func (e *enemy) Process() {
 		return
 	}
 
+	// Shot Process
 	if e.count == e.Shot.StartCount {
-		shotRegister(e.id, e.Shot)
+		e.shotProc = shot.New(e.Shot.Type, e.Shot.BulletInfo)
+	}
+
+	if e.shotProc != nil {
+		if e.shotProc.Process(e.X, e.Y) {
+			e.shotProc = nil
+		}
 	}
 }
 
