@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	acts = []func(*enemy){act0, act1}
+	acts = []func(*enemy){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
 )
 
 type enemy struct {
