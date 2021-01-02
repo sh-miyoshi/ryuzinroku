@@ -11,17 +11,23 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
 func main() {
 	dxlib.Init("DxLib.dll")
 
 	dxlib.ChangeWindowMode(dxlib.TRUE)
-	dxlib.SetGraphMode(common.ScreenX, common.ScreenY, 16)
+	dxlib.SetGraphMode(common.ScreenX, common.ScreenY, 16, 60)
 	dxlib.SetOutApplicationLogValidFlag(dxlib.TRUE)
 
 	dxlib.DxLib_Init()
 	dxlib.SetDrawScreen(dxlib.DX_SCREEN_BACK)
+
+	if err := sound.Init(); err != nil {
+		fmt.Printf("Failed to init sound: %v\n", err)
+		os.Exit(1)
+	}
 
 	board, err := background.NewBoard(
 		"data/image/background/board_top.png",

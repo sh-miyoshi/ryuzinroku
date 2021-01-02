@@ -6,6 +6,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
 // 1発だけ、自機に向かって直線移動
@@ -20,6 +21,7 @@ func shotAct0(ex, ey float64, s *Shot) {
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
+		sound.PlayerSound(sound.SEEnemyShot)
 	}
 
 	if !s.finished && !bullet.Exists(s.id) {

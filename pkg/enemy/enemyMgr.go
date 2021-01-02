@@ -112,7 +112,7 @@ func load(no int) error {
 
 	enemyImgInfo[no].images = make([]int32, int(enemyImgInfo[no].info.AllNum))
 	fname := fmt.Sprintf("data/image/char/enemy/%d.png", no)
-	res := dxlib.LoadDivGraph(fname, enemyImgInfo[no].info.AllNum, enemyImgInfo[no].info.XNum, enemyImgInfo[no].info.YNum, enemyImgInfo[no].info.XSize, enemyImgInfo[no].info.YSize, enemyImgInfo[no].images)
+	res := dxlib.LoadDivGraph(fname, enemyImgInfo[no].info.AllNum, enemyImgInfo[no].info.XNum, enemyImgInfo[no].info.YNum, enemyImgInfo[no].info.XSize, enemyImgInfo[no].info.YSize, enemyImgInfo[no].images, dxlib.FALSE)
 	if res == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}

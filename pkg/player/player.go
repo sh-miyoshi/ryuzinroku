@@ -26,7 +26,7 @@ func create(img common.ImageInfo) (*player, error) {
 		y: common.FiledSizeY * 3 / 4,
 	}
 	res.images = make([]int32, img.AllNum)
-	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images)
+	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
 	if r != 0 {
 		return nil, fmt.Errorf("Failed to load player image")
 	}
