@@ -7,6 +7,11 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
+)
+
+const (
+	initShotPower = 500
 )
 
 type player struct {
@@ -14,6 +19,7 @@ type player struct {
 	count    int
 	imgCount int
 	images   []int32
+	plyrShot *shot.Shot
 }
 
 func create(img common.ImageInfo) (*player, error) {
@@ -22,8 +28,9 @@ func create(img common.ImageInfo) (*player, error) {
 	}
 
 	res := player{
-		x: common.FiledSizeX / 2,
-		y: common.FiledSizeY * 3 / 4,
+		x:        common.FiledSizeX / 2,
+		y:        common.FiledSizeY * 3 / 4,
+		plyrShot: &shot.Shot{Power: initShotPower},
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
@@ -41,6 +48,8 @@ func (p *player) draw() {
 func (p *player) process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
+
+	p.plyrShot.Process(p.x, p.y)
 
 	// Check left and right moves
 	moveX := 0

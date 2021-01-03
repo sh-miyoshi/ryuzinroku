@@ -8,16 +8,22 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 )
 
+const (
+	maxImgSize = 120
+)
+
 // Bullet ...
 type Bullet struct {
 	Color int `yaml:"color"`
 	Type  int `yaml:"type"`
 
-	ShotID  string
-	X, Y    float64
-	Speed   float64
-	Angle   float64
-	ActType int
+	ShotID   string
+	X, Y     float64
+	Speed    float64
+	Angle    float64
+	ActType  int
+	IsPlayer bool
+	Power    int
 }
 
 var (
@@ -28,7 +34,7 @@ var (
 
 // Init ...
 func Init() error {
-	bulletImgs = make([][]int32, 10)
+	bulletImgs = make([][]int32, 11)
 	bulletImgs[0] = make([]int32, 5)
 	if res := dxlib.LoadDivGraph("data/image/bullet/b0.png", 5, 5, 1, 76, 76, bulletImgs[0], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b0.png")
@@ -69,6 +75,11 @@ func Init() error {
 	if res := dxlib.LoadDivGraph("data/image/bullet/b9.png", 3, 3, 1, 13, 19, bulletImgs[9], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b9.png")
 	}
+	bulletImgs[10] = make([]int32, 1)
+	bulletImgs[10][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
+	if bulletImgs[10][0] == -1 {
+		return fmt.Errorf("Failed to load image: data/image/bullet/player_b0.png")
+	}
 
 	return nil
 }
@@ -87,7 +98,8 @@ func MgrProcess() {
 
 		bulletActs[b.ActType](b)
 
-		if b.X < -50 || b.X > common.FiledSizeX+50 || b.Y < -50 || b.Y > common.FiledSizeY+50 {
+		out := b.Speed + float64(maxImgSize)/2
+		if b.X < -out || b.X > common.FiledSizeX+out || b.Y < -out || b.Y > common.FiledSizeY+out {
 			continue
 		}
 		newBullets = append(newBullets, b)
