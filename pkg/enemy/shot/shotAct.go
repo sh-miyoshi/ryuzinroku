@@ -21,7 +21,7 @@ func shotAct0(ex, ey float64, s *Shot) {
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
-		sound.PlayerSound(sound.SEEnemyShot)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 
 	if !s.finished && !bullet.Exists(s.id) {
