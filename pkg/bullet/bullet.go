@@ -130,14 +130,8 @@ func Exists(shotID string) bool {
 }
 
 // GetBullets ...
-func GetBullets(isPlyrShot bool) []*Bullet {
-	res := []*Bullet{}
-	for _, b := range bullets {
-		if b.IsPlayer == isPlyrShot {
-			res = append(res, b)
-		}
-	}
-	return res
+func GetBullets() []*Bullet {
+	return bullets
 }
 
 // RemoveHitBullets ...

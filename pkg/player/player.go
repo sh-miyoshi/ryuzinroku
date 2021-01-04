@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
@@ -12,14 +13,16 @@ import (
 
 const (
 	initShotPower = 500
+	hitRange      = 2.0
 )
 
 type player struct {
-	x, y     float64
-	count    int
-	imgCount int
-	images   []int32
-	plyrShot *shot.Shot
+	x, y            float64
+	count           int
+	imgCount        int
+	images          []int32
+	plyrShot        *shot.Shot
+	invincibleCount int
 }
 
 func create(img common.ImageInfo) (*player, error) {
@@ -42,7 +45,9 @@ func create(img common.ImageInfo) (*player, error) {
 }
 
 func (p *player) draw() {
-	common.CharDraw(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
+	if p.invincibleCount%2 == 0 {
+		common.CharDraw(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
+	}
 }
 
 func (p *player) process() {
@@ -86,4 +91,46 @@ func (p *player) move() {
 			p.y = float64(my)
 		}
 	}
+}
+
+func (p *player) hitProc(bullets []*bullet.Bullet) []int {
+	hits := []int{}
+	for i, b := range bullets {
+		if b.IsPlayer {
+			continue
+		}
+
+		x := b.X - p.x
+		y := b.Y - p.y
+		r := b.HitRange + hitRange
+
+		if x*x+y*y < r*r { // 当たり判定内なら
+			hits = append(hits, i)
+			continue
+		}
+
+		// 中間を計算する必要があれば
+		if b.Speed > r {
+			// 1フレーム前にいた位置
+			preX := b.X + math.Cos(b.Angle+math.Pi)*b.Speed
+			preY := b.Y + math.Sin(b.Angle+math.Pi)*b.Speed
+			for j := 0; j < int(b.Speed/r); j++ { // 進んだ分÷当たり判定分ループ
+				px := preX - p.x
+				py := preY - p.y
+				if px*px+py*py < r*r {
+					hits = append(hits, i)
+					break
+				}
+				preX += math.Cos(b.Angle) * b.Speed
+				preY += math.Sin(b.Angle) * b.Speed
+			}
+		}
+	}
+
+	if len(hits) > 0 {
+		// TODO player death
+		fmt.Println("hits")
+	}
+
+	return hits
 }

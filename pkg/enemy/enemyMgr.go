@@ -88,7 +88,7 @@ func MgrProcess() {
 	}
 
 	newEnemies := []*enemy{}
-	bullets := bullet.GetBullets(true)
+	bullets := bullet.GetBullets()
 	for _, e := range enemies {
 		hits := e.HitProc(bullets)
 		if len(hits) > 0 {

@@ -94,6 +94,10 @@ func (e *enemy) Draw() {
 func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
 	res := []int{}
 	for i, b := range bullets {
+		if !b.IsPlayer {
+			continue
+		}
+
 		x := b.X - e.X
 		y := b.Y - e.Y
 		r := b.HitRange + hitRanges[e.Type]

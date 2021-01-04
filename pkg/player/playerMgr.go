@@ -1,6 +1,7 @@
 package player
 
 import (
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 )
 
@@ -18,6 +19,11 @@ func Init() error {
 // MgrProcess ...
 func MgrProcess() {
 	plyr.process()
+	bullets := bullet.GetBullets()
+	hits := plyr.hitProc(bullets)
+	if len(hits) > 0 {
+		bullet.RemoveHitBullets(hits)
+	}
 }
 
 // MgrDraw ...
