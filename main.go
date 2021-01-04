@@ -8,6 +8,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
@@ -51,6 +52,10 @@ func main() {
 		fmt.Printf("Failed to init player: %v\n", err)
 		os.Exit(1)
 	}
+	if err := effect.Init(); err != nil {
+		fmt.Printf("Failed to init effect: %v\n", err)
+		os.Exit(1)
+	}
 
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
@@ -58,12 +63,14 @@ func main() {
 		player.MgrProcess()
 		enemy.MgrProcess()
 		bullet.MgrProcess()
+		effect.MgrProcess()
 
 		// 描画関係
 		player.MgrDraw()
 		bullet.MgrDraw()
 		enemy.MgrDraw()
 		board.Draw()
+		effect.MgrDraw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break

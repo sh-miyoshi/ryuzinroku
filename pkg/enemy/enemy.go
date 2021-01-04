@@ -6,6 +6,7 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -59,6 +60,12 @@ func (e *enemy) Process() {
 	if e.HP <= 0 {
 		e.dead = true
 		sound.PlaySound(sound.SEEnemyDead)
+		effect.Register(effect.Controller{
+			Type:  effect.ControllerTypeDead,
+			Color: 0, // TODO set correct param
+			X:     e.X,
+			Y:     e.Y,
+		})
 		return
 	}
 	if e.X < -50 || e.X > common.FiledSizeX+50 || e.Y < -50 || e.Y > common.FiledSizeY+50 {
