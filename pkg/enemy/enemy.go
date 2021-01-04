@@ -93,6 +93,7 @@ func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
 
 		if x*x+y*y < r*r { // 当たり判定内なら
 			e.HP -= b.Power
+			sound.PlaySound(sound.SEEnemyHit)
 			res = append(res, i)
 			continue
 		}
@@ -107,6 +108,7 @@ func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
 				py := preY - e.Y
 				if px*px+py*py < r*r {
 					e.HP -= b.Power
+					sound.PlaySound(sound.SEEnemyHit)
 					res = append(res, i)
 					break
 				}
