@@ -1,6 +1,8 @@
 package enemy
 
 import (
+	"math"
+
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
@@ -8,7 +10,8 @@ import (
 )
 
 var (
-	acts = []func(*enemy){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
+	acts      = []func(*enemy){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
+	hitRanges = []float64{16}
 )
 
 type enemyShot struct {
@@ -76,4 +79,49 @@ func (e *enemy) Process() {
 // Draw ...
 func (e *enemy) Draw() {
 	common.CharDraw(e.X, e.Y, e.images[e.imgCount], dxlib.TRUE)
+}
+
+// HitProc ...
+func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
+	res := []int{}
+	for i, b := range bullets {
+		x := b.X - e.X
+		y := b.Y - e.Y
+		r := b.HitRange + hitRanges[e.Type]
+
+		if x*x+y*y < r*r { // 当たり判定内なら
+			e.HP -= b.Power
+			res = append(res, i)
+			continue
+		}
+
+		// 中間を計算する必要があれば
+		if b.Speed > r {
+			// 1フレーム前にいた位置
+			preX := b.X + math.Cos(b.Angle+math.Pi)*b.Speed
+			preY := b.Y + math.Sin(b.Angle+math.Pi)*b.Speed
+			for j := 0; j < int(b.Speed/r); j++ { // 進んだ分÷当たり判定分ループ
+				px := preX - e.X
+				py := preY - e.Y
+				if px*px+py*py < r*r {
+					e.HP -= b.Power
+					res = append(res, i)
+					break
+				}
+				preX += math.Cos(b.Angle) * b.Speed
+				preY += math.Sin(b.Angle) * b.Speed
+			}
+		}
+	}
+	return res
+	//                         double px,py;
+	//                         for(j=0;j<cshot[i].spd/r;j++){//進んだ分÷当たり判定分ループ
+	//                                 px=pre_x-enemy[s].x;
+	//                                 py=pre_y-enemy[s].y;
+	//                                 if(px*px+py*py<r*r)
+	//                                         return 1;
+	//                                 pre_x+=cos(cshot[i].angle)*r;
+	//                                 pre_y+=sin(cshot[i].angle)*r;
+	//                         }
+	//                 }
 }

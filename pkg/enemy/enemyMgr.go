@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -87,8 +88,15 @@ func MgrProcess() {
 	}
 
 	newEnemies := []*enemy{}
+	bullets := bullet.GetBullets(true)
 	for _, e := range enemies {
+		hits := e.HitProc(bullets)
+		if len(hits) > 0 {
+			bullet.RemoveHitBullets(hits)
+		}
+
 		e.Process()
+
 		if !e.dead {
 			newEnemies = append(newEnemies, e)
 		}

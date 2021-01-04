@@ -3,6 +3,7 @@ package bullet
 import (
 	"fmt"
 	"math"
+	"sort"
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
@@ -24,12 +25,14 @@ type Bullet struct {
 	ActType  int
 	IsPlayer bool
 	Power    int
+	HitRange float64
 }
 
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
 	bulletActs = []func(*Bullet){bulletAct0, bulletAct1}
+	hitRanges  = []float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 6}
 )
 
 // Init ...
@@ -86,6 +89,7 @@ func Init() error {
 
 // Register ...
 func Register(b Bullet) {
+	b.HitRange = hitRanges[b.Type]
 	bullets = append(bullets, &b)
 }
 
@@ -123,4 +127,24 @@ func Exists(shotID string) bool {
 		}
 	}
 	return false
+}
+
+// GetBullets ...
+func GetBullets(isPlyrShot bool) []*Bullet {
+	res := []*Bullet{}
+	for _, b := range bullets {
+		if b.IsPlayer == isPlyrShot {
+			res = append(res, b)
+		}
+	}
+	return res
+}
+
+// RemoveHitBullets ...
+func RemoveHitBullets(hits []int) {
+	sort.Sort(sort.Reverse(sort.IntSlice(hits)))
+	for _, hit := range hits {
+		bullets[hit] = bullets[len(bullets)-1]
+		bullets = bullets[:len(bullets)-1]
+	}
 }

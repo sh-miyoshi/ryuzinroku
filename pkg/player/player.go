@@ -49,8 +49,11 @@ func (p *player) process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
 
+	p.move()
 	p.plyrShot.Process(p.x, p.y)
+}
 
+func (p *player) move() {
 	// Check left and right moves
 	moveX := 0
 	if inputs.CheckKey(dxlib.KEY_INPUT_LEFT) > 0 {

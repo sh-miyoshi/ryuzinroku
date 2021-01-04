@@ -61,8 +61,8 @@ func main() {
 
 		// 描画関係
 		player.MgrDraw()
-		enemy.MgrDraw()
 		bullet.MgrDraw()
+		enemy.MgrDraw()
 		board.Draw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
