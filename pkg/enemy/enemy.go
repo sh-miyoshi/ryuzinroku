@@ -7,6 +7,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
 var (
@@ -57,6 +58,7 @@ func (e *enemy) Process() {
 
 	if e.HP <= 0 {
 		e.dead = true
+		sound.PlaySound(sound.SEEnemyDead)
 		return
 	}
 	if e.X < -50 || e.X > common.FiledSizeX+50 || e.Y < -50 || e.Y > common.FiledSizeY+50 {
@@ -114,14 +116,4 @@ func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
 		}
 	}
 	return res
-	//                         double px,py;
-	//                         for(j=0;j<cshot[i].spd/r;j++){//進んだ分÷当たり判定分ループ
-	//                                 px=pre_x-enemy[s].x;
-	//                                 py=pre_y-enemy[s].y;
-	//                                 if(px*px+py*py<r*r)
-	//                                         return 1;
-	//                                 pre_x+=cos(cshot[i].angle)*r;
-	//                                 pre_y+=sin(cshot[i].angle)*r;
-	//                         }
-	//                 }
 }
