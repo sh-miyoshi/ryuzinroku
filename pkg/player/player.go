@@ -9,11 +9,17 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
 const (
 	initShotPower = 500
 	hitRange      = 2.0
+)
+
+const (
+	stateNormal int = iota
+	stateDead
 )
 
 type player struct {
@@ -23,6 +29,7 @@ type player struct {
 	images          []int32
 	plyrShot        *shot.Shot
 	invincibleCount int
+	state           int
 }
 
 func create(img common.ImageInfo) (*player, error) {
@@ -34,6 +41,7 @@ func create(img common.ImageInfo) (*player, error) {
 		x:        common.FiledSizeX / 2,
 		y:        common.FiledSizeY * 3 / 4,
 		plyrShot: &shot.Shot{Power: initShotPower},
+		state:    stateNormal,
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
@@ -54,8 +62,27 @@ func (p *player) process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
 
-	p.move()
-	p.plyrShot.Process(p.x, p.y)
+	switch p.state {
+	case stateNormal:
+		p.move()
+		p.plyrShot.Process(p.x, p.y)
+	case stateDead:
+		p.y -= 1.5
+
+		input := inputs.CheckKey(dxlib.KEY_INPUT_LEFT) + inputs.CheckKey(dxlib.KEY_INPUT_RIGHT) + inputs.CheckKey(dxlib.KEY_INPUT_UP) + inputs.CheckKey(dxlib.KEY_INPUT_DOWN)
+		//１秒以上か、キャラがある程度上にいて、何かおされたら
+		if p.count > 60 || (p.y < float64(common.FiledSizeY)-20 && input != 0) {
+			p.count = 0
+			p.state = stateNormal
+		}
+	}
+
+	if p.invincibleCount > 0 {
+		p.invincibleCount++
+		if p.invincibleCount > 120 {
+			p.invincibleCount = 0 // 無敵状態終了
+		}
+	}
 }
 
 func (p *player) move() {
@@ -128,8 +155,13 @@ func (p *player) hitProc(bullets []*bullet.Bullet) []int {
 	}
 
 	if len(hits) > 0 {
-		// TODO player death
-		fmt.Println("hits")
+		// Player death
+		sound.PlaySound(sound.SEPlayerDead)
+		p.state = stateDead
+		p.invincibleCount++
+		p.count = 0
+		p.x = float64(common.FiledSizeX) / 2
+		p.y = float64(common.FiledSizeY) + 30
 	}
 
 	return hits

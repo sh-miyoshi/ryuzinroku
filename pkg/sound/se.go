@@ -18,6 +18,8 @@ const (
 	SEEnemyDead
 	// SEEnemyHit ...
 	SEEnemyHit
+	// SEPlayerDead ...
+	SEPlayerDead
 
 	// SEMax ...
 	SEMax
@@ -34,8 +36,7 @@ func Init() error {
 	soundEffects[int(SEPlayerShot)] = dxlib.LoadSoundMem("data/se/cshot.wav", 3, -1)
 	soundEffects[int(SEEnemyDead)] = dxlib.LoadSoundMem("data/se/enemy_death.wav", 3, -1)
 	soundEffects[int(SEEnemyHit)] = dxlib.LoadSoundMem("data/se/hit.wav", 3, -1)
-
-	// TODO change volume
+	soundEffects[int(SEPlayerDead)] = dxlib.LoadSoundMem("data/se/char_death.wav", 3, -1)
 
 	for i, s := range soundEffects {
 		if s == -1 {
@@ -48,6 +49,7 @@ func Init() error {
 	dxlib.ChangeVolumeSoundMem(128, soundEffects[int(SEEnemyDead)])
 	dxlib.ChangeVolumeSoundMem(128, soundEffects[int(SEPlayerShot)])
 	dxlib.ChangeVolumeSoundMem(80, soundEffects[int(SEEnemyHit)])
+	dxlib.ChangeVolumeSoundMem(80, soundEffects[int(SEPlayerDead)])
 
 	return nil
 }
