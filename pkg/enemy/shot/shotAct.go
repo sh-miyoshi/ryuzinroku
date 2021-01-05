@@ -40,6 +40,7 @@ func shotAct1(ex, ey float64, s *Shot) {
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
 
@@ -57,6 +58,7 @@ func shotAct2(ex, ey float64, s *Shot) {
 		b.Angle = s.baseAngle
 		b.Speed = 3
 		bullet.Register(b)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
 
@@ -71,6 +73,7 @@ func shotAct3(ex, ey float64, s *Shot) {
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 1 + 5.0/100*float64(s.count)
 		bullet.Register(b)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
 
@@ -87,6 +90,7 @@ func shotAct4(ex, ey float64, s *Shot) {
 			b.Angle = angle + math.Pi*2/20*float64(i)
 			b.Speed = 4
 			bullet.Register(b)
+			sound.PlaySound(sound.SEEnemyShot)
 		}
 	}
 }
@@ -102,6 +106,7 @@ func shotAct5(ex, ey float64, s *Shot) {
 		b.Angle = math.Atan2(py-b.Y, px-b.X) + common.RandomAngle(math.Pi/4)
 		b.Speed = float64(3) + common.RandomAngle(1.5)
 		bullet.Register(b)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
 
@@ -117,5 +122,6 @@ func shotAct6(ex, ey float64, s *Shot) {
 		b.Speed = float64(4) + common.RandomAngle(2)
 		b.ActType = 1
 		bullet.Register(b)
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }

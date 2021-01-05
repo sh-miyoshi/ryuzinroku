@@ -45,16 +45,22 @@ func Init() error {
 	}
 
 	// 各素材の再生ボリュームを設定
-	dxlib.ChangeVolumeSoundMem(50, soundEffects[int(SEEnemyShot)])
-	dxlib.ChangeVolumeSoundMem(128, soundEffects[int(SEEnemyDead)])
+	dxlib.ChangeVolumeSoundMem(128, soundEffects[int(SEEnemyShot)])
+	dxlib.ChangeVolumeSoundMem(96, soundEffects[int(SEEnemyDead)])
 	dxlib.ChangeVolumeSoundMem(128, soundEffects[int(SEPlayerShot)])
-	dxlib.ChangeVolumeSoundMem(80, soundEffects[int(SEEnemyHit)])
-	dxlib.ChangeVolumeSoundMem(80, soundEffects[int(SEPlayerDead)])
+	dxlib.ChangeVolumeSoundMem(64, soundEffects[int(SEEnemyHit)])
+	dxlib.ChangeVolumeSoundMem(64, soundEffects[int(SEPlayerDead)])
 
 	return nil
 }
 
 // PlaySound ...
 func PlaySound(typ SEType) {
+	if dxlib.CheckSoundMem(soundEffects[typ]) == 1 {
+		if typ == SEEnemyHit {
+			return
+		}
+		dxlib.StopSoundMem(soundEffects[typ])
+	}
 	dxlib.PlaySoundMem(soundEffects[typ], dxlib.DX_PLAYTYPE_BACK, dxlib.TRUE)
 }
