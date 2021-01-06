@@ -7,11 +7,12 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/minion"
 	yaml "gopkg.in/yaml.v2"
 )
 
 type story struct {
-	Enemies []enemy `yaml:"enemies"`
+	Minions []minion.Minion `yaml:"enemies"`
 }
 
 type imageInfo struct {
@@ -21,7 +22,7 @@ type imageInfo struct {
 }
 
 var (
-	enemyImgInfo = []*imageInfo{
+	minionImgInfo = []*imageInfo{
 		{
 			info:   common.ImageInfo{AllNum: 9, XNum: 3, YNum: 3, XSize: 32, YSize: 32},
 			loaded: false,
@@ -29,7 +30,7 @@ var (
 	}
 
 	storyInfo story
-	enemies   []*enemy
+	minions   []*minion.Minion
 	count     int
 )
 
@@ -45,8 +46,8 @@ func StoryInit(storyFile string) error {
 	}
 
 	// Load enemy images
-	for _, e := range storyInfo.Enemies {
-		if e.Type >= len(enemyImgInfo) {
+	for _, e := range storyInfo.Minions {
+		if e.Type >= len(minionImgInfo) {
 			return fmt.Errorf("Invalid story file: enemy type %d is not defined", e.Type)
 		}
 		if err := load(e.Type); err != nil {
@@ -61,7 +62,7 @@ func StoryInit(storyFile string) error {
 // StoryEnd ...
 func StoryEnd() {
 	// Delete images
-	for _, imgInfos := range enemyImgInfo {
+	for _, imgInfos := range minionImgInfo {
 		if imgInfos.loaded {
 			for i := 0; i < int(imgInfos.info.AllNum); i++ {
 				dxlib.DeleteGraph(imgInfos.images[i])
@@ -76,20 +77,17 @@ func StoryEnd() {
 
 // MgrProcess ...
 func MgrProcess() {
-	for _, e := range storyInfo.Enemies {
+	for _, e := range storyInfo.Minions {
 		if e.ApperCount == count {
-			enemy := e
-			enemy.images = enemyImgInfo[e.Type].images
-			enemy.imgCount = 0
-			enemy.dead = false
-			enemy.direct = common.DirectFront
-			enemies = append(enemies, &enemy)
+			m := e
+			minion.Init(&m, minionImgInfo[e.Type].images)
+			minions = append(minions, &m)
 		}
 	}
 
-	newEnemies := []*enemy{}
+	newMinions := []*minion.Minion{}
 	bullets := bullet.GetBullets()
-	for _, e := range enemies {
+	for _, e := range minions {
 		hits := e.HitProc(bullets)
 		if len(hits) > 0 {
 			bullet.RemoveHitBullets(hits)
@@ -97,34 +95,34 @@ func MgrProcess() {
 
 		e.Process()
 
-		if !e.dead {
-			newEnemies = append(newEnemies, e)
+		if !e.IsDead() {
+			newMinions = append(newMinions, e)
 		}
 	}
-	enemies = newEnemies
+	minions = newMinions
 
 	count++
 }
 
 // MgrDraw ...
 func MgrDraw() {
-	for _, e := range enemies {
+	for _, e := range minions {
 		e.Draw()
 	}
 }
 
 func load(no int) error {
-	if enemyImgInfo[no].loaded {
+	if minionImgInfo[no].loaded {
 		return nil
 	}
 
-	enemyImgInfo[no].images = make([]int32, int(enemyImgInfo[no].info.AllNum))
+	minionImgInfo[no].images = make([]int32, int(minionImgInfo[no].info.AllNum))
 	fname := fmt.Sprintf("data/image/char/enemy/%d.png", no)
-	res := dxlib.LoadDivGraph(fname, enemyImgInfo[no].info.AllNum, enemyImgInfo[no].info.XNum, enemyImgInfo[no].info.YNum, enemyImgInfo[no].info.XSize, enemyImgInfo[no].info.YSize, enemyImgInfo[no].images, dxlib.FALSE)
+	res := dxlib.LoadDivGraph(fname, minionImgInfo[no].info.AllNum, minionImgInfo[no].info.XNum, minionImgInfo[no].info.YNum, minionImgInfo[no].info.XSize, minionImgInfo[no].info.YSize, minionImgInfo[no].images, dxlib.FALSE)
 	if res == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
 
-	enemyImgInfo[no].loaded = true
+	minionImgInfo[no].loaded = true
 	return nil
 }

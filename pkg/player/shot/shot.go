@@ -18,7 +18,7 @@ type Shot struct {
 
 // Process ...
 func (s *Shot) Process(px, py float64) {
-	if inputs.CheckKey(dxlib.KEY_INPUT_X) > 0 {
+	if inputs.CheckKey(dxlib.KEY_INPUT_Z) > 0 {
 		s.count++
 		if s.count%3 == 0 {
 			num := 2

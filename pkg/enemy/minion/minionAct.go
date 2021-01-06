@@ -1,10 +1,10 @@
-package enemy
+package minion
 
 import "github.com/sh-miyoshi/ryuzinroku/pkg/common"
 
 //移動パターン0
 //下がってきて停滞して上がっていく
-func act0(obj *enemy) {
+func act0(obj *Minion) {
 	if obj.count == 0 {
 		obj.vy = 3
 	}
@@ -20,7 +20,7 @@ func act0(obj *enemy) {
 
 //移動パターン1
 //下がってきて停滞して左下に行く
-func act1(obj *enemy) {
+func act1(obj *Minion) {
 	if obj.count == 0 {
 		obj.vy = 3
 	}
@@ -38,7 +38,7 @@ func act1(obj *enemy) {
 
 // //移動パターン2
 // //下がってきて停滞して右下に行く
-func act2(obj *enemy) {
+func act2(obj *Minion) {
 	if obj.count == 0 {
 		obj.vy = 3
 	}
@@ -56,7 +56,7 @@ func act2(obj *enemy) {
 
 // //行動パターン3
 // //すばやく降りてきて左へ
-func act3(obj *enemy) {
+func act3(obj *Minion) {
 	if obj.count == 0 {
 		obj.vy = 5
 	}
@@ -73,7 +73,7 @@ func act3(obj *enemy) {
 
 // //行動パターン4
 // //すばやく降りてきて右へ
-func act4(obj *enemy) {
+func act4(obj *Minion) {
 	if obj.count == 0 {
 		obj.vy = 5
 	}
@@ -90,7 +90,7 @@ func act4(obj *enemy) {
 
 // //行動パターン5
 // //斜め左下へ
-func act5(obj *enemy) {
+func act5(obj *Minion) {
 	if obj.count == 0 {
 		obj.vx = -1
 		obj.vy = 2
@@ -100,7 +100,7 @@ func act5(obj *enemy) {
 
 // //行動パターン6
 // //斜め右下へ
-func act6(obj *enemy) {
+func act6(obj *Minion) {
 	if obj.count == 0 {
 		obj.vx = 1
 		obj.vy = 2
@@ -110,7 +110,7 @@ func act6(obj *enemy) {
 
 // //移動パターン7
 // //停滞してそのまま左上に
-func act7(obj *enemy) {
+func act7(obj *Minion) {
 	if obj.count == obj.Wait {
 		obj.vx = -0.7
 		obj.vy = -0.3
@@ -120,7 +120,7 @@ func act7(obj *enemy) {
 
 // //移動パターン8
 // //停滞してそのまま右上に
-func act8(obj *enemy) {
+func act8(obj *Minion) {
 	if obj.count == obj.Wait {
 		obj.vx = 0.7
 		obj.vy = -0.3
@@ -130,7 +130,7 @@ func act8(obj *enemy) {
 
 // //移動パターン9
 // //停滞してそのまま上に
-func act9(obj *enemy) {
+func act9(obj *Minion) {
 	if obj.count == obj.Wait {
 		obj.vy = -1
 	}

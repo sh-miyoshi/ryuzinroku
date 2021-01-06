@@ -1,4 +1,4 @@
-package enemy
+package minion
 
 import (
 	"math"
@@ -12,25 +12,26 @@ import (
 )
 
 var (
-	acts      = []func(*enemy){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
+	acts      = []func(*Minion){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
 	hitRanges = []float64{16}
 )
 
-type enemyShot struct {
+type minionShot struct {
 	Type       int           `yaml:"type"`
 	StartCount int           `yaml:"startCount"`
 	BulletInfo bullet.Bullet `yaml:"bullet"`
 }
 
-type enemy struct {
-	ApperCount  int       `yaml:"appearCount"`
-	MovePattern int       `yaml:"movePattern"`
-	Type        int       `yaml:"type"`
-	X           float64   `yaml:"x"`
-	Y           float64   `yaml:"y"`
-	HP          int       `yaml:"hp"`
-	Wait        int       `yaml:"wait"`
-	Shot        enemyShot `yaml:"shot"`
+// Minion ...
+type Minion struct {
+	ApperCount  int        `yaml:"appearCount"`
+	MovePattern int        `yaml:"movePattern"`
+	Type        int        `yaml:"type"`
+	X           float64    `yaml:"x"`
+	Y           float64    `yaml:"y"`
+	HP          int        `yaml:"hp"`
+	Wait        int        `yaml:"wait"`
+	Shot        minionShot `yaml:"shot"`
 
 	images   []int32
 	imgCount int
@@ -41,8 +42,16 @@ type enemy struct {
 	shotProc *shot.Shot
 }
 
+// Init ...
+func Init(m *Minion, imgs []int32) {
+	m.images = imgs
+	m.imgCount = 0
+	m.dead = false
+	m.direct = common.DirectFront
+}
+
 // Process ...
-func (e *enemy) Process() {
+func (e *Minion) Process() {
 	acts[e.MovePattern](e)
 
 	e.count++
@@ -86,12 +95,12 @@ func (e *enemy) Process() {
 }
 
 // Draw ...
-func (e *enemy) Draw() {
+func (e *Minion) Draw() {
 	common.CharDraw(e.X, e.Y, e.images[e.imgCount], dxlib.TRUE)
 }
 
 // HitProc ...
-func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
+func (e *Minion) HitProc(bullets []*bullet.Bullet) []int {
 	res := []int{}
 	for i, b := range bullets {
 		if !b.IsPlayer {
@@ -129,4 +138,9 @@ func (e *enemy) HitProc(bullets []*bullet.Bullet) []int {
 		}
 	}
 	return res
+}
+
+// IsDead ...
+func (e *Minion) IsDead() bool {
+	return e.dead
 }
