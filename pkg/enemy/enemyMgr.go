@@ -7,11 +7,13 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/boss"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/minion"
 	yaml "gopkg.in/yaml.v2"
 )
 
 type story struct {
+	Boss    []boss.Boss     `yaml:"boss"`
 	Minions []minion.Minion `yaml:"enemies"`
 }
 
@@ -28,10 +30,21 @@ var (
 			loaded: false,
 		},
 	}
+	bossImgInfo = imageInfo{
+		info: common.ImageInfo{
+			FileName: "data/image/char/enemy/riria.png",
+			AllNum:   8,
+			XNum:     8,
+			YNum:     1,
+			XSize:    100,
+			YSize:    100,
+		},
+	}
 
 	storyInfo story
-	minions   []*minion.Minion
 	count     int
+	minions   []*minion.Minion
+	bossInst  *boss.Boss
 )
 
 // StoryInit ...
@@ -53,6 +66,14 @@ func StoryInit(storyFile string) error {
 		if err := load(e.Type); err != nil {
 			return err
 		}
+	}
+
+	// Load boss image
+	bossImgInfo.images = make([]int32, int(bossImgInfo.info.AllNum))
+	fname := bossImgInfo.info.FileName
+	res := dxlib.LoadDivGraph(fname, bossImgInfo.info.AllNum, bossImgInfo.info.XNum, bossImgInfo.info.YNum, bossImgInfo.info.XSize, bossImgInfo.info.YSize, bossImgInfo.images, dxlib.FALSE)
+	if res == -1 {
+		return fmt.Errorf("Failed to load boss image: %s", fname)
 	}
 
 	count = 0
@@ -77,35 +98,26 @@ func StoryEnd() {
 
 // MgrProcess ...
 func MgrProcess() {
-	for _, e := range storyInfo.Minions {
-		if e.ApperCount == count {
-			m := e
-			minion.Init(&m, minionImgInfo[e.Type].images)
-			minions = append(minions, &m)
-		}
+	if bossInst != nil {
+		bossInst.Process()
+		return
 	}
 
-	newMinions := []*minion.Minion{}
-	bullets := bullet.GetBullets()
-	for _, e := range minions {
-		hits := e.HitProc(bullets)
-		if len(hits) > 0 {
-			bullet.RemoveHitBullets(hits)
-		}
+	bossApper()
 
-		e.Process()
-
-		if !e.IsDead() {
-			newMinions = append(newMinions, e)
-		}
-	}
-	minions = newMinions
-
+	// Minions process
+	minionApper()
+	minionProc()
 	count++
 }
 
 // MgrDraw ...
 func MgrDraw() {
+	if bossInst != nil {
+		bossInst.Draw()
+		return
+	}
+
 	for _, e := range minions {
 		e.Draw()
 	}
@@ -125,4 +137,42 @@ func load(no int) error {
 
 	minionImgInfo[no].loaded = true
 	return nil
+}
+
+func minionApper() {
+	for _, e := range storyInfo.Minions {
+		if e.ApperCount == count {
+			m := e
+			minion.Init(&m, minionImgInfo[e.Type].images)
+			minions = append(minions, &m)
+		}
+	}
+}
+
+func minionProc() {
+	newMinions := []*minion.Minion{}
+	bullets := bullet.GetBullets()
+	for _, e := range minions {
+		hits := e.HitProc(bullets)
+		if len(hits) > 0 {
+			bullet.RemoveHitBullets(hits)
+		}
+
+		e.Process()
+
+		if !e.IsDead() {
+			newMinions = append(newMinions, e)
+		}
+	}
+	minions = newMinions
+}
+
+func bossApper() {
+	for _, b := range storyInfo.Boss {
+		if b.AppearCount == count {
+			minions = nil
+			bossInst = &b
+			bossInst.Init(bossImgInfo.images)
+		}
+	}
 }
