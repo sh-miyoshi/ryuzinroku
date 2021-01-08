@@ -53,7 +53,7 @@ func (b *Boss) Init(imgs []int32) {
 }
 
 // Process ...
-func (b *Boss) Process() {
+func (b *Boss) Process() bool {
 	// Move
 	b.move.process()
 	b.x, b.y = b.move.currentPos()
@@ -71,19 +71,28 @@ func (b *Boss) Process() {
 			b.currentBarr++
 			barr := b.Barrages[b.currentBarr]
 			b.shotProc = shot.New(barr.Type, barr.Bullet)
-			return
+			return false
 		}
 	case modeBarr:
-		if b.shotProc != nil {
-			b.shotProc.Process(b.x, b.y)
+		b.shotProc.Process(b.x, b.y)
+
+		// HPが0以下になるかendTimeになれば待機モードに
+
+		// TODO Check bullet hit and dead
+
+		if b.count >= endTime {
+			// TODO Stop Shot
+			if b.currentBarr == len(b.Barrages)-1 {
+				return true // finish
+			}
+			b.mode = modeWait
+			b.count = 0
+			b.move.moveTo(b.x, b.y, stdPosX, stdPosY, 60)
 		}
 	}
 
-	// Check bullet hit and dead
-	// 待機モードの場合はHPを減らさない
-	// 弾幕モードの時、HPが0以下になるかendTimeになれば待機モードに
-	// TODO
 	b.count++
+	return false
 }
 
 // Draw ...

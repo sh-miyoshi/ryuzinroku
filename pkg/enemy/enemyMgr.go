@@ -99,7 +99,9 @@ func StoryEnd() {
 // MgrProcess ...
 func MgrProcess() {
 	if bossInst != nil {
-		bossInst.Process()
+		if bossInst.Process() {
+			bossInst = nil
+		}
 		return
 	}
 

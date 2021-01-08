@@ -154,7 +154,8 @@ func (p *player) hitProc(bullets []*bullet.Bullet) []int {
 		}
 	}
 
-	if len(hits) > 0 {
+	// ヒットした弾が存在し、無敵状態でないなら
+	if len(hits) > 0 && p.invincibleCount == 0 {
 		// Player death
 		sound.PlaySound(sound.SEPlayerDead)
 		p.state = stateDead
