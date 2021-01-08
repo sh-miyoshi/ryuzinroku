@@ -16,7 +16,10 @@ type Shot struct {
 }
 
 var (
-	shotActs = []func(float64, float64, *Shot){shotAct0, shotAct1, shotAct2, shotAct3, shotAct4, shotAct5, shotAct6}
+	shotActs = []func(float64, float64, *Shot){
+		shotAct0, shotAct1, shotAct2, shotAct3, shotAct4, shotAct5, shotAct6,
+		bossShotAct0,
+	}
 )
 
 // New ...
