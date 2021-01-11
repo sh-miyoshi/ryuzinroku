@@ -13,8 +13,7 @@ type Back struct {
 	imageSizeY int32
 }
 
-// NewBack ...
-func NewBack(filePath string) (*Back, error) {
+func newBack(filePath string) (*Back, error) {
 	res := &Back{}
 	res.image = dxlib.LoadGraph(filePath, dxlib.FALSE)
 	if res.image == -1 {

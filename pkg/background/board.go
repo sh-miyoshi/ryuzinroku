@@ -14,8 +14,7 @@ type Board struct {
 	imgRight  int32
 }
 
-// NewBoard ...
-func NewBoard(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Board, error) {
+func newBoard(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Board, error) {
 	res := Board{
 		imgTop:    dxlib.LoadGraph(imgTopFile, dxlib.FALSE),
 		imgBottom: dxlib.LoadGraph(imtBottomFile, dxlib.FALSE),

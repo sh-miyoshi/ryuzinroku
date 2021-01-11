@@ -34,25 +34,8 @@ func main() {
 		fmt.Printf("Failed to init sound: %v\n", err)
 		os.Exit(1)
 	}
-
-	board, err := background.NewBoard(
-		"data/image/background/board_top.png",
-		"data/image/background/board_bottom.png",
-		"data/image/background/board_left.png",
-		"data/image/background/board_right.png",
-	)
-	if err != nil {
-		fmt.Printf("Failed to init board: %v\n", err)
-		os.Exit(1)
-	}
-	back, err := background.NewBack("data/image/background/back0.png")
-	if err != nil {
-		fmt.Printf("Failed to init back: %v\n", err)
-		os.Exit(1)
-	}
-
-	if err := enemy.StoryInit("data/story/story.yaml"); err != nil {
-		fmt.Printf("Failed to init enemy: %v\n", err)
+	if err := background.Init(); err != nil {
+		fmt.Printf("Failed to init background: %v\n", err)
 		os.Exit(1)
 	}
 	if err := bullet.Init(); err != nil {
@@ -68,6 +51,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	// TODO set per story
+	if err := enemy.StoryInit("data/story/story.yaml"); err != nil {
+		fmt.Printf("Failed to init enemy: %v\n", err)
+		os.Exit(1)
+	}
+
 	count := 0
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
@@ -78,11 +67,11 @@ func main() {
 		effect.MgrProcess()
 
 		// 描画関係
-		back.Draw(count)
+		background.DrawBack(count)
 		player.MgrDraw()
 		bullet.MgrDraw()
 		enemy.MgrDraw()
-		board.Draw()
+		background.DrawBoard()
 		effect.MgrDraw()
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
