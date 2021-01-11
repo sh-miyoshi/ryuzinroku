@@ -115,7 +115,7 @@ func MgrProcess() {
 func MgrDraw() {
 	// Show bullets
 	for _, b := range bullets {
-		dxlib.DrawRotaGraph(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, b.Angle+math.Pi/2, bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
 }
 

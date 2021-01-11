@@ -88,7 +88,7 @@ func MgrDraw() {
 			dxlib.SetDrawBlendMode(e.BlendType, e.BlendParam)
 		}
 
-		dxlib.DrawRotaGraph(int32(e.X)+common.FieldTopX, int32(e.Y)+common.FieldTopY, e.ExtRate, e.Angle, effectImgs[e.Type][e.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(e.X)+common.FieldTopX, int32(e.Y)+common.FieldTopY, float32(e.ExtRate), float32(e.Angle), effectImgs[e.Type][e.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 
 		if e.BlendType != dxlib.DX_BLENDMODE_NOBLEND {
 			dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_NOBLEND, 0)
