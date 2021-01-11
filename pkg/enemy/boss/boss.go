@@ -97,6 +97,7 @@ func (b *Boss) Process() bool {
 
 		// HPが0以下になるかendTimeになれば待機モードに
 		if b.currentHP <= 0 || b.count >= endTime {
+			sound.PlaySound(sound.SEEnemyDead)
 			bullet.RemoveCharBullets(b.charID)
 			if b.currentBarr == len(b.Barrages)-1 {
 				return true // finish
