@@ -125,3 +125,39 @@ func shotAct6(ex, ey float64, s *Shot) {
 		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
+
+// みょん弾幕
+func shotAct7(ex, ey float64, s *Shot) {
+	if s.count <= 150 && s.count%10 == 0 {
+		for i := 0; i < 20; i++ {
+			b := s.bulletInfo
+			b.Type = 7
+			b.ShotID = s.id
+			b.X = ex + math.Cos(math.Pi/2+math.Pi/150*float64(s.count))*100
+			b.Y = ey + math.Sin(math.Pi/2+math.Pi/150*float64(s.count))*100
+			b.Angle = math.Pi * 2 / 20 * float64(i)
+			b.Speed = 1.2
+			b.Color = 2
+			b.ActType = 1
+			bullet.Register(b)
+		}
+		for i := 0; i < 20; i++ {
+			b := s.bulletInfo
+			b.Type = 7
+			b.ShotID = s.id
+			b.X = ex + math.Cos(math.Pi/2-math.Pi/150*float64(s.count))*100
+			b.Y = ey + math.Sin(math.Pi/2-math.Pi/150*float64(s.count))*100
+			b.Angle = math.Pi * 2 / 20 * float64(i)
+			b.Speed = 1.2
+			b.Color = 4
+			b.ActType = 1
+			bullet.Register(b)
+			sound.PlaySound(sound.SEEnemyShot)
+		}
+	}
+}
+
+// ダミー(なにもしない)
+func shotActNon(ex, ey float64, s *Shot) {
+	// nothing to do
+}

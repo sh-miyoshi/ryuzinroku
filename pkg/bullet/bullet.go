@@ -114,9 +114,11 @@ func MgrProcess() {
 // MgrDraw ...
 func MgrDraw() {
 	// Show bullets
+	// TODO SetDrawMode(DX_DRAWMODE_BILINEAR)
 	for _, b := range bullets {
 		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
+	// SetDrawMode(DX_DRAWMODE_NEAREST)
 }
 
 // Exists ...

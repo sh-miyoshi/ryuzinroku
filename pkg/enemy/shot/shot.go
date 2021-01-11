@@ -16,8 +16,12 @@ type Shot struct {
 }
 
 var (
+	// ショットパターン
+	// 0 ~ 9: 雑魚適用のショット
+	// 10 ~ : ボス用の弾幕
 	shotActs = []func(float64, float64, *Shot){
-		shotAct0, shotAct1, shotAct2, shotAct3, shotAct4, shotAct5, shotAct6,
+		shotAct0, shotAct1, shotAct2, shotAct3, shotAct4,
+		shotAct5, shotAct6, shotAct7, shotActNon, shotActNon,
 		bossShotAct0,
 	}
 )
