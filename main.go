@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
@@ -14,6 +15,10 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
+
+func init() {
+	runtime.LockOSThread()
+}
 
 func main() {
 	dxlib.Init("DxLib.dll")
@@ -84,6 +89,7 @@ func main() {
 			break
 		}
 		count++
+		dxlib.DrawFormatString(0, 0, dxlib.GetColor(255, 255, 255), "%d", count)
 	}
 
 	dxlib.DxLib_End()
