@@ -45,6 +45,7 @@ var (
 	count     int
 	minions   []*minion.Minion
 	bossInst  *boss.Boss
+	bossHPImg int32
 )
 
 // StoryInit ...
@@ -74,6 +75,11 @@ func StoryInit(storyFile string) error {
 	res := dxlib.LoadDivGraph(fname, bossImgInfo.info.AllNum, bossImgInfo.info.XNum, bossImgInfo.info.YNum, bossImgInfo.info.XSize, bossImgInfo.info.YSize, bossImgInfo.images, dxlib.FALSE)
 	if res == -1 {
 		return fmt.Errorf("Failed to load boss image: %s", fname)
+	}
+
+	bossHPImg = dxlib.LoadGraph("data/image/etc/boss_hp.png", dxlib.FALSE)
+	if bossHPImg == -1 {
+		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp.png")
 	}
 
 	count = 0
@@ -174,7 +180,7 @@ func bossApper() {
 		if b.AppearCount == count {
 			minions = nil
 			bossInst = &b
-			bossInst.Init(bossImgInfo.images)
+			bossInst.Init(bossImgInfo.images, bossHPImg)
 		}
 	}
 }

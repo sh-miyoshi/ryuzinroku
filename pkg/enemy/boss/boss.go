@@ -34,21 +34,25 @@ type Boss struct {
 	x, y        float64
 	count       int
 	images      []int32
+	hpImg       int32
 	currentBarr int
 	mode        int
 	move        mover
 	shotProc    *shot.Shot
+	currentHP   int
 }
 
 // Init ...
-func (b *Boss) Init(imgs []int32) {
+func (b *Boss) Init(imgs []int32, hpImg int32) {
 	b.count = 0
 	b.currentBarr = -1
 	b.x = float64(common.FiledSizeX) / 2
 	b.y = -30
 	b.images = imgs
 	b.mode = modeWait
+	b.hpImg = hpImg
 	b.shotProc = nil
+	b.currentHP = 0
 	b.move.moveTo(b.x, b.y, stdPosX, stdPosY, 60)
 }
 
@@ -71,6 +75,7 @@ func (b *Boss) Process() bool {
 			b.currentBarr++
 			barr := b.Barrages[b.currentBarr]
 			b.shotProc = shot.New(barr.Type, barr.Bullet)
+			b.currentHP = barr.HP
 			return false
 		}
 	case modeBarr:
@@ -98,4 +103,13 @@ func (b *Boss) Process() bool {
 // Draw ...
 func (b *Boss) Draw() {
 	common.CharDraw(b.x, b.y, b.images[0], dxlib.TRUE)
+
+	// HP描画
+	// TODO hpの色を背景色に合わせて変える
+	if b.currentHP > 0 && b.currentBarr < len(b.Barrages) {
+		hpSize := common.FiledSizeX * 0.98 * float64(b.currentHP) / float64(b.Barrages[b.currentBarr].HP)
+		for i := 0; i < int(hpSize); i++ {
+			dxlib.DrawGraph(3+int32(i)+common.FieldTopX, 2+common.FieldTopY, b.hpImg, dxlib.FALSE)
+		}
+	}
 }
