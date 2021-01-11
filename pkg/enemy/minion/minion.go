@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	acts      = []func(*Minion){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9}
+	acts      = []func(*Minion){act0, act1, act2, act3, act4, act5, act6, act7, act8, act9, act10}
 	hitRanges = []float64{16}
 )
 
@@ -31,6 +31,7 @@ type Minion struct {
 	Y           float64    `yaml:"y"`
 	HP          int        `yaml:"hp"`
 	Wait        int        `yaml:"wait"`
+	Speed       float64    `yaml:"speed"`
 	Shot        minionShot `yaml:"shot"`
 
 	images   []int32
@@ -39,6 +40,7 @@ type Minion struct {
 	dead     bool
 	direct   common.Direct
 	vx, vy   float64
+	angle    float64
 	shotProc *shot.Shot
 }
 
@@ -63,6 +65,8 @@ func (e *Minion) Process() {
 		e.imgCount += 6
 	}
 
+	e.X += math.Cos(e.angle) * e.Speed
+	e.Y += math.Sin(e.angle) * e.Speed
 	e.X += e.vx
 	e.Y += e.vy
 
