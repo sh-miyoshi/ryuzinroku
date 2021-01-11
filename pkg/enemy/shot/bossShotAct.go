@@ -18,6 +18,7 @@ func bossShotAct0(ex, ey float64, s *Shot) {
 		angle := math.Atan2(py-ey, px-ex)
 		for i := 0; i < 30; i++ {
 			b := s.bulletInfo
+			b.CharID = s.charID
 			b.ShotID = s.id
 			b.X = ex
 			b.Y = ey

@@ -1,10 +1,14 @@
 package boss
 
 import (
+	"math"
+
+	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
 const (
@@ -12,6 +16,7 @@ const (
 	stdPosY  = 100.0
 	waitTime = 140
 	endTime  = 99 * 60
+	hitRange = 40.0
 )
 
 const (
@@ -40,6 +45,7 @@ type Boss struct {
 	move        mover
 	shotProc    *shot.Shot
 	currentHP   int
+	charID      string
 }
 
 // Init ...
@@ -53,6 +59,7 @@ func (b *Boss) Init(imgs []int32, hpImg int32) {
 	b.hpImg = hpImg
 	b.shotProc = nil
 	b.currentHP = 0
+	b.charID = uuid.New().String()
 	b.move.moveTo(b.x, b.y, stdPosX, stdPosY, 60)
 }
 
@@ -74,19 +81,23 @@ func (b *Boss) Process() bool {
 			b.mode = modeBarr
 			b.currentBarr++
 			barr := b.Barrages[b.currentBarr]
-			b.shotProc = shot.New(barr.Type, barr.Bullet)
+			b.shotProc = shot.New(barr.Type, b.charID, barr.Bullet)
 			b.currentHP = barr.HP
 			return false
 		}
 	case modeBarr:
 		b.shotProc.Process(b.x, b.y)
 
+		// Check bullet hit and dead
+		bullets := bullet.GetBullets()
+		hits := b.hitProc(bullets)
+		if len(hits) > 0 {
+			bullet.RemoveHitBullets(hits)
+		}
+
 		// HPが0以下になるかendTimeになれば待機モードに
-
-		// TODO Check bullet hit and dead
-
-		if b.count >= endTime {
-			// TODO Stop Shot
+		if b.currentHP <= 0 || b.count >= endTime {
+			bullet.RemoveCharBullets(b.charID)
 			if b.currentBarr == len(b.Barrages)-1 {
 				return true // finish
 			}
@@ -112,4 +123,44 @@ func (b *Boss) Draw() {
 			dxlib.DrawGraph(3+int32(i)+common.FieldTopX, 2+common.FieldTopY, b.hpImg, dxlib.FALSE)
 		}
 	}
+}
+
+func (b *Boss) hitProc(bullets []*bullet.Bullet) []int {
+	res := []int{}
+	for i, bl := range bullets {
+		if !bl.IsPlayer {
+			continue
+		}
+
+		x := bl.X - b.x
+		y := bl.Y - b.y
+		r := bl.HitRange + hitRange
+
+		if x*x+y*y < r*r { // 当たり判定内なら
+			b.currentHP -= bl.Power
+			sound.PlaySound(sound.SEEnemyHit)
+			res = append(res, i)
+			continue
+		}
+
+		// 中間を計算する必要があれば
+		if bl.Speed > r {
+			// 1フレーム前にいた位置
+			preX := bl.X + math.Cos(bl.Angle+math.Pi)*bl.Speed
+			preY := bl.Y + math.Sin(bl.Angle+math.Pi)*bl.Speed
+			for j := 0; j < int(bl.Speed/r); j++ { // 進んだ分÷当たり判定分ループ
+				px := preX - b.x
+				py := preY - b.y
+				if px*px+py*py < r*r {
+					b.currentHP -= bl.Power
+					sound.PlaySound(sound.SEEnemyHit)
+					res = append(res, i)
+					break
+				}
+				preX += math.Cos(bl.Angle) * bl.Speed
+				preY += math.Sin(bl.Angle) * bl.Speed
+			}
+		}
+	}
+	return res
 }

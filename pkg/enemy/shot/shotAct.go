@@ -14,6 +14,7 @@ func shotAct0(ex, ey float64, s *Shot) {
 	if s.count == 0 {
 		// register bullet
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -33,6 +34,7 @@ func shotAct0(ex, ey float64, s *Shot) {
 func shotAct1(ex, ey float64, s *Shot) {
 	if s.count <= 100 && s.count%10 == 0 { //100カウント中10カウントに1回
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -52,6 +54,7 @@ func shotAct2(ex, ey float64, s *Shot) {
 			s.baseAngle = math.Atan2(py-ey, px-ex)
 		}
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -66,6 +69,7 @@ func shotAct2(ex, ey float64, s *Shot) {
 func shotAct3(ex, ey float64, s *Shot) {
 	if s.count <= 100 && s.count%10 == 0 {
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -84,6 +88,7 @@ func shotAct4(ex, ey float64, s *Shot) {
 		angle := math.Atan2(py-ey, px-ex)
 		for i := 0; i < 20; i++ {
 			b := s.bulletInfo
+			b.CharID = s.charID
 			b.ShotID = s.id
 			b.X = ex
 			b.Y = ey
@@ -99,6 +104,7 @@ func shotAct4(ex, ey float64, s *Shot) {
 func shotAct5(ex, ey float64, s *Shot) {
 	if s.count < 120 && s.count%2 == 0 {
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -114,6 +120,7 @@ func shotAct5(ex, ey float64, s *Shot) {
 func shotAct6(ex, ey float64, s *Shot) {
 	if s.count < 120 && s.count%2 == 0 {
 		b := s.bulletInfo
+		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
@@ -131,6 +138,7 @@ func shotAct7(ex, ey float64, s *Shot) {
 	if s.count <= 150 && s.count%10 == 0 {
 		for i := 0; i < 20; i++ {
 			b := s.bulletInfo
+			b.CharID = s.charID
 			b.Type = 7
 			b.ShotID = s.id
 			b.X = ex + math.Cos(math.Pi/2+math.Pi/150*float64(s.count))*100
@@ -143,6 +151,7 @@ func shotAct7(ex, ey float64, s *Shot) {
 		}
 		for i := 0; i < 20; i++ {
 			b := s.bulletInfo
+			b.CharID = s.charID
 			b.Type = 7
 			b.ShotID = s.id
 			b.X = ex + math.Cos(math.Pi/2-math.Pi/150*float64(s.count))*100

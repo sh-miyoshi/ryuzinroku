@@ -12,6 +12,7 @@ type Shot struct {
 	finished   bool
 	count      int
 	baseAngle  float64
+	charID     string
 	bulletInfo bullet.Bullet
 }
 
@@ -27,13 +28,14 @@ var (
 )
 
 // New ...
-func New(typ int, b bullet.Bullet) *Shot {
+func New(typ int, charID string, b bullet.Bullet) *Shot {
 	return &Shot{
 		typ:        typ,
 		id:         uuid.New().String(),
 		finished:   false,
 		count:      0,
 		bulletInfo: b,
+		charID:     charID,
 	}
 }
 

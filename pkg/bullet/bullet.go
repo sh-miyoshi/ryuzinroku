@@ -18,6 +18,7 @@ type Bullet struct {
 	Color int `yaml:"color"`
 	Type  int `yaml:"type"`
 
+	CharID   string
 	ShotID   string
 	X, Y     float64
 	Speed    float64
@@ -143,4 +144,16 @@ func RemoveHitBullets(hits []int) {
 		bullets[hit] = bullets[len(bullets)-1]
 		bullets = bullets[:len(bullets)-1]
 	}
+}
+
+// RemoveCharBullets ...
+func RemoveCharBullets(charID string) {
+	newBullets := []*Bullet{}
+	for _, b := range bullets {
+		if b.CharID != charID {
+			newBullets = append(newBullets, b)
+		}
+	}
+
+	bullets = newBullets
 }

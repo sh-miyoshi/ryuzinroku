@@ -3,6 +3,7 @@ package minion
 import (
 	"math"
 
+	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
@@ -42,6 +43,7 @@ type Minion struct {
 	vx, vy   float64
 	angle    float64
 	shotProc *shot.Shot
+	charID   string
 }
 
 // Init ...
@@ -50,6 +52,7 @@ func Init(m *Minion, imgs []int32) {
 	m.imgCount = 0
 	m.dead = false
 	m.direct = common.DirectFront
+	m.charID = uuid.New().String()
 }
 
 // Process ...
@@ -88,7 +91,7 @@ func (e *Minion) Process() {
 
 	// Shot Process
 	if e.count == e.Shot.StartCount {
-		e.shotProc = shot.New(e.Shot.Type, e.Shot.BulletInfo)
+		e.shotProc = shot.New(e.Shot.Type, e.charID, e.Shot.BulletInfo)
 	}
 
 	if e.shotProc != nil {
