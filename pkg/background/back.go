@@ -7,13 +7,20 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 )
 
+type addImg struct {
+	x, y     int32
+	filePath string
+	image    int32
+}
+
 // Back ...
 type Back struct {
 	image      int32
 	imageSizeY int32
+	addImgs    []addImg
 }
 
-func newBack(filePath string) (*Back, error) {
+func newBack(filePath string, addImgs ...addImg) (*Back, error) {
 	res := &Back{}
 	res.image = dxlib.LoadGraph(filePath, dxlib.FALSE)
 	if res.image == -1 {
@@ -22,6 +29,14 @@ func newBack(filePath string) (*Back, error) {
 	dxlib.GetGraphSize(res.image, nil, &res.imageSizeY)
 	if res.imageSizeY <= 0 {
 		return nil, fmt.Errorf("Failed to get graph size")
+	}
+
+	for _, i := range addImgs {
+		i.image = dxlib.LoadGraph(i.filePath, dxlib.FALSE)
+		if i.image == -1 {
+			return nil, fmt.Errorf("Failed to load image %s", i.filePath)
+		}
+		res.addImgs = append(res.addImgs, i)
 	}
 
 	return res, nil
@@ -33,5 +48,8 @@ func (b *Back) Draw(count int) {
 	y := common.FieldTopY + count%int(b.imageSizeY)
 	dxlib.DrawGraph(common.FieldTopX, int32(y)-b.imageSizeY, b.image, dxlib.FALSE)
 	dxlib.DrawGraph(common.FieldTopX, int32(y), b.image, dxlib.FALSE)
+	for _, i := range b.addImgs {
+		dxlib.DrawGraph(common.FieldTopX+i.x, common.FieldTopY+i.y, i.image, dxlib.TRUE)
+	}
 	dxlib.SetDrawArea(0, 0, common.ScreenX, common.ScreenY)
 }

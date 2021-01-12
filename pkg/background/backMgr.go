@@ -7,11 +7,14 @@ const (
 	BackNormal int = iota
 	// BackSpellCard ...
 	BackSpellCard
+
+	backMax
 )
 
 var (
-	back  *Back
-	board *Board
+	currentBack = BackNormal
+	backs       [backMax]*Back
+	board       *Board
 )
 
 // Init ...
@@ -26,9 +29,17 @@ func Init() error {
 	if err != nil {
 		return fmt.Errorf("Failed to init board: %v", err)
 	}
-	back, err = newBack("data/image/background/back0.png")
+	backs[BackNormal], err = newBack("data/image/background/back0.png")
 	if err != nil {
-		return fmt.Errorf("Failed to init back: %v", err)
+		return fmt.Errorf("Failed to init back normal: %v", err)
+	}
+
+	backs[BackSpellCard], err = newBack(
+		"data/image/background/back1.png",
+		addImg{x: 0, y: 0, filePath: "data/image/background/back1_fixed0.png"},
+	)
+	if err != nil {
+		return fmt.Errorf("Failed to init back spellcard: %v", err)
 	}
 
 	return nil
@@ -36,8 +47,8 @@ func Init() error {
 
 // DrawBack ...
 func DrawBack(count int) {
-	if back != nil {
-		back.Draw(count)
+	if backs[currentBack] != nil {
+		backs[currentBack].Draw(count)
 	}
 }
 
@@ -50,5 +61,5 @@ func DrawBoard() {
 
 // SetBack ...
 func SetBack(backType int) {
-
+	currentBack = backType
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
@@ -25,9 +26,10 @@ const (
 )
 
 type barrage struct {
-	Type   int           `yaml:"type"`
-	HP     int           `yaml:"hp"`
-	Bullet bullet.Bullet `yaml:"bullet"`
+	Type      int           `yaml:"type"`
+	HP        int           `yaml:"hp"`
+	Bullet    bullet.Bullet `yaml:"bullet"`
+	SpellCard bool          `yaml:"spellcard"`
 }
 
 // Boss ...
@@ -51,15 +53,14 @@ type Boss struct {
 // Init ...
 func (b *Boss) Init(imgs []int32, hpImg int32) {
 	b.count = 0
-	b.currentBarr = -1
+	b.currentBarr = 0
 	b.x = float64(common.FiledSizeX) / 2
 	b.y = -30
 	b.images = imgs
 	b.mode = modeWait
 	b.hpImg = hpImg
-	b.shotProc = nil
-	b.currentHP = 0
 	b.charID = uuid.New().String()
+	b.setBarr()
 	b.move.moveTo(b.x, b.y, stdPosX, stdPosY, 60)
 }
 
@@ -79,10 +80,6 @@ func (b *Boss) Process() bool {
 		if b.count == waitTime {
 			b.count = 0
 			b.mode = modeBarr
-			b.currentBarr++
-			barr := b.Barrages[b.currentBarr]
-			b.shotProc = shot.New(barr.Type, b.charID, barr.Bullet)
-			b.currentHP = barr.HP
 			return false
 		}
 	case modeBarr:
@@ -100,10 +97,13 @@ func (b *Boss) Process() bool {
 			sound.PlaySound(sound.SEEnemyDead)
 			bullet.RemoveCharBullets(b.charID)
 			if b.currentBarr == len(b.Barrages)-1 {
+				background.SetBack(background.BackNormal)
 				return true // finish
 			}
+			b.currentBarr++
 			b.mode = modeWait
 			b.count = 0
+			b.setBarr()
 			b.move.moveTo(b.x, b.y, stdPosX, stdPosY, 60)
 		}
 	}
@@ -164,4 +164,15 @@ func (b *Boss) hitProc(bullets []*bullet.Bullet) []int {
 		}
 	}
 	return res
+}
+
+func (b *Boss) setBarr() {
+	barr := b.Barrages[b.currentBarr]
+	b.shotProc = shot.New(barr.Type, b.charID, barr.Bullet)
+	b.currentHP = barr.HP
+	if barr.SpellCard {
+		background.SetBack(background.BackSpellCard)
+	} else {
+		background.SetBack(background.BackNormal)
+	}
 }
