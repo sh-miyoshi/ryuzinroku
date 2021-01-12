@@ -45,7 +45,7 @@ var (
 	count     int
 	minions   []*minion.Minion
 	bossInst  *boss.Boss
-	bossHPImg int32
+	bossHPImg [boss.HPColMax]int32
 )
 
 // StoryInit ...
@@ -77,9 +77,13 @@ func StoryInit(storyFile string) error {
 		return fmt.Errorf("Failed to load boss image: %s", fname)
 	}
 
-	bossHPImg = dxlib.LoadGraph("data/image/etc/boss_hp.png", dxlib.FALSE)
-	if bossHPImg == -1 {
-		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp.png")
+	bossHPImg[boss.HPColNormal] = dxlib.LoadGraph("data/image/etc/boss_hp_normal.png", dxlib.FALSE)
+	if bossHPImg[boss.HPColNormal] == -1 {
+		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_normal.png")
+	}
+	bossHPImg[boss.HPColBright] = dxlib.LoadGraph("data/image/etc/boss_hp_bright.png", dxlib.FALSE)
+	if bossHPImg[boss.HPColBright] == -1 {
+		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_bright.png")
 	}
 
 	count = 0

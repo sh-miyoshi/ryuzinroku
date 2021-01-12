@@ -25,6 +25,16 @@ const (
 	modeBarr
 )
 
+const (
+	// HPColNormal ...
+	HPColNormal int = iota
+	// HPColBright ...
+	HPColBright
+
+	// HPColMax ...
+	HPColMax
+)
+
 type barrage struct {
 	Type      int           `yaml:"type"`
 	HP        int           `yaml:"hp"`
@@ -41,7 +51,7 @@ type Boss struct {
 	x, y        float64
 	count       int
 	images      []int32
-	hpImg       int32
+	hpImg       [HPColMax]int32
 	currentBarr int
 	mode        int
 	move        mover
@@ -51,7 +61,7 @@ type Boss struct {
 }
 
 // Init ...
-func (b *Boss) Init(imgs []int32, hpImg int32) {
+func (b *Boss) Init(imgs []int32, hpImg [HPColMax]int32) {
 	b.count = 0
 	b.currentBarr = 0
 	b.x = float64(common.FiledSizeX) / 2
@@ -119,9 +129,14 @@ func (b *Boss) Draw() {
 	// HP描画
 	// TODO hpの色を背景色に合わせて変える
 	if b.currentHP > 0 && b.currentBarr < len(b.Barrages) {
+		col := HPColNormal
+		if b.Barrages[b.currentBarr].SpellCard {
+			col = HPColBright
+		}
+
 		hpSize := common.FiledSizeX * 0.98 * float64(b.currentHP) / float64(b.Barrages[b.currentBarr].HP)
 		for i := 0; i < int(hpSize); i++ {
-			dxlib.DrawGraph(3+int32(i)+common.FieldTopX, 2+common.FieldTopY, b.hpImg, dxlib.FALSE)
+			dxlib.DrawGraph(3+int32(i)+common.FieldTopX, 2+common.FieldTopY, b.hpImg[col], dxlib.FALSE)
 		}
 	}
 }
