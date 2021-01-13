@@ -10,6 +10,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -74,7 +75,6 @@ type Riria struct {
 	backImgs    []int32
 	currentBarr int
 	mode        int
-	move        mover
 	shotProc    *shot.Shot
 	currentHP   int
 	charID      string
@@ -100,17 +100,14 @@ func NewRiria(def Define, charImg []int32, hpImg [HPColMax]int32, backImgs []int
 	}
 
 	inst.setBarr()
-	inst.move.moveTo(inst.x, inst.y, stdPosX, stdPosY, 60)
+	mover.CharRegist(inst.charID, &inst.x, &inst.y)
+	mover.MoveTo(inst.charID, stdPosX, stdPosY, 60)
 
 	return &inst, nil
 }
 
 // Process ...
 func (r *Riria) Process() bool {
-	// Move
-	r.move.process()
-	r.x, r.y = r.move.currentPos()
-
 	// 初期状態は待機モード
 	// 今が待機モードならwaitTime分待機する
 	// 待機が終了したら弾幕を登録し、弾幕モードにする
@@ -145,7 +142,7 @@ func (r *Riria) Process() bool {
 			r.mode = modeWait
 			r.count = 0
 			r.setBarr()
-			r.move.moveTo(r.x, r.y, stdPosX, stdPosY, 60)
+			mover.MoveTo(r.charID, stdPosX, stdPosY, 60)
 		}
 	}
 

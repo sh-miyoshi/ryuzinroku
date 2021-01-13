@@ -12,6 +12,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -65,6 +66,7 @@ func main() {
 		enemy.MgrProcess()
 		bullet.MgrProcess()
 		effect.MgrProcess()
+		mover.Process()
 
 		// 描画関係
 		background.DrawBack(count)
