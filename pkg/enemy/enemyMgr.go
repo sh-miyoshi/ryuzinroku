@@ -13,7 +13,7 @@ import (
 )
 
 type story struct {
-	Boss    []boss.Boss     `yaml:"boss"`
+	Boss    []boss.Define   `yaml:"boss"`
 	Minions []minion.Minion `yaml:"enemies"`
 }
 
@@ -30,22 +30,25 @@ var (
 			loaded: false,
 		},
 	}
-	bossImgInfo = imageInfo{
-		info: common.ImageInfo{
-			FileName: "data/image/char/enemy/riria.png",
-			AllNum:   8,
-			XNum:     8,
-			YNum:     1,
-			XSize:    100,
-			YSize:    100,
+	bossCharImgInfo = [boss.TypeMax]imageInfo{
+		{
+			info: common.ImageInfo{
+				FileName: "data/image/char/enemy/riria.png",
+				AllNum:   8,
+				XNum:     8,
+				YNum:     1,
+				XSize:    100,
+				YSize:    100,
+			},
 		},
 	}
 
-	storyInfo story
-	count     int
-	minions   []*minion.Minion
-	bossInst  *boss.Boss
-	bossHPImg [boss.HPColMax]int32
+	storyInfo   story
+	count       int
+	minions     []*minion.Minion
+	bossInst    boss.Boss
+	bossHPImg   [boss.HPColMax]int32
+	bossEtcImgs []int32
 )
 
 // StoryInit ...
@@ -70,13 +73,15 @@ func StoryInit(storyFile string) error {
 	}
 
 	// Load boss image
-	bossImgInfo.images = make([]int32, int(bossImgInfo.info.AllNum))
-	fname := bossImgInfo.info.FileName
-	res := dxlib.LoadDivGraph(fname, bossImgInfo.info.AllNum, bossImgInfo.info.XNum, bossImgInfo.info.YNum, bossImgInfo.info.XSize, bossImgInfo.info.YSize, bossImgInfo.images, dxlib.FALSE)
-	if res == -1 {
-		return fmt.Errorf("Failed to load boss image: %s", fname)
+	// ボス登場時に読み込もうとすると遅延が発生するかもしれないので先に読み込んでおく
+	for i, b := range bossCharImgInfo {
+		bossCharImgInfo[i].images = make([]int32, int(b.info.AllNum))
+		fname := b.info.FileName
+		res := dxlib.LoadDivGraph(fname, b.info.AllNum, b.info.XNum, b.info.YNum, b.info.XSize, b.info.YSize, bossCharImgInfo[i].images, dxlib.FALSE)
+		if res == -1 {
+			return fmt.Errorf("Failed to load boss image: %s", fname)
+		}
 	}
-
 	bossHPImg[boss.HPColNormal] = dxlib.LoadGraph("data/image/etc/boss_hp_normal.png", dxlib.FALSE)
 	if bossHPImg[boss.HPColNormal] == -1 {
 		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_normal.png")
@@ -85,6 +90,22 @@ func StoryInit(storyFile string) error {
 	if bossHPImg[boss.HPColBright] == -1 {
 		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_bright.png")
 	}
+	// etc img
+	img := dxlib.LoadGraph("data/image/effect/bossback0.png", dxlib.FALSE)
+	if img == -1 {
+		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback0.png")
+	}
+	bossEtcImgs = append(bossEtcImgs, img)
+	img = dxlib.LoadGraph("data/image/effect/bossback1.png", dxlib.FALSE)
+	if img == -1 {
+		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback1.png")
+	}
+	bossEtcImgs = append(bossEtcImgs, img)
+	img = dxlib.LoadGraph("data/image/effect/bossback2.png", dxlib.FALSE)
+	if img == -1 {
+		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback2.png")
+	}
+	bossEtcImgs = append(bossEtcImgs, img)
 
 	count = 0
 	return nil
@@ -179,12 +200,14 @@ func minionProc() {
 	minions = newMinions
 }
 
-func bossApper() {
+func bossApper() error {
 	for _, b := range storyInfo.Boss {
 		if b.AppearCount == count {
 			minions = nil
-			bossInst = &b
-			bossInst.Init(bossImgInfo.images, bossHPImg)
+			var err error
+			bossInst, err = boss.NewRiria(b, bossCharImgInfo[b.Type].images, bossHPImg, bossEtcImgs)
+			return err
 		}
 	}
+	return nil
 }
