@@ -79,6 +79,7 @@ type Riria struct {
 	shotProc    *shot.Shot
 	currentHP   int
 	charID      string
+	imgCount    int
 }
 
 // NewRiria ...
@@ -94,6 +95,7 @@ func NewRiria(def Define, charImg []int32, hpImg [HPColMax]int32, backImgs []int
 		images:      charImg,
 		hpImg:       hpImg,
 		backImgs:    backImgs,
+		imgCount:    0,
 	}
 
 	if len(backImgs) != 3 {
@@ -148,18 +150,21 @@ func (r *Riria) Process() bool {
 	}
 
 	r.count++
+	r.imgCount++
 	return false
 }
 
 // Draw ...
 func (r *Riria) Draw() {
+	cnt := r.imgCount
+
 	dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_ALPHA, 150)
-	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(r.y)+common.FieldTopY, float32(0.4+0.05*math.Sin(math.Pi*2/360*float64(r.count%360)))*3, float32(math.Pi*2*float64(r.count%580)/580), r.backImgs[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(r.y)+common.FieldTopY, float32(0.5+0.1*math.Sin(math.Pi*2/360*float64(r.count%360)))*2, 2*math.Pi*float32(r.count%340)/340, r.backImgs[0], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/153*float64(r.count%153))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/120*float64(r.count%120))+common.FieldTopY), float32(0.4+0.05*math.Sin(math.Pi*2/120*float64(r.count%120))), 2*math.Pi*float32(r.count%30)/30, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/200*float64((r.count+20)%200))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/177*float64((r.count+20)%177))+common.FieldTopY), float32(0.3+0.05*math.Sin(math.Pi*2/120*float64(r.count%120))), 2*math.Pi*float32(r.count%35)/35, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(r.y)+common.FieldTopY, float32(0.4+0.05*math.Sin(math.Pi*2/360*float64(cnt%360)))*3, float32(math.Pi*2*float64(cnt%580)/580), r.backImgs[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(r.y)+common.FieldTopY, float32(0.5+0.1*math.Sin(math.Pi*2/360*float64(cnt%360)))*2, 2*math.Pi*float32(cnt%340)/340, r.backImgs[0], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/153*float64(cnt%153))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/120*float64(cnt%120))+common.FieldTopY), float32(0.4+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%30)/30, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/200*float64((cnt+20)%200))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/177*float64((cnt+20)%177))+common.FieldTopY), float32(0.3+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%35)/35, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_NOBLEND, 0)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/230*float64((r.count+40)%230))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/189*float64((r.count+40)%189))+common.FieldTopY), float32(0.6+0.05*math.Sin(math.Pi*2/120*float64(r.count%120))), 2*math.Pi*float32(r.count%40)/40, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/230*float64((cnt+40)%230))+common.FieldTopX), int32(r.y+80*math.Sin(math.Pi*2/189*float64((cnt+40)%189))+common.FieldTopY), float32(0.6+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%40)/40, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 
 	common.CharDraw(r.x, r.y, r.images[0], dxlib.TRUE)
 
