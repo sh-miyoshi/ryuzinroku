@@ -1,6 +1,8 @@
 package mover
 
-import "errors"
+import (
+	"errors"
+)
 
 type charInfo struct {
 	active           bool
@@ -32,6 +34,17 @@ func CharRegist(charID string, x, y *float64) {
 	charList = append(charList, &c)
 }
 
+// CharRemove ...
+func CharRemove(charID string) {
+	newList := []*charInfo{}
+	for _, c := range charList {
+		if c.charID != charID {
+			newList = append(newList, c)
+		}
+	}
+	charList = newList
+}
+
 // MoveTo ...
 func MoveTo(charID string, targetX, targetY float64, targetCount int) error {
 	for _, c := range charList {
@@ -61,7 +74,6 @@ func MoveTo(charID string, targetX, targetY float64, targetCount int) error {
 
 // Process ...
 func Process() {
-	newList := []*charInfo{}
 	for _, c := range charList {
 		if c.active {
 			c.count++
@@ -72,11 +84,8 @@ func Process() {
 			*c.y = c.initY - ((c.v0y * t) - 0.5*c.ay*t*t)
 
 			if c.count >= c.targetCount {
-				// remove from charList
-				continue
+				c.active = false
 			}
 		}
-		newList = append(newList, c)
 	}
-	charList = newList
 }

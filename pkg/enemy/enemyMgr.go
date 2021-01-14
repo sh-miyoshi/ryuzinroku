@@ -131,6 +131,7 @@ func StoryEnd() {
 func MgrProcess() {
 	if bossInst != nil {
 		if bossInst.Process() {
+			bossInst.Clear()
 			bossInst = nil
 		}
 		return

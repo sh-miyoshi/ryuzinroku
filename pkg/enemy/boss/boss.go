@@ -62,6 +62,7 @@ type Define struct {
 type Boss interface {
 	Process() bool
 	Draw()
+	Clear()
 }
 
 // Riria ...
@@ -174,6 +175,11 @@ func (r *Riria) Draw() {
 			dxlib.DrawGraph(3+int32(i)+common.FieldTopX, 2+common.FieldTopY, r.hpImg[col], dxlib.FALSE)
 		}
 	}
+}
+
+// Clear ...
+func (r *Riria) Clear() {
+	mover.CharRemove(r.charID)
 }
 
 func (r *Riria) hitProc(bullets []*bullet.Bullet) []int {
