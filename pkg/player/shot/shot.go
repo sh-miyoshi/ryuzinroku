@@ -17,7 +17,7 @@ type Shot struct {
 }
 
 // Process ...
-func (s *Shot) Process(px, py float64) {
+func (s *Shot) Process(px, py float64, slow bool) {
 	if inputs.CheckKey(dxlib.KEY_INPUT_Z) > 0 {
 		s.count++
 		if s.count%3 == 0 {
@@ -29,7 +29,11 @@ func (s *Shot) Process(px, py float64) {
 			ofsx := []float64{-10, 10, -30, 30}
 			ofsy := []float64{-30, -30, -10, -10}
 			for i := 0; i < num; i++ {
-				registerBullet(px+ofsx[i], py+ofsy[i], s.Power)
+				if slow {
+					registerBullet(px+ofsx[i]/3, py+ofsy[i]/2, s.Power)
+				} else {
+					registerBullet(px+ofsx[i], py+ofsy[i], s.Power)
+				}
 			}
 		}
 	} else {

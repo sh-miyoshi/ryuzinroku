@@ -30,6 +30,7 @@ type player struct {
 	plyrShot        *shot.Shot
 	invincibleCount int
 	state           int
+	slow            bool
 }
 
 func create(img common.ImageInfo) (*player, error) {
@@ -62,10 +63,12 @@ func (p *player) process() {
 	p.count++
 	p.imgCount = (p.count / 6) % 4
 
+	p.slow = inputs.CheckKey(dxlib.KEY_INPUT_LSHIFT) > 0
+
 	switch p.state {
 	case stateNormal:
 		p.move()
-		p.plyrShot.Process(p.x, p.y)
+		p.plyrShot.Process(p.x, p.y, p.slow)
 	case stateDead:
 		p.y -= 1.5
 
@@ -109,6 +112,12 @@ func (p *player) move() {
 			// 斜め移動
 			moveX = int(float64(moveX) / math.Sqrt(2))
 			moveY = int(float64(moveY) / math.Sqrt(2))
+		}
+
+		// 低速移動
+		if p.slow {
+			moveX /= 3
+			moveY /= 3
 		}
 
 		mx := int(p.x) + moveX
