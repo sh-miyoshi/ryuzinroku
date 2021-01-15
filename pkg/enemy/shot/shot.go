@@ -22,7 +22,7 @@ var (
 	// 10 ~ : ボス用の弾幕
 	shotActs = []func(float64, float64, *Shot){
 		shotAct0, shotAct1, shotAct2, shotAct3, shotAct4,
-		shotAct5, shotAct6, shotAct7, shotActNon, shotActNon,
+		shotAct5, shotAct6, shotAct7, shotAct8, shotActNon,
 		bossShotAct0, bossShotAct1,
 	}
 )

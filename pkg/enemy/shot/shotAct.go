@@ -9,6 +9,12 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
+func bulletActSlow(b *bullet.Bullet) {
+	if b.Speed > 1.5 {
+		b.Speed -= 0.04
+	}
+}
+
 // 1発だけ、自機に向かって直線移動
 func shotAct0(ex, ey float64, s *Shot) {
 	if s.count == 0 {
@@ -127,7 +133,7 @@ func shotAct6(ex, ey float64, s *Shot) {
 		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X) + common.RandomAngle(math.Pi/4)
 		b.Speed = float64(4) + common.RandomAngle(2)
-		b.ActType = 1
+		b.Act = bulletActSlow
 		bullet.Register(b)
 		sound.PlaySound(sound.SEEnemyShot)
 	}
@@ -146,7 +152,7 @@ func shotAct7(ex, ey float64, s *Shot) {
 			b.Angle = math.Pi * 2 / 20 * float64(i)
 			b.Speed = 1.2
 			b.Color = 2
-			b.ActType = 1
+			b.Act = bulletActSlow
 			bullet.Register(b)
 		}
 		for i := 0; i < 20; i++ {
@@ -159,10 +165,44 @@ func shotAct7(ex, ey float64, s *Shot) {
 			b.Angle = math.Pi * 2 / 20 * float64(i)
 			b.Speed = 1.2
 			b.Color = 4
-			b.ActType = 1
+			b.Act = bulletActSlow
 			bullet.Register(b)
 			sound.PlaySound(sound.SEEnemyShot)
 		}
+	}
+}
+
+// ミシャグジさま弾幕
+func shotAct8(ex, ey float64, s *Shot) {
+	if s.count < 1200 && s.count%90 == 0 {
+		angle := common.RandomAngle(math.Pi)
+		for j := 0; j < 2; j++ { // 途中から２分裂する分
+			for i := 0; i < 60; i++ { // 一度に60個
+				b := s.bulletInfo
+				b.CharID = s.charID
+				b.Type = 8
+				b.ShotID = s.id
+				b.X = ex
+				b.Y = ey
+				b.Angle = angle + math.Pi*2/60*float64(i)
+				b.Speed = 2
+				b.Color = 4
+				b.State = j
+				b.Act = func(b *bullet.Bullet) {
+					if b.Count > 30 && b.Count < 120 {
+						b.Speed -= 1.2 / 90
+						// 90カウントかけて90°傾ける
+						if b.State == 1 {
+							b.Angle += (math.Pi / 2) / 90 * (-1)
+						} else {
+							b.Angle += (math.Pi / 2) / 90 * (1)
+						}
+					}
+				}
+				bullet.Register(b)
+			}
+		}
+		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
 

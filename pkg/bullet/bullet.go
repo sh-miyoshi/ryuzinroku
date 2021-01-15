@@ -18,21 +18,22 @@ type Bullet struct {
 	Color int `yaml:"color"`
 	Type  int `yaml:"type"`
 
+	Count    int
 	CharID   string
 	ShotID   string
 	X, Y     float64
 	Speed    float64
 	Angle    float64
-	ActType  int
 	IsPlayer bool
 	Power    int
 	HitRange float64
+	State    int
+	Act      func(b *Bullet)
 }
 
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
-	bulletActs = []func(*Bullet){bulletAct0, bulletAct1}
 	hitRanges  = []float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 6}
 )
 
@@ -90,6 +91,7 @@ func Init() error {
 
 // Register ...
 func Register(b Bullet) {
+	b.Count = 0
 	b.HitRange = hitRanges[b.Type]
 	bullets = append(bullets, &b)
 }
@@ -98,10 +100,13 @@ func Register(b Bullet) {
 func MgrProcess() {
 	newBullets := []*Bullet{}
 	for _, b := range bullets {
+		b.Count++
 		b.X += math.Cos(b.Angle) * b.Speed
 		b.Y += math.Sin(b.Angle) * b.Speed
 
-		bulletActs[b.ActType](b)
+		if b.Act != nil {
+			b.Act(b)
+		}
 
 		out := b.Speed + float64(maxImgSize)/2
 		if b.X < -out || b.X > common.FiledSizeX+out || b.Y < -out || b.Y > common.FiledSizeY+out {
