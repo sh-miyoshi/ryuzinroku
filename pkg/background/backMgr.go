@@ -12,7 +12,8 @@ const (
 )
 
 var (
-	currentBack = BackNormal
+	bright      int32 = 255
+	currentBack       = BackNormal
 	backs       [backMax]*Back
 	board       *Board
 )
@@ -62,4 +63,14 @@ func DrawBoard() {
 // SetBack ...
 func SetBack(backType int) {
 	currentBack = backType
+}
+
+// GetBright ...
+func GetBright() int32 {
+	return bright
+}
+
+// SetBright ...
+func SetBright(param int32) {
+	bright = param
 }

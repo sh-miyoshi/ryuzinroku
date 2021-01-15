@@ -7,6 +7,7 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
@@ -75,6 +76,16 @@ func (p *player) process() {
 	case stateNormal:
 		p.move()
 		p.plyrShot.Process(p.x, p.y, p.slow)
+		if inputs.CheckKey(dxlib.KEY_INPUT_X) == 1 {
+			if err := effect.Register(effect.Controller{
+				Type: effect.ControllerTypeBomb,
+				X:    p.x,
+				Y:    p.y,
+			}); err == nil {
+				// 無敵状態に
+				p.invincibleCount = 1
+			}
+		}
 	case stateDead:
 		p.y -= 1.5
 

@@ -69,12 +69,7 @@ func main() {
 		mover.Process()
 
 		// 描画関係
-		background.DrawBack(count)
-		player.MgrDraw()
-		bullet.MgrDraw()
-		enemy.MgrDraw()
-		background.DrawBoard()
-		effect.MgrDraw()
+		draw(count)
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
 			break
@@ -84,4 +79,31 @@ func main() {
 	}
 
 	dxlib.DxLib_End()
+}
+
+func draw(count int) {
+	bright := background.GetBright()
+	if bright != 255 {
+		dxlib.SetDrawBright(bright, bright, bright)
+	}
+	background.DrawBack(count)
+	enemy.MgrDraw()
+	background.DrawBoard()
+	if bright != 255 {
+		dxlib.SetDrawBright(255, 255, 255)
+	}
+
+	player.MgrDraw()
+
+	if bright != 255 {
+		dxlib.SetDrawBright(bright, bright, bright)
+	}
+
+	bullet.MgrDraw()
+
+	if bright != 255 {
+		dxlib.SetDrawBright(255, 255, 255)
+	}
+
+	effect.MgrDraw()
 }
