@@ -186,10 +186,15 @@ func minionApper() {
 func minionProc() {
 	newMinions := []*minion.Minion{}
 	bullets := bullet.GetBullets()
+	bombDm := bullet.PopBomb()
 	for _, e := range minions {
 		hits := e.HitProc(bullets)
 		if len(hits) > 0 {
 			bullet.RemoveHitBullets(hits)
+		}
+
+		if bombDm > 0 {
+			e.HP -= bombDm
 		}
 
 		e.Process()

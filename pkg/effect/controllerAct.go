@@ -80,7 +80,7 @@ func ctrlAct1(c *Controller) bool {
 	}
 
 	if c.count%10 == 0 { // 1/6秒に１回
-		shotAng := [4]float64{}
+		shotAng := [4]float64{0, math.Pi, math.Pi / 2, math.Pi * 1.5}
 		// ボムエフェクトの登録
 		n := c.count / 10
 		if n < 4 {

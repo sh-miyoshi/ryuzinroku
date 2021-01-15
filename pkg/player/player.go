@@ -84,6 +84,8 @@ func (p *player) process() {
 			}); err == nil {
 				// 無敵状態に
 				p.invincibleCount = 1
+				// ダメージの登録
+				bullet.PushBomb(p.plyrShot.Power / 20)
 			}
 		}
 	case stateDead:

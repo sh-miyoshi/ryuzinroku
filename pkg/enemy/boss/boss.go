@@ -133,6 +133,11 @@ func (r *Riria) Process() bool {
 			bullet.RemoveHitBullets(hits)
 		}
 
+		bombDm := bullet.PopBomb()
+		if bombDm > 0 {
+			r.currentHP -= bombDm
+		}
+
 		// HPが0以下になるかendTimeになれば待機モードに
 		if r.currentHP <= 0 || r.count >= endTime {
 			sound.PlaySound(sound.SEEnemyDead)
