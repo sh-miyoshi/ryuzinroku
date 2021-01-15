@@ -25,15 +25,16 @@ const (
 type player struct {
 	x, y            float64
 	count           int
-	imgCount        int
+	imgNo           int
 	images          []int32
 	plyrShot        *shot.Shot
 	invincibleCount int
 	state           int
 	slow            bool
+	hitImg          int32
 }
 
-func create(img common.ImageInfo) (*player, error) {
+func create(img common.ImageInfo, hitImg int32) (*player, error) {
 	if img.AllNum <= 0 {
 		return nil, fmt.Errorf("image num must be positive integer, but got %d", img.AllNum)
 	}
@@ -43,6 +44,7 @@ func create(img common.ImageInfo) (*player, error) {
 		y:        common.FiledSizeY * 3 / 4,
 		plyrShot: &shot.Shot{Power: initShotPower},
 		state:    stateNormal,
+		hitImg:   hitImg,
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
@@ -55,13 +57,17 @@ func create(img common.ImageInfo) (*player, error) {
 
 func (p *player) draw() {
 	if p.invincibleCount%2 == 0 {
-		common.CharDraw(p.x, p.y, p.images[p.imgCount], dxlib.TRUE)
+		common.CharDraw(p.x, p.y, p.images[p.imgNo], dxlib.TRUE)
+	}
+
+	if p.slow {
+		dxlib.DrawRotaGraphFast(int32(p.x)+common.FieldTopX, int32(p.y)+common.FieldTopY, 1, math.Pi*2*float32(p.count%120)/120, p.hitImg, dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
 }
 
 func (p *player) process() {
 	p.count++
-	p.imgCount = (p.count / 6) % 4
+	p.imgNo = (p.count / 6) % 4
 
 	p.slow = inputs.CheckKey(dxlib.KEY_INPUT_LSHIFT) > 0
 
@@ -92,10 +98,10 @@ func (p *player) move() {
 	// Check left and right moves
 	moveX := 0
 	if inputs.CheckKey(dxlib.KEY_INPUT_LEFT) > 0 {
-		p.imgCount += 4 * 2
+		p.imgNo += 4 * 2
 		moveX = -4
 	} else if inputs.CheckKey(dxlib.KEY_INPUT_RIGHT) > 0 {
-		p.imgCount += 4 * 1
+		p.imgNo += 4 * 1
 		moveX = 4
 	}
 
