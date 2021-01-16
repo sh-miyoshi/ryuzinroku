@@ -34,52 +34,39 @@ type Bullet struct {
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
-	hitRanges  = []float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 1, 2, 0, 0, 0, 6}
+	hitRanges  = [16]float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 1, 2, 1.5, 4, 0.5, 6}
 )
 
 // Init ...
 func Init() error {
 	bulletImgs = make([][]int32, 16)
-	bulletImgs[0] = make([]int32, 5)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b0.png", 5, 5, 1, 76, 76, bulletImgs[0], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b0.png")
+	imgs := []common.ImageInfo{
+		{AllNum: 5, XNum: 5, YNum: 1, XSize: 76, YSize: 76},
+		{AllNum: 6, XNum: 6, YNum: 1, XSize: 22, YSize: 22},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 5, YSize: 120},
+		{AllNum: 5, XNum: 5, YNum: 1, XSize: 19, YSize: 34},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 38, YSize: 38},
+		{AllNum: 3, XNum: 3, YNum: 1, XSize: 14, YSize: 16},
+		{AllNum: 3, XNum: 3, YNum: 1, XSize: 14, YSize: 18},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 16, YSize: 16},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 12, YSize: 18},
+		{AllNum: 3, XNum: 3, YNum: 1, XSize: 13, YSize: 19},
+		{AllNum: 8, XNum: 8, YNum: 1, XSize: 8, YSize: 8},
+		{AllNum: 8, XNum: 8, YNum: 1, XSize: 35, YSize: 32},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 12, YSize: 12},
+		{AllNum: 10, XNum: 10, YNum: 1, XSize: 22, YSize: 22},
+		{AllNum: 4, XNum: 4, YNum: 1, XSize: 6, YSize: 6},
 	}
-	bulletImgs[1] = make([]int32, 6)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b1.png", 6, 6, 1, 22, 22, bulletImgs[1], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b1.png")
+
+	for i, img := range imgs {
+		fname := fmt.Sprintf("data/image/bullet/b%d.png", i)
+		bulletImgs[i] = make([]int32, int(img.AllNum))
+		if res := dxlib.LoadDivGraph(fname, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, bulletImgs[i], dxlib.FALSE); res == -1 {
+			return fmt.Errorf("Failed to load image: %s", fname)
+		}
 	}
-	bulletImgs[2] = make([]int32, 10)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b2.png", 10, 10, 1, 5, 120, bulletImgs[2], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b2.png")
-	}
-	bulletImgs[3] = make([]int32, 5)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b3.png", 5, 5, 1, 19, 34, bulletImgs[3], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b3.png")
-	}
-	bulletImgs[4] = make([]int32, 10)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b4.png", 10, 10, 1, 38, 38, bulletImgs[4], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b4.png")
-	}
-	bulletImgs[5] = make([]int32, 3)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b5.png", 3, 3, 1, 14, 16, bulletImgs[5], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b5.png")
-	}
-	bulletImgs[6] = make([]int32, 3)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b6.png", 3, 3, 1, 14, 18, bulletImgs[6], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b6.png")
-	}
-	bulletImgs[7] = make([]int32, 10)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b7.png", 10, 10, 1, 16, 16, bulletImgs[7], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b7.png")
-	}
-	bulletImgs[8] = make([]int32, 10)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b8.png", 10, 10, 1, 12, 18, bulletImgs[8], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b8.png")
-	}
-	bulletImgs[9] = make([]int32, 3)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b9.png", 3, 3, 1, 13, 19, bulletImgs[9], dxlib.FALSE); res == -1 {
-		return fmt.Errorf("Failed to load image: data/image/bullet/b9.png")
-	}
+
+	// Load player bullet
 	bulletImgs[15] = make([]int32, 1)
 	bulletImgs[15][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
 	if bulletImgs[15][0] == -1 {
