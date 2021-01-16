@@ -105,3 +105,71 @@ func bossShotAct1(ex, ey float64, s *Shot) {
 		sound.PlaySound(sound.SEEnemyShot)
 	}
 }
+
+// パーフェクトフリーズ
+func bossShotAct2(ex, ey float64, s *Shot) {
+	const tm = 650
+
+	t := s.count % tm
+	if t == 0 || t == 210 {
+		moveRandom(s.charID, ex, ey, 100, 80, box{x1: 40, y1: 50, x2: float64(common.FiledSizeX) - 40, y2: 150})
+	}
+
+	// 最初のランダム発射
+	if t < 180 {
+		for i := 0; i < 2; i++ {
+			b := s.bulletInfo
+			b.CharID = s.charID
+			b.ShotID = s.id
+			b.X = ex
+			b.Y = ey
+			b.Color = rand.Intn(6)
+			b.Type = 7
+			b.Angle = common.RandomAngle(math.Pi*2/20) + math.Pi*2/10*float64(t)
+			b.Speed = 3.2 + common.RandomAngle(2.1)
+			b.Count = t // 同時に止めるためあえて0からスタートさせない
+			b.Rotate = true
+			b.Act = func(b *bullet.Bullet) {
+				if b.Count == 190 {
+					// 停止
+					b.Speed = 0
+					b.Color = 9
+					b.Rotate = false
+				}
+				if b.Count == 390 {
+					b.Angle = common.RandomAngle(math.Pi)
+					b.Rotate = true
+				}
+				if b.Count > 390 {
+					b.Speed += 0.01
+				}
+			}
+			bullet.Register(b)
+		}
+		if t%10 == 0 {
+			sound.PlaySound(sound.SEEnemyShot)
+		}
+	}
+
+	// 自機依存による8方向発射
+	if t > 210 && t < 270 && t%3 == 0 {
+		px, py := player.GetPlayerPos()
+		angle := math.Atan2(py-ey, px-ex)
+		for i := 0; i < 8; i++ {
+			b := s.bulletInfo
+			b.CharID = s.charID
+			b.ShotID = s.id
+			b.X = ex
+			b.Y = ey
+			b.Color = 0
+			b.Type = 7
+			b.Angle = angle - math.Pi/2*0.8 + math.Pi*0.8/7*float64(i) + common.RandomAngle(math.Pi/180)
+			b.Speed = 3 + common.RandomAngle(0.3)
+			b.Rotate = true
+			bullet.Register(b)
+		}
+		if t%10 == 0 {
+			sound.PlaySound(sound.SEEnemyShot)
+		}
+	}
+}

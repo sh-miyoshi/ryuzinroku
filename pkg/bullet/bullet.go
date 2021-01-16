@@ -27,19 +27,19 @@ type Bullet struct {
 	IsPlayer bool
 	Power    int
 	HitRange float64
-	State    int
+	Rotate   bool // 表示される弾を回転させるか
 	Act      func(b *Bullet)
 }
 
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
-	hitRanges  = []float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 6}
+	hitRanges  = []float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 1, 2, 0, 0, 0, 6}
 )
 
 // Init ...
 func Init() error {
-	bulletImgs = make([][]int32, 11)
+	bulletImgs = make([][]int32, 16)
 	bulletImgs[0] = make([]int32, 5)
 	if res := dxlib.LoadDivGraph("data/image/bullet/b0.png", 5, 5, 1, 76, 76, bulletImgs[0], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b0.png")
@@ -68,8 +68,8 @@ func Init() error {
 	if res := dxlib.LoadDivGraph("data/image/bullet/b6.png", 3, 3, 1, 14, 18, bulletImgs[6], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b6.png")
 	}
-	bulletImgs[7] = make([]int32, 9)
-	if res := dxlib.LoadDivGraph("data/image/bullet/b7.png", 9, 9, 1, 16, 16, bulletImgs[7], dxlib.FALSE); res == -1 {
+	bulletImgs[7] = make([]int32, 10)
+	if res := dxlib.LoadDivGraph("data/image/bullet/b7.png", 10, 10, 1, 16, 16, bulletImgs[7], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b7.png")
 	}
 	bulletImgs[8] = make([]int32, 10)
@@ -80,9 +80,9 @@ func Init() error {
 	if res := dxlib.LoadDivGraph("data/image/bullet/b9.png", 3, 3, 1, 13, 19, bulletImgs[9], dxlib.FALSE); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/b9.png")
 	}
-	bulletImgs[10] = make([]int32, 1)
-	bulletImgs[10][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
-	if bulletImgs[10][0] == -1 {
+	bulletImgs[15] = make([]int32, 1)
+	bulletImgs[15][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
+	if bulletImgs[15][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/player_b0.png")
 	}
 
@@ -91,7 +91,6 @@ func Init() error {
 
 // Register ...
 func Register(b Bullet) {
-	b.Count = 0
 	b.HitRange = hitRanges[b.Type]
 	bullets = append(bullets, &b)
 }
@@ -122,7 +121,12 @@ func MgrDraw() {
 	// Show bullets
 	// TODO SetDrawMode(DX_DRAWMODE_BILINEAR)
 	for _, b := range bullets {
-		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		ang := b.Angle + math.Pi/2
+		if b.Rotate {
+			ang = math.Pi * 2 * float64(b.Count%120) / 120
+		}
+
+		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(ang), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
 	// SetDrawMode(DX_DRAWMODE_NEAREST)
 }

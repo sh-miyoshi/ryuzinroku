@@ -88,7 +88,6 @@ func draw(count int) {
 	}
 	background.DrawBack(count)
 	enemy.MgrDraw()
-	background.DrawBoard()
 	if bright != 255 {
 		dxlib.SetDrawBright(255, 255, 255)
 	}
@@ -100,6 +99,7 @@ func draw(count int) {
 	}
 
 	bullet.MgrDraw()
+	background.DrawBoard()
 
 	if bright != 255 {
 		dxlib.SetDrawBright(255, 255, 255)

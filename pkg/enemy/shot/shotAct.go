@@ -187,15 +187,20 @@ func shotAct8(ex, ey float64, s *Shot) {
 				b.Angle = angle + math.Pi*2/60*float64(i)
 				b.Speed = 2
 				b.Color = 4
-				b.State = j
-				b.Act = func(b *bullet.Bullet) {
-					if b.Count > 30 && b.Count < 120 {
-						b.Speed -= 1.2 / 90
-						// 90カウントかけて90°傾ける
-						if b.State == 1 {
-							b.Angle += (math.Pi / 2) / 90 * (-1)
-						} else {
+				if j == 0 {
+					b.Act = func(b *bullet.Bullet) {
+						if b.Count > 30 && b.Count < 120 {
+							b.Speed -= 1.2 / 90
+							// 90カウントかけて90°傾ける
 							b.Angle += (math.Pi / 2) / 90 * (1)
+						}
+					}
+				} else {
+					b.Act = func(b *bullet.Bullet) {
+						if b.Count > 30 && b.Count < 120 {
+							b.Speed -= 1.2 / 90
+							// 90カウントかけて90°傾ける
+							b.Angle += (math.Pi / 2) / 90 * (-1)
 						}
 					}
 				}

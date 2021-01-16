@@ -48,7 +48,7 @@ func registerBullet(x, y float64, power int) {
 	}
 
 	b := bullet.Bullet{
-		Type:     10,
+		Type:     15,
 		Angle:    -math.Pi / 2,
 		Speed:    20,
 		IsPlayer: true,
