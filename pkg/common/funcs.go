@@ -1,6 +1,7 @@
 package common
 
 import (
+	"math"
 	"math/rand"
 
 	"github.com/sh-miyoshi/dxlib"
@@ -22,4 +23,13 @@ func CharDraw(x float64, y float64, grHandle int32, transFlag int32) {
 // RandomAngle method return random value in -angle to angle
 func RandomAngle(angle float64) float64 {
 	return -angle + angle*2*rand.Float64()
+}
+
+// Rotate method rotates (x, y) by an angle around (bx, by).
+func Rotate(bx, by, x, y, angle float64) (float64, float64) {
+	x -= bx
+	y -= by
+	rx := math.Cos(angle)*x - math.Sin(angle)*y
+	ry := math.Sin(angle)*x + math.Cos(angle)*y
+	return rx + bx, ry + by
 }

@@ -9,3 +9,9 @@ type ImageInfo struct {
 	XSize    int32
 	YSize    int32
 }
+
+// Coordinates ...
+type Coordinates struct {
+	X float64
+	Y float64
+}
