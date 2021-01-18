@@ -105,8 +105,12 @@ func MgrProcess() {
 
 // MgrDraw ...
 func MgrDraw() {
+	if len(bullets) == 0 {
+		return
+	}
+
 	// Show bullets
-	// TODO SetDrawMode(DX_DRAWMODE_BILINEAR)
+	dxlib.SetDrawMode(dxlib.DX_DRAWMODE_BILINEAR)
 	for _, b := range bullets {
 		ang := b.Angle + math.Pi/2
 		if b.Rotate {
@@ -115,7 +119,7 @@ func MgrDraw() {
 
 		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(ang), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
-	// SetDrawMode(DX_DRAWMODE_NEAREST)
+	dxlib.SetDrawMode(dxlib.DX_DRAWMODE_NEAREST)
 }
 
 // Exists ...
