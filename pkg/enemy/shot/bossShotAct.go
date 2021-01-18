@@ -6,6 +6,7 @@ import (
 
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
@@ -171,5 +172,48 @@ func bossShotAct2(ex, ey float64, s *Shot) {
 		if t%10 == 0 {
 			sound.PlaySound(sound.SEEnemyShot)
 		}
+	}
+}
+
+// レーザーサンプル
+func bossShotAct3(ex, ey float64, s *Shot) {
+	const tm = 420
+	t := s.count % tm
+
+	if t == 0 {
+		for j := 0; j < 2; j++ {
+			num := 4 + s.count/tm
+			for i := 0; i < num; i++ {
+				fi := float64(i)
+				fj := float64(j)
+				fn := float64(num)
+				angle := math.Pi*2/fn*fi + math.Pi*2/(fn*2)*fj + math.Pi*2/(fn*4)*float64((num+1)%2)
+				l := laser.Laser{
+					RotOrigin: common.Coordinates{X: ex, Y: ey},
+					Angle:     angle,
+					Width:     2,
+					Length:    240,
+					Act: func(l *laser.Laser) bool {
+						if l.Count == 80 {
+							l.Width = 60
+						}
+						if l.Count >= 260 && l.Count <= 320 {
+							l.Width = (10 * (60 - float64(l.Count-260)) / 30.0)
+						}
+
+						return l.Count >= 320
+					},
+				}
+				if j == 0 {
+					l.Color = laser.ColorBlue
+					l.SetRotate(math.Pi/fn, 80)
+				} else {
+					l.Color = laser.ColorPink
+					l.SetRotate(-math.Pi/fn, 80)
+				}
+				laser.Register(l)
+			}
+		}
+		// TODO sound
 	}
 }
