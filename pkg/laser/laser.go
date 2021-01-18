@@ -22,9 +22,15 @@ type Laser struct {
 	Length    float64
 	Angle     float64
 	Color     int
+	Act       func(l *Laser) bool
+	Count     int
 
-	viewOrigin common.Coordinates
-	viewRect   [4]common.Coordinates
+	isRotate    bool
+	baseAngle   float64
+	targetAngle float64
+	targetCount int
+	viewOrigin  common.Coordinates
+	viewRect    [4]common.Coordinates
 }
 
 const (
@@ -58,20 +64,48 @@ func Register(l Laser) {
 	l.viewOrigin.X = l.RotOrigin.X + math.Cos(l.Angle)*viewDist
 	l.viewOrigin.Y = l.RotOrigin.Y + math.Sin(l.Angle)*viewDist
 
+	if l.Act == nil {
+		panic("laser act must be set")
+	}
+
 	lasers = append(lasers, &l)
 }
 
 // MgrProcess ...
 func MgrProcess() {
+	newLasers := []*Laser{}
 	for _, l := range lasers {
-		// 座標変換
 		o := l.RotOrigin
+
+		if l.isRotate {
+			if l.Count >= l.targetCount {
+				l.isRotate = false
+			} else {
+				t := float64(l.targetCount)
+				c := float64(l.Count)
+				delta := 2*l.targetAngle*c/t - l.targetAngle*c*c/(t*t)
+
+				l.Angle = l.baseAngle + delta
+				l.viewOrigin.X = o.X + math.Cos(l.Angle)*viewDist
+				l.viewOrigin.Y = o.Y + math.Sin(l.Angle)*viewDist
+			}
+		}
+
+		// 座標変換
 		v := common.Coordinates{X: o.X + viewDist, Y: o.Y}
 		l.viewRect[0].X, l.viewRect[0].Y = common.Rotate(o.X, o.Y, v.X, v.Y+l.Width/2, l.Angle)
 		l.viewRect[1].X, l.viewRect[1].Y = common.Rotate(o.X, o.Y, v.X, v.Y-l.Width/2, l.Angle)
 		l.viewRect[2].X, l.viewRect[2].Y = common.Rotate(o.X, o.Y, v.X+l.Length, v.Y-l.Width/2, l.Angle)
 		l.viewRect[3].X, l.viewRect[3].Y = common.Rotate(o.X, o.Y, v.X+l.Length, v.Y+l.Width/2, l.Angle)
+
+		if !l.Act(l) {
+			// まだ終了していないならnewLasersに追加
+			newLasers = append(newLasers, l)
+		}
+
+		l.Count++
 	}
+	lasers = newLasers
 }
 
 // MgrDraw ...
@@ -100,6 +134,7 @@ func MgrDraw() {
 
 // IsHit ...
 func IsHit() bool {
+	// TODO
 	return false
 }
 
@@ -109,4 +144,12 @@ func drawSqure(p [4]common.Coordinates) {
 		int32(p[3].X), int32(p[3].Y), 0xff0000, dxlib.TRUE)
 	dxlib.DrawTriangle(int32(p[1].X), int32(p[1].Y), int32(p[3].X), int32(p[3].Y),
 		int32(p[2].X), int32(p[2].Y), 0xff0000, dxlib.TRUE)
+}
+
+// SetRotate ...
+func (l *Laser) SetRotate(angle float64, tm int) {
+	l.baseAngle = l.Angle
+	l.targetAngle = angle
+	l.targetCount = tm
+	l.isRotate = true
 }
