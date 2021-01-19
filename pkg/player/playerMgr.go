@@ -36,6 +36,7 @@ func MgrProcess() {
 	if len(hits) > 0 {
 		bullet.RemoveHitBullets(hits)
 	}
+	plyr.laserHitProc()
 }
 
 // MgrDraw ...

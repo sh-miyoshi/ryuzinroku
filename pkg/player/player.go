@@ -9,6 +9,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -194,4 +195,16 @@ func (p *player) hitProc(bullets []*bullet.Bullet) []int {
 	}
 
 	return hits
+}
+
+func (p *player) laserHitProc() {
+	if laser.IsHit(p.x, p.y, hitRange) && p.invincibleCount == 0 {
+		// Player death
+		sound.PlaySound(sound.SEPlayerDead)
+		p.state = stateDead
+		p.invincibleCount++
+		p.count = 0
+		p.x = float64(common.FiledSizeX) / 2
+		p.y = float64(common.FiledSizeY) + 30
+	}
 }
