@@ -218,6 +218,6 @@ func bossShotAct3(ex, ey float64, s *Shot) {
 				laser.Register(l)
 			}
 		}
-		// TODO sound
+		sound.PlaySound(sound.SELaser)
 	}
 }
