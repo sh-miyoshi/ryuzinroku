@@ -196,8 +196,12 @@ func bossShotAct3(ex, ey float64, s *Shot) {
 					Act: func(l *laser.Laser) bool {
 						if l.Count == 80 {
 							l.Width = 60
+							l.EnableHit = true
 						}
 						if l.Count >= 260 && l.Count <= 320 {
+							if l.Count == 280 {
+								l.EnableHit = false
+							}
 							l.Width = (10 * (60 - float64(l.Count-260)) / 30.0)
 						}
 

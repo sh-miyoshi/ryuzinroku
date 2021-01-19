@@ -126,10 +126,10 @@ func MgrDraw() {
 	}
 	dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_NOBLEND, 0)
 
-	// debug
-	for _, l := range lasers {
-		l.drawHitArea()
-	}
+	// // debug
+	// for _, l := range lasers {
+	// 	l.drawHitArea()
+	// }
 
 	dxlib.SetDrawMode(dxlib.DX_DRAWMODE_NEAREST)
 }
@@ -179,7 +179,7 @@ func (l *Laser) setHitRect() {
 
 		l.hitRect[0].X = v.X + 20
 		l.hitRect[0].Y = v.Y - l.Width/4
-		l.hitRect[1].X = v.X + l.Length*0.9
+		l.hitRect[1].X = v.X + l.Length*0.8
 		l.hitRect[1].Y = v.Y + l.Width/4
 	} else {
 		l.hitRect = [2]common.Coordinates{}
