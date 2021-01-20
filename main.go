@@ -12,6 +12,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
@@ -56,6 +57,10 @@ func main() {
 		fmt.Printf("Failed to init laser: %v\n", err)
 		os.Exit(1)
 	}
+	if err := item.Init(); err != nil {
+		fmt.Printf("Failed to init item: %v\n", err)
+		os.Exit(1)
+	}
 
 	// TODO set per story
 	if err := enemy.StoryInit("data/story/story.yaml"); err != nil {
@@ -73,8 +78,9 @@ func main() {
 		effect.MgrProcess()
 		mover.Process()
 		laser.MgrProcess()
+		item.MgrProcess()
 
-		// // 描画関係
+		// 描画関係
 		draw(count)
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
@@ -95,6 +101,7 @@ func draw(count int) {
 		dxlib.SetDrawBright(bright, bright, bright)
 	}
 	background.DrawBack(count)
+	item.MgrDraw()
 	enemy.MgrDraw()
 	if bright != 255 {
 		dxlib.SetDrawBright(255, 255, 255)

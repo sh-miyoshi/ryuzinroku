@@ -9,6 +9,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
@@ -207,4 +208,10 @@ func (p *player) laserHitProc() {
 		p.x = float64(common.FiledSizeX) / 2
 		p.y = float64(common.FiledSizeY) + 30
 	}
+}
+
+func (p *player) itemProc(items []*item.Item) {
+	// slow modeならアイテムを引き寄せる
+	// ボーダーラインより上にいればアイテムを引き寄せる
+	// 一定より近くにあればアイテムを取得する
 }

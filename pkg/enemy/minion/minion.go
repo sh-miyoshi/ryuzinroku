@@ -9,6 +9,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -25,15 +26,16 @@ type minionShot struct {
 
 // Minion ...
 type Minion struct {
-	ApperCount  int        `yaml:"appearCount"`
-	MovePattern int        `yaml:"movePattern"`
-	Type        int        `yaml:"type"`
-	X           float64    `yaml:"x"`
-	Y           float64    `yaml:"y"`
-	HP          int        `yaml:"hp"`
-	Wait        int        `yaml:"wait"`
-	Speed       float64    `yaml:"speed"`
-	Shot        minionShot `yaml:"shot"`
+	ApperCount  int         `yaml:"appearCount"`
+	MovePattern int         `yaml:"movePattern"`
+	Type        int         `yaml:"type"`
+	X           float64     `yaml:"x"`
+	Y           float64     `yaml:"y"`
+	HP          int         `yaml:"hp"`
+	Wait        int         `yaml:"wait"`
+	Speed       float64     `yaml:"speed"`
+	Shot        minionShot  `yaml:"shot"`
+	Items       []item.Item `yaml:"items"`
 
 	images   []int32
 	imgCount int
@@ -82,6 +84,22 @@ func (e *Minion) Process() {
 			X:     e.X,
 			Y:     e.Y,
 		})
+		for i, itm := range e.Items {
+			x := e.X
+			y := e.Y
+			if i > 0 {
+				// 複数なら適当にちらばらせる
+				x += common.RandomAngle(40)
+				y += common.RandomAngle(40)
+			}
+
+			item.Register(item.Item{
+				Type: itm.Type,
+				X:    x,
+				Y:    y,
+				VY:   -3.5,
+			})
+		}
 		return
 	}
 	if e.X < -50 || e.X > common.FiledSizeX+50 || e.Y < -50 || e.Y > common.FiledSizeY+50 {
