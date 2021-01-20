@@ -1,0 +1,115 @@
+# boss:
+# - appearCount: 100
+#   type: 0
+#   final: false
+#   barrages:
+#   - type: 13
+#     hp: 1000
+#     spellcard: true
+#     bullet:
+#       type: 8
+#       color: 0
+#   - type: 10
+#     hp: 5000
+#     bullet:
+#       type: 4
+#       color: 0
+enemies:
+- appearCount: 60
+  movePattern: 9
+  type: 0
+  x: 200
+  y: 150
+  hp: 100
+  wait: 200
+  speed: 0
+  shot:
+    startCount: 60
+    type: 8
+    bullet:
+      type: 0
+      color: 0
+  items:
+  - type: 0
+  - type: 3
+# - appearCount: 200
+#   movePattern: 9
+#   type: 0
+#   x: 180
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   speed: 0
+#   shot:
+#     startCount: 60
+#     type: 1
+#     bullet:
+#       type: 8
+#       color: 0
+# - appearCount: 340
+#   movePattern: 9
+#   type: 0
+#   x: 200
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   speed: 0
+#   shot:
+#     startCount: 60
+#     type: 2
+#     bullet:
+#       type: 9
+#       color: 0
+# - appearCount: 480
+#   movePattern: 9
+#   type: 0
+#   x: 180
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   speed: 0
+#   shot:
+#     startCount: 60
+#     type: 3
+#     bullet:
+#       type: 0
+#       color: 0
+# - appearCount: 620
+#   movePattern: 9
+#   type: 0
+#   x: 200
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   shot:
+#     startCount: 60
+#     type: 4
+#     bullet:
+#       type: 7
+#       color: 0
+# - appearCount: 760
+#   movePattern: 9
+#   type: 0
+#   x: 180
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   shot:
+#     startCount: 60
+#     type: 5
+#     bullet:
+#       type: 8
+#       color: 0
+# - appearCount: 900
+#   movePattern: 9
+#   type: 0
+#   x: 180
+#   y: 150
+#   hp: 100
+#   wait: 120
+#   shot:
+#     startCount: 60
+#     type: 6
+#     bullet:
+#       type: 8
+#       color: 0
