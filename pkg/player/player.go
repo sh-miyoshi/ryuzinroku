@@ -186,13 +186,7 @@ func (p *player) hitProc(bullets []*bullet.Bullet) []int {
 
 	// ヒットした弾が存在し、無敵状態でないなら
 	if len(hits) > 0 && p.invincibleCount == 0 {
-		// Player death
-		sound.PlaySound(sound.SEPlayerDead)
-		p.state = stateDead
-		p.invincibleCount++
-		p.count = 0
-		p.x = float64(common.FiledSizeX) / 2
-		p.y = float64(common.FiledSizeY) + 30
+		p.death()
 	}
 
 	return hits
@@ -200,13 +194,7 @@ func (p *player) hitProc(bullets []*bullet.Bullet) []int {
 
 func (p *player) laserHitProc() {
 	if laser.IsHit(p.x, p.y, hitRange) && p.invincibleCount == 0 {
-		// Player death
-		sound.PlaySound(sound.SEPlayerDead)
-		p.state = stateDead
-		p.invincibleCount++
-		p.count = 0
-		p.x = float64(common.FiledSizeX) / 2
-		p.y = float64(common.FiledSizeY) + 30
+		p.death()
 	}
 }
 
@@ -214,4 +202,21 @@ func (p *player) itemProc(items []*item.Item) {
 	// slow modeならアイテムを引き寄せる
 	// ボーダーラインより上にいればアイテムを引き寄せる
 	// 一定より近くにあればアイテムを取得する
+}
+
+func (p *player) death() {
+	sound.PlaySound(sound.SEPlayerDead)
+	for i := 0; i < 4; i++ {
+		item.Register(item.Item{
+			Type: item.TypePowerL,
+			X:    p.x + common.RandomAngle(40),
+			Y:    p.y + common.RandomAngle(40),
+			VY:   -3.5,
+		})
+	}
+	p.state = stateDead
+	p.invincibleCount++
+	p.count = 0
+	p.x = float64(common.FiledSizeX) / 2
+	p.y = float64(common.FiledSizeY) + 30
 }
