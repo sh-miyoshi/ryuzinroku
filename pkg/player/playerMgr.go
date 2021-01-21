@@ -6,6 +6,7 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 )
 
 var (
@@ -37,6 +38,8 @@ func MgrProcess() {
 		bullet.RemoveHitBullets(hits)
 	}
 	plyr.laserHitProc()
+	items := item.GetItems()
+	plyr.itemProc(items)
 }
 
 // MgrDraw ...

@@ -16,8 +16,11 @@ import (
 )
 
 const (
-	initShotPower = 500
-	hitRange      = 2.0
+	initShotPower   = 500
+	hitRange        = 2.0
+	itemGetBorder   = 100.0
+	itemAbsorbRange = 70.0
+	itemHitRange    = 20.0
 )
 
 const (
@@ -198,10 +201,41 @@ func (p *player) laserHitProc() {
 	}
 }
 
+func (p *player) absorbItem(itm *item.Item) {
+	v := 3.0
+	if itm.State == item.StateAbsorb {
+		v = 8.0
+	}
+	angle := math.Atan2(p.y-itm.Y, p.x-itm.X)
+
+	itm.X += math.Cos(angle) * v
+	itm.Y += math.Sin(angle) * v
+}
+
 func (p *player) itemProc(items []*item.Item) {
-	// slow modeならアイテムを引き寄せる
-	// ボーダーラインより上にいればアイテムを引き寄せる
-	// 一定より近くにあればアイテムを取得する
+	for i := 0; i < len(items); i++ {
+		x := p.x - items[i].X
+		y := p.y - items[i].Y
+
+		// ボーダーラインより上にいればアイテムを引き寄せる
+		if p.y < itemGetBorder {
+			items[i].State = item.StateAbsorb
+		}
+		if items[i].State == item.StateAbsorb {
+			p.absorbItem(items[i])
+		} else {
+			// slow modeならアイテムを引き寄せる
+			if p.slow && (x*x+y*y) < (itemAbsorbRange*itemAbsorbRange) {
+				p.absorbItem(items[i])
+			}
+		}
+		// 一定より近くにあればアイテムを取得する
+		if (x*x + y*y) < (itemHitRange * itemHitRange) {
+			// TODO item get
+			items[i].State = item.StateGot
+		}
+	}
+
 }
 
 func (p *player) death() {

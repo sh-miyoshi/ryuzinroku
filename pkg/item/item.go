@@ -14,10 +14,20 @@ type Item struct {
 
 	X, Y   float64
 	VX, VY float64
+	State  int
 
 	count   int
 	extRate float64
 }
+
+const (
+	// StateNormal ...
+	StateNormal int = iota
+	// StateAbsorb ...
+	StateAbsorb
+	// StateGot ...
+	StateGot
+)
 
 const (
 	// TypePowerS is small power
@@ -101,6 +111,10 @@ func Register(i Item) {
 func MgrProcess() {
 	newList := []*Item{}
 	for _, i := range items {
+		if i.State == StateGot {
+			continue
+		}
+
 		i.count++
 
 		i.X += i.VX
@@ -125,4 +139,9 @@ func MgrDraw() {
 		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate)*0.8, -angle, itemDefs[int(i.Type)].images[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate), 0, itemDefs[int(i.Type)].images[0], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
+}
+
+// GetItems ...
+func GetItems() []*Item {
+	return items
 }
