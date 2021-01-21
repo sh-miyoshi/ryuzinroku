@@ -17,6 +17,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/title"
 )
 
 func init() {
@@ -67,6 +68,10 @@ func main() {
 		fmt.Printf("Failed to init enemy: %v\n", err)
 		os.Exit(1)
 	}
+	if err := title.StoryInit("data/story/story.yaml"); err != nil {
+		fmt.Printf("Failed to init title: %v\n", err)
+		os.Exit(1)
+	}
 
 	count := 0
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
@@ -79,6 +84,7 @@ func main() {
 		mover.Process()
 		laser.MgrProcess()
 		item.MgrProcess()
+		title.Process()
 
 		// 描画関係
 		draw(count)
@@ -115,6 +121,7 @@ func draw(count int) {
 
 	bullet.MgrDraw()
 	laser.MgrDraw()
+	title.Draw()
 	background.DrawBoard()
 
 	if bright != 255 {
