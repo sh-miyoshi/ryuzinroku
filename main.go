@@ -16,6 +16,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/title"
 )
@@ -60,6 +61,10 @@ func main() {
 	}
 	if err := item.Init(); err != nil {
 		fmt.Printf("Failed to init item: %v\n", err)
+		os.Exit(1)
+	}
+	if err := score.Init(); err != nil {
+		fmt.Printf("Failed to init score: %v\n", err)
 		os.Exit(1)
 	}
 

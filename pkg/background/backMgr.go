@@ -1,6 +1,9 @@
 package background
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
+)
 
 const (
 	// BackNormal ...
@@ -57,6 +60,7 @@ func DrawBack(count int) {
 func DrawBoard() {
 	if board != nil {
 		board.Draw()
+		score.Draw()
 	}
 }
 

@@ -12,6 +12,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -21,6 +22,7 @@ const (
 	itemGetBorder   = 100.0
 	itemAbsorbRange = 70.0
 	itemHitRange    = 20.0
+	initRemainNum   = 5
 )
 
 const (
@@ -57,6 +59,9 @@ func create(img common.ImageInfo, hitImg int32) (*player, error) {
 	if r != 0 {
 		return nil, fmt.Errorf("Failed to load player image")
 	}
+
+	score.Set(score.TypeRemainNum, initRemainNum)
+	score.Set(score.TypePlayerPower, initShotPower)
 
 	return &res, nil
 }
@@ -240,6 +245,15 @@ func (p *player) itemProc(items []*item.Item) {
 
 func (p *player) death() {
 	sound.PlaySound(sound.SEPlayerDead)
+
+	remain := score.Get(score.TypeRemainNum)
+	remain--
+	if remain == 0 {
+		// TODO game over
+	} else {
+		score.Set(score.TypeRemainNum, remain)
+	}
+
 	for i := 0; i < 4; i++ {
 		item.Register(item.Item{
 			Type: item.TypePowerL,
