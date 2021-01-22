@@ -22,6 +22,7 @@ type Bullet struct {
 	CharID   string
 	ShotID   string
 	X, Y     float64
+	VX, VY   float64
 	Speed    float64
 	Angle    float64
 	IsPlayer bool
@@ -89,6 +90,8 @@ func MgrProcess() {
 		b.Count++
 		b.X += math.Cos(b.Angle) * b.Speed
 		b.Y += math.Sin(b.Angle) * b.Speed
+		b.X += b.VX
+		b.Y += b.VY
 
 		if b.Act != nil {
 			b.Act(b)

@@ -37,6 +37,12 @@ func StoryInit(storyFile string) error {
 	}
 
 	title.enable = false
+
+	if title.Title.ImageFile == "" {
+		// No title data
+		return nil
+	}
+
 	title.image = dxlib.LoadGraph(title.Title.ImageFile, dxlib.FALSE)
 	if title.image == -1 {
 		return fmt.Errorf("Failed to load title image: %s", title.Title.ImageFile)

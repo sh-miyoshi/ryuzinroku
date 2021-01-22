@@ -24,6 +24,7 @@ var (
 		shotAct0, shotAct1, shotAct2, shotAct3, shotAct4,
 		shotAct5, shotAct6, shotAct7, shotAct8, shotActNon,
 		bossShotAct0, bossShotAct1, bossShotAct2, bossShotAct3,
+		bossShotAct4,
 	}
 )
 

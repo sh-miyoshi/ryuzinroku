@@ -221,3 +221,61 @@ func bossShotAct3(ex, ey float64, s *Shot) {
 		sound.PlaySound(sound.SELaser)
 	}
 }
+
+// ケロちゃん風雨に負けず
+func bossShotAct4(ex, ey float64, s *Shot) {
+	const tm = 200
+	t := s.count % tm
+	if t == 0 {
+		s.baseAngle = 190 + common.RandomAngle(30)
+	}
+
+	angle := math.Pi*1.5 + math.Pi/6*math.Sin(math.Pi*2/s.baseAngle*float64(s.count))
+	if s.count%4 == 0 {
+		for i := 0; i < 8; i++ {
+			b := s.bulletInfo
+			b.CharID = s.charID
+			b.ShotID = s.id
+			b.Type = 4
+			b.Color = 0
+			b.Angle = 0
+			b.X = ex
+			b.Y = ey
+			b.VX = math.Cos(angle-math.Pi/8*4+math.Pi/8*float64(i)+math.Pi/16) * 3
+			b.VY = math.Sin(angle-math.Pi/8*4+math.Pi/8*float64(i)+math.Pi/16) * 3
+			b.Act = func(b *bullet.Bullet) {
+				if b.Count < 150 {
+					b.VY += 0.03
+				}
+			}
+			bullet.Register(b)
+		}
+		sound.PlaySound(sound.SEEnemyShot)
+	}
+	if s.count > 80 {
+		num := 1
+		if t%2 == 1 {
+			num = 2
+		}
+		for n := 0; n < num; n++ {
+			angle = math.Pi*1.5 - math.Pi/2 + math.Pi/12*float64(s.count%13) + common.RandomAngle(math.Pi/15)
+			b := s.bulletInfo
+			b.CharID = s.charID
+			b.ShotID = s.id
+			b.Type = 8
+			b.Color = 4
+			b.Angle = 0
+			b.X = ex
+			b.Y = ey
+			b.VX = math.Cos(angle) * 1.4 * 1.2
+			b.VY = math.Sin(angle) * 1.4
+			b.Act = func(b *bullet.Bullet) {
+				if b.Count < 160 {
+					b.VY += 0.03
+				}
+				b.Angle = math.Atan2(b.VY, b.VX)
+			}
+			bullet.Register(b)
+		}
+	}
+}
