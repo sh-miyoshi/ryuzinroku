@@ -34,8 +34,6 @@ const (
 	TypePowerS uint = iota
 	// TypePointS is small point
 	TypePointS
-	// TypeShot is shot
-	TypeShot
 	// TypeMoneyS is small money
 	TypeMoneyS
 	// TypePowerL is large power
@@ -61,10 +59,6 @@ var (
 		{ // TypePointS
 			info:    common.ImageInfo{XSize: 35, YSize: 35},
 			extRate: 0.6,
-		},
-		{ // TypeShot
-			info:    common.ImageInfo{XSize: 15, YSize: 15},
-			extRate: 1,
 		},
 		{ // TypeMoneyS
 			info:    common.ImageInfo{XSize: 35, YSize: 35},

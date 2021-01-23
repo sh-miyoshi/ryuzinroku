@@ -17,12 +17,13 @@ import (
 )
 
 const (
-	initShotPower   = 500
+	initShotPower   = 300
 	hitRange        = 2.0
 	itemGetBorder   = 100.0
 	itemAbsorbRange = 70.0
 	itemHitRange    = 20.0
 	initRemainNum   = 5
+	maxShotPower    = 500
 )
 
 const (
@@ -217,6 +218,14 @@ func (p *player) absorbItem(itm *item.Item) {
 	itm.Y += math.Sin(angle) * v
 }
 
+func upmax(current, upVal, max int) int {
+	current += upVal
+	if current > max {
+		return max
+	}
+	return current
+}
+
 func (p *player) itemProc(items []*item.Item) {
 	for i := 0; i < len(items); i++ {
 		x := p.x - items[i].X
@@ -236,7 +245,21 @@ func (p *player) itemProc(items []*item.Item) {
 		}
 		// 一定より近くにあればアイテムを取得する
 		if (x*x + y*y) < (itemHitRange * itemHitRange) {
-			// TODO item get
+			switch items[i].Type {
+			case item.TypePowerS:
+				p.plyrShot.Power = upmax(p.plyrShot.Power, 3, maxShotPower)
+				score.Set(score.TypePlayerPower, p.plyrShot.Power)
+			case item.TypePowerL:
+				p.plyrShot.Power = upmax(p.plyrShot.Power, 50, maxShotPower)
+				score.Set(score.TypePlayerPower, p.plyrShot.Power)
+			case item.TypePointS:
+				score.Set(score.TypeScore, upmax(score.Get(score.TypeScore), 1, 999999999))
+			case item.TypeMoneyS:
+				score.Set(score.TypeMoney, upmax(score.Get(score.TypeMoney), 1, 999999))
+			case item.TypeMoneyL:
+				score.Set(score.TypeMoney, upmax(score.Get(score.TypeMoney), 10, 999999))
+			}
+			sound.PlaySound(sound.SEItemGet)
 			items[i].State = item.StateGot
 		}
 	}
