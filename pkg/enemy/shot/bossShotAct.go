@@ -279,3 +279,164 @@ func bossShotAct4(ex, ey float64, s *Shot) {
 		}
 	}
 }
+
+// 反魂蝶～八部咲き～
+func bossShotAct5(ex, ey float64, s *Shot) {
+	const tm = 420
+	t := s.count % tm
+
+	if t == 0 {
+		num := 4 + (s.count / tm)
+		for j := 0; j < 2; j++ {
+			for i := 0; i < num; i++ {
+				fi := float64(i)
+				fj := float64(j)
+				fn := float64(num)
+				angle := math.Pi*2/fn*fi + math.Pi*2/(fn*2)*fj + math.Pi*2/(fn*4)*float64((num+1)%2)
+				l := laser.Laser{
+					RotOrigin: common.Coordinates{X: ex, Y: ey},
+					Angle:     angle,
+					Width:     2,
+					Length:    310,
+					Act: func(l *laser.Laser) bool {
+						if l.Count == 80 {
+							l.Width = 30
+							l.EnableHit = true
+						}
+						if l.Count >= 260 && l.Count <= 320 {
+							if l.Count == 280 {
+								l.EnableHit = false
+							}
+							l.Width = (10 * (60 - float64(l.Count-260)) / 30.0)
+						}
+
+						return l.Count >= 320
+					},
+				}
+				if j == 0 {
+					l.Color = laser.ColorBlue
+					l.SetRotate(math.Pi/fn, 80)
+				} else {
+					l.Color = laser.ColorPink
+					l.SetRotate(-math.Pi/fn, 80)
+				}
+				laser.Register(l)
+			}
+		}
+		sound.PlaySound(sound.SELaser)
+	}
+
+	act0 := func(b *bullet.Bullet) {
+		if b.Count > 90 && b.Count <= 100 {
+			b.Speed -= b.Speed / 220
+		}
+	}
+	act1 := func(b *bullet.Bullet) {
+		if b.Count > 50 {
+			b.Speed += b.Speed / 45
+		}
+	}
+	act2 := func(b *bullet.Bullet) {
+		if b.Count > 65 {
+			b.Speed += b.Speed / 90
+		}
+	}
+
+	if t == 50 {
+		angle := common.RandomAngle(math.Pi)
+		for l := 0; l < 2; l++ {
+			for k := 0; k < 3; k++ {
+				for j := 0; j < 3; j++ {
+					for i := 0; i < 30; i++ {
+						b := s.bulletInfo
+						b.CharID = s.charID
+						b.ShotID = s.id
+						b.Type = 11
+						b.Color = l
+						b.Angle = angle + math.Pi*2/30*float64(i) + math.Pi*2/60*float64(l)
+						b.Speed = 1.8 - 0.2*float64(j) + 0.1*float64(l)
+						b.X = ex
+						b.Y = ey
+						switch k {
+						case 0:
+							b.Act = act0
+						case 1:
+							b.Act = act1
+						case 2:
+							b.Act = act2
+						}
+						bullet.Register(b)
+					}
+				}
+			}
+		}
+		sound.PlaySound(sound.SEEnemyShot)
+	}
+
+	if t >= 170 && t < 310 && (t-170)%35 == 0 {
+		angle := common.RandomAngle(math.Pi)
+		for k := 0; k < 2; k++ { // 速度の違う2つの弾がある
+			for j := 0; j < 3; j++ { // 1箇所から3つにわかれる
+				for i := 0; i < 30; i++ { // 1周30個
+					b := s.bulletInfo
+					b.CharID = s.charID
+					b.ShotID = s.id
+					b.Type = 11
+					b.Color = 2
+					b.Angle = angle + math.Pi*2/30*float64(i)
+					b.Speed = 2 - 0.3*float64(k)
+					b.X = ex
+					b.Y = ey
+					b.Act = func(b *bullet.Bullet) {
+						switch j {
+						case 0:
+							act0(b)
+						case 1:
+							act1(b)
+						case 2:
+							act2(b)
+						}
+
+						if b.Count > 15 && b.Count <= 80 {
+							baseAng := math.Pi / 300
+							if (t-170)%70 == 0 {
+								baseAng *= -1
+							}
+							b.Angle += baseAng
+						}
+					}
+
+					bullet.Register(b)
+				}
+			}
+		}
+		sound.PlaySound(sound.SEEnemyShot)
+	}
+
+	if t == 360 {
+		angle := common.RandomAngle(math.Pi)
+		for j := 0; j < 3; j++ { // 1箇所から3つにわかれる
+			for i := 0; i < 30; i++ { // 1周30個
+				b := s.bulletInfo
+				b.CharID = s.charID
+				b.ShotID = s.id
+				b.Type = 0
+				b.Color = 1
+				b.Angle = angle + math.Pi*2/30*float64(i)
+				b.Speed = 1.8
+				b.X = ex
+				b.Y = ey
+				switch j {
+				case 0:
+					b.Act = act0
+				case 1:
+					b.Act = act1
+				case 2:
+					b.Act = act2
+				}
+				bullet.Register(b)
+			}
+		}
+		sound.PlaySound(sound.SEEnemyShot)
+	}
+}
