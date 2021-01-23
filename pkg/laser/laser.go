@@ -26,6 +26,7 @@ type Laser struct {
 	Act          func(l *Laser) bool
 	Count        int
 	EnableHit    bool
+	CharID       string
 
 	isRotate    bool
 	baseAngle   float64
@@ -147,6 +148,17 @@ func IsHit(charX, charY float64, hitRange float64) bool {
 		}
 	}
 	return false
+}
+
+// RemoveCharLaser ...
+func RemoveCharLaser(charID string) {
+	newLasers := []*Laser{}
+	for _, l := range lasers {
+		if l.CharID != charID {
+			newLasers = append(newLasers, l)
+		}
+	}
+	lasers = newLasers
 }
 
 // SetRotate ...

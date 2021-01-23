@@ -10,6 +10,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -142,8 +143,10 @@ func (r *Riria) Process() bool {
 		if r.currentHP <= 0 || r.count >= endTime {
 			sound.PlaySound(sound.SEEnemyDead)
 			bullet.RemoveCharBullets(r.charID)
+			laser.RemoveCharLaser(r.charID)
 			if r.currentBarr == len(r.Barrages)-1 {
 				background.SetBack(background.BackNormal)
+				sound.PlaySound(sound.SEBossDead)
 				return true // finish
 			}
 			r.currentBarr++

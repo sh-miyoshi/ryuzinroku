@@ -193,6 +193,7 @@ func bossShotAct3(ex, ey float64, s *Shot) {
 					Angle:     angle,
 					Width:     2,
 					Length:    240,
+					CharID:    s.charID,
 					Act: func(l *laser.Laser) bool {
 						if l.Count == 80 {
 							l.Width = 60
@@ -298,6 +299,7 @@ func bossShotAct5(ex, ey float64, s *Shot) {
 					Angle:     angle,
 					Width:     2,
 					Length:    310,
+					CharID:    s.charID,
 					Act: func(l *laser.Laser) bool {
 						if l.Count == 80 {
 							l.Width = 30
