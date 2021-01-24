@@ -78,6 +78,12 @@ func main() {
 		fmt.Printf("Failed to init title: %v\n", err)
 		os.Exit(1)
 	}
+	if err := sound.BGMStoryInit("data/story/story.yaml"); err != nil {
+		fmt.Printf("Failed to init bgm: %v\n", err)
+		os.Exit(1)
+	}
+
+	sound.BGMPlay(sound.TypeNormal) // TODO
 
 	state := 0
 	count := 0

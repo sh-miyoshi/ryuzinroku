@@ -1,12 +1,19 @@
-title:
-  startCount: 60
-  file: "data/image/background/title0.png"
+bgm:
+  normal:
+    file: "data/bgm/normal0.ogg"
+    loopCnt: 26672
+  boss:
+    file: "data/bgm/boss0.ogg"
+    loopCnt: 27010
+# title:
+#   startCount: 60
+#   file: "data/image/background/title0.png"
 # boss:
 # - appearCount: 100
 #   type: 0
-#   final: false
+#   final: true
 #   barrages:
-#   - type: 13
+#   - type: 15
 #     hp: 1000
 #     spellcard: true
 #     bullet:
