@@ -10,6 +10,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/end"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
@@ -78,24 +79,39 @@ func main() {
 		os.Exit(1)
 	}
 
+	state := 0
 	count := 0
+
+MAIN:
 	for dxlib.ScreenFlip() == 0 && dxlib.ProcessMessage() == 0 && dxlib.ClearDrawScreen() == 0 {
 		// 処理関係
 		inputs.KeyStateUpdate()
-		player.MgrProcess()
-		enemy.MgrProcess()
-		bullet.MgrProcess()
-		effect.MgrProcess()
-		mover.Process()
-		laser.MgrProcess()
-		item.MgrProcess()
-		title.Process()
+
+		switch state {
+		case 0:
+			if player.MgrProcess() {
+				end.Init(false)
+				state = 1
+				continue
+			}
+			enemy.MgrProcess()
+			bullet.MgrProcess()
+			effect.MgrProcess()
+			mover.Process()
+			laser.MgrProcess()
+			item.MgrProcess()
+			title.Process()
+		case 1:
+			if end.Process() {
+				break MAIN
+			}
+		}
 
 		// 描画関係
 		draw(count)
 
 		if dxlib.CheckHitKey(dxlib.KEY_INPUT_ESCAPE) == 1 {
-			break
+			break MAIN
 		}
 		count++
 
@@ -114,20 +130,12 @@ func draw(count int) {
 	background.DrawBack(count)
 	item.MgrDraw()
 	enemy.MgrDraw()
-	if bright != 255 {
-		dxlib.SetDrawBright(255, 255, 255)
-	}
-
 	player.MgrDraw()
-
-	if bright != 255 {
-		dxlib.SetDrawBright(bright, bright, bright)
-	}
-
 	bullet.MgrDraw()
 	laser.MgrDraw()
 	title.Draw()
 	background.DrawBoard()
+	end.Draw()
 
 	if bright != 255 {
 		dxlib.SetDrawBright(255, 255, 255)

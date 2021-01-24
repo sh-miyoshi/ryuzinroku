@@ -30,7 +30,7 @@ func Init() error {
 }
 
 // MgrProcess ...
-func MgrProcess() {
+func MgrProcess() bool {
 	plyr.process()
 	bullets := bullet.GetBullets()
 	hits := plyr.hitProc(bullets)
@@ -40,6 +40,8 @@ func MgrProcess() {
 	plyr.laserHitProc()
 	items := item.GetItems()
 	plyr.itemProc(items)
+
+	return plyr.gaveOver
 }
 
 // MgrDraw ...

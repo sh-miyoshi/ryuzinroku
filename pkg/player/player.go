@@ -17,12 +17,14 @@ import (
 )
 
 const (
+	// InitRemainNum ...
+	InitRemainNum = 5
+
 	initShotPower   = 300
 	hitRange        = 2.0
 	itemGetBorder   = 100.0
 	itemAbsorbRange = 70.0
 	itemHitRange    = 20.0
-	initRemainNum   = 5
 	maxShotPower    = 500
 )
 
@@ -41,6 +43,7 @@ type player struct {
 	state           int
 	slow            bool
 	hitImg          int32
+	gaveOver        bool
 }
 
 func create(img common.ImageInfo, hitImg int32) (*player, error) {
@@ -54,6 +57,7 @@ func create(img common.ImageInfo, hitImg int32) (*player, error) {
 		plyrShot: &shot.Shot{Power: initShotPower},
 		state:    stateNormal,
 		hitImg:   hitImg,
+		gaveOver: false,
 	}
 	res.images = make([]int32, img.AllNum)
 	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
@@ -61,7 +65,7 @@ func create(img common.ImageInfo, hitImg int32) (*player, error) {
 		return nil, fmt.Errorf("Failed to load player image")
 	}
 
-	score.Set(score.TypeRemainNum, initRemainNum)
+	score.Set(score.TypeRemainNum, InitRemainNum)
 	score.Set(score.TypePlayerPower, initShotPower)
 
 	return &res, nil
@@ -271,10 +275,11 @@ func (p *player) death() {
 
 	remain := score.Get(score.TypeRemainNum)
 	remain--
+	score.Set(score.TypeRemainNum, remain)
 	if remain == 0 {
-		// TODO game over
-	} else {
-		score.Set(score.TypeRemainNum, remain)
+		// game over
+		p.gaveOver = true
+		return
 	}
 
 	for i := 0; i < 4; i++ {
