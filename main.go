@@ -83,8 +83,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	sound.BGMPlay(sound.TypeNormal) // TODO
-
 	state := 0
 	count := 0
 
@@ -126,8 +124,12 @@ MAIN:
 		}
 		count++
 
+		if count == 60 {
+			sound.BGMPlay(sound.TypeNormal)
+		}
+
 		// for debug
-		dxlib.DrawFormatString(0, 0, dxlib.GetColor(255, 255, 255), "%d", count)
+		// dxlib.DrawFormatString(0, 0, dxlib.GetColor(255, 255, 255), "%d", count)
 	}
 
 	dxlib.DxLib_End()

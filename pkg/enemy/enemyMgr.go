@@ -9,6 +9,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/boss"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/minion"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -218,6 +219,9 @@ func bossApper() error {
 			minions = nil
 			var err error
 			bossInst, err = boss.NewRiria(b, bossCharImgInfo[b.Type].images, bossHPImg, bossEtcImgs)
+			if isFinal {
+				sound.BGMPlay(sound.TypeBoss)
+			}
 			return err
 		}
 	}
