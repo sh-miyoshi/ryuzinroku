@@ -45,6 +45,7 @@ var (
 
 	storyInfo   story
 	count       int
+	isFinal     bool
 	minions     []*minion.Minion
 	bossInst    boss.Boss
 	bossHPImg   [boss.HPColMax]int32
@@ -128,13 +129,15 @@ func StoryEnd() {
 }
 
 // MgrProcess ...
-func MgrProcess() {
+func MgrProcess() bool {
 	if bossInst != nil {
+		finish := false
 		if bossInst.Process() {
 			bossInst.Clear()
 			bossInst = nil
+			finish = isFinal
 		}
-		return
+		return finish
 	}
 
 	bossApper()
@@ -143,6 +146,8 @@ func MgrProcess() {
 	minionApper()
 	minionProc()
 	count++
+
+	return false
 }
 
 // MgrDraw ...
@@ -209,6 +214,7 @@ func minionProc() {
 func bossApper() error {
 	for _, b := range storyInfo.Boss {
 		if b.AppearCount == count {
+			isFinal = b.Final
 			minions = nil
 			var err error
 			bossInst, err = boss.NewRiria(b, bossCharImgInfo[b.Type].images, bossHPImg, bossEtcImgs)

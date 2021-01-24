@@ -94,7 +94,12 @@ MAIN:
 				state = 1
 				continue
 			}
-			enemy.MgrProcess()
+			if enemy.MgrProcess() {
+				end.Init(true)
+				state = 1
+				continue
+			}
+
 			bullet.MgrProcess()
 			effect.MgrProcess()
 			mover.Process()
@@ -127,6 +132,7 @@ func draw(count int) {
 	if bright != 255 {
 		dxlib.SetDrawBright(bright, bright, bright)
 	}
+
 	background.DrawBack(count)
 	item.MgrDraw()
 	enemy.MgrDraw()
