@@ -8,7 +8,6 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -34,12 +33,11 @@ func moveRandom(charID string, ex, ey float64, dist float64, targetCnt int, move
 }
 
 // 円形照射
-func bossShotAct0(ex, ey float64, s *Shot) {
+func bossShotAct0(ex, ey, px, py float64, s *Shot) {
 	const tm = 120
 	t := s.count % tm
 
 	if t < 60 && t%10 == 0 {
-		px, py := player.GetPlayerPos()
 		angle := math.Atan2(py-ey, px-ex)
 		for i := 0; i < 30; i++ {
 			b := s.bulletInfo
@@ -56,13 +54,12 @@ func bossShotAct0(ex, ey float64, s *Shot) {
 }
 
 // サイレントセレナ
-func bossShotAct1(ex, ey float64, s *Shot) {
+func bossShotAct1(ex, ey, px, py float64, s *Shot) {
 	const turnCnt = 60
 	const loopCnt = turnCnt * 4
 
 	t := s.count % turnCnt
 	if t == 0 { // 1ターンの最初の初期化
-		px, py := player.GetPlayerPos()
 		s.baseAngle = math.Atan2(py-ey, px-ex)
 		if s.count%loopCnt == (turnCnt * 3) { // 4ターンに１回移動
 			moveRandom(s.charID, ex, ey, 60, 60, box{x1: 40, y1: 30, x2: float64(common.FiledSizeX) - 40, y2: 120})
@@ -108,7 +105,7 @@ func bossShotAct1(ex, ey float64, s *Shot) {
 }
 
 // パーフェクトフリーズ
-func bossShotAct2(ex, ey float64, s *Shot) {
+func bossShotAct2(ex, ey, px, py float64, s *Shot) {
 	const tm = 650
 
 	t := s.count % tm
@@ -154,7 +151,6 @@ func bossShotAct2(ex, ey float64, s *Shot) {
 
 	// 自機依存による8方向発射
 	if t > 210 && t < 270 && t%3 == 0 {
-		px, py := player.GetPlayerPos()
 		angle := math.Atan2(py-ey, px-ex)
 		for i := 0; i < 8; i++ {
 			b := s.bulletInfo
@@ -176,7 +172,7 @@ func bossShotAct2(ex, ey float64, s *Shot) {
 }
 
 // レーザーサンプル
-func bossShotAct3(ex, ey float64, s *Shot) {
+func bossShotAct3(ex, ey, px, py float64, s *Shot) {
 	const tm = 420
 	t := s.count % tm
 
@@ -224,7 +220,7 @@ func bossShotAct3(ex, ey float64, s *Shot) {
 }
 
 // ケロちゃん風雨に負けず
-func bossShotAct4(ex, ey float64, s *Shot) {
+func bossShotAct4(ex, ey, px, py float64, s *Shot) {
 	const tm = 200
 	t := s.count % tm
 	if t == 0 {
@@ -282,7 +278,7 @@ func bossShotAct4(ex, ey float64, s *Shot) {
 }
 
 // 反魂蝶～八部咲き～
-func bossShotAct5(ex, ey float64, s *Shot) {
+func bossShotAct5(ex, ey, px, py float64, s *Shot) {
 	const tm = 420
 	t := s.count % tm
 

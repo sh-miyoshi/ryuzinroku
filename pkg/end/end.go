@@ -5,8 +5,8 @@ import (
 	"math"
 
 	"github.com/sh-miyoshi/dxlib"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 )
 

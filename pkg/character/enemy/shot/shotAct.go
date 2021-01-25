@@ -5,7 +5,6 @@ import (
 
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -16,7 +15,7 @@ func bulletActSlow(b *bullet.Bullet) {
 }
 
 // 1発だけ、自機に向かって直線移動
-func shotAct0(ex, ey float64, s *Shot) {
+func shotAct0(ex, ey, px, py float64, s *Shot) {
 	if s.count == 0 {
 		// register bullet
 		b := s.bulletInfo
@@ -24,7 +23,6 @@ func shotAct0(ex, ey float64, s *Shot) {
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
-		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
@@ -37,14 +35,13 @@ func shotAct0(ex, ey float64, s *Shot) {
 }
 
 // 100カウント中に10発、自機に向かって直線発射(常に自機狙い)
-func shotAct1(ex, ey float64, s *Shot) {
+func shotAct1(ex, ey, px, py float64, s *Shot) {
 	if s.count <= 100 && s.count%10 == 0 { //100カウント中10カウントに1回
 		b := s.bulletInfo
 		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
-		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 3
 		bullet.Register(b)
@@ -53,10 +50,9 @@ func shotAct1(ex, ey float64, s *Shot) {
 }
 
 // 100カウント中に10発、自機に向かって直線発射(角度記憶)
-func shotAct2(ex, ey float64, s *Shot) {
+func shotAct2(ex, ey, px, py float64, s *Shot) {
 	if s.count <= 100 && s.count%10 == 0 {
 		if s.count == 0 {
-			px, py := player.GetPlayerPos()
 			s.baseAngle = math.Atan2(py-ey, px-ex)
 		}
 		b := s.bulletInfo
@@ -72,14 +68,13 @@ func shotAct2(ex, ey float64, s *Shot) {
 }
 
 // 100カウント中に10発、自機に向かってスピード変化直線発射
-func shotAct3(ex, ey float64, s *Shot) {
+func shotAct3(ex, ey, px, py float64, s *Shot) {
 	if s.count <= 100 && s.count%10 == 0 {
 		b := s.bulletInfo
 		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
-		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X)
 		b.Speed = 1 + 5.0/100*float64(s.count)
 		bullet.Register(b)
@@ -88,9 +83,8 @@ func shotAct3(ex, ey float64, s *Shot) {
 }
 
 // 0.5秒に1回ずつ円形発射
-func shotAct4(ex, ey float64, s *Shot) {
+func shotAct4(ex, ey, px, py float64, s *Shot) {
 	if s.count < 120 && s.count%20 == 0 {
-		px, py := player.GetPlayerPos()
 		angle := math.Atan2(py-ey, px-ex)
 		for i := 0; i < 20; i++ {
 			b := s.bulletInfo
@@ -107,14 +101,13 @@ func shotAct4(ex, ey float64, s *Shot) {
 }
 
 // ばらまきショット
-func shotAct5(ex, ey float64, s *Shot) {
+func shotAct5(ex, ey, px, py float64, s *Shot) {
 	if s.count < 120 && s.count%2 == 0 {
 		b := s.bulletInfo
 		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
-		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X) + common.RandomAngle(math.Pi/4)
 		b.Speed = float64(3) + common.RandomAngle(1.5)
 		bullet.Register(b)
@@ -123,14 +116,13 @@ func shotAct5(ex, ey float64, s *Shot) {
 }
 
 // ばらまきショット(減速)
-func shotAct6(ex, ey float64, s *Shot) {
+func shotAct6(ex, ey, px, py float64, s *Shot) {
 	if s.count < 120 && s.count%2 == 0 {
 		b := s.bulletInfo
 		b.CharID = s.charID
 		b.ShotID = s.id
 		b.X = ex
 		b.Y = ey
-		px, py := player.GetPlayerPos()
 		b.Angle = math.Atan2(py-b.Y, px-b.X) + common.RandomAngle(math.Pi/4)
 		b.Speed = float64(4) + common.RandomAngle(2)
 		b.Act = bulletActSlow
@@ -140,7 +132,7 @@ func shotAct6(ex, ey float64, s *Shot) {
 }
 
 // みょん弾幕
-func shotAct7(ex, ey float64, s *Shot) {
+func shotAct7(ex, ey, px, py float64, s *Shot) {
 	if s.count <= 150 && s.count%10 == 0 {
 		for i := 0; i < 20; i++ {
 			b := s.bulletInfo
@@ -173,7 +165,7 @@ func shotAct7(ex, ey float64, s *Shot) {
 }
 
 // ミシャグジさま弾幕
-func shotAct8(ex, ey float64, s *Shot) {
+func shotAct8(ex, ey, px, py float64, s *Shot) {
 	if s.count < 1200 && s.count%90 == 0 {
 		angle := common.RandomAngle(math.Pi)
 		for j := 0; j < 2; j++ { // 途中から２分裂する分
@@ -212,6 +204,6 @@ func shotAct8(ex, ey float64, s *Shot) {
 }
 
 // ダミー(なにもしない)
-func shotActNon(ex, ey float64, s *Shot) {
+func shotActNon(ex, ey, px, py float64, s *Shot) {
 	// nothing to do
 }

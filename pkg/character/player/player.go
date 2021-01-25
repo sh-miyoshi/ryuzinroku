@@ -6,12 +6,12 @@ import (
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/player/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/player/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -81,7 +81,7 @@ func (p *player) draw() {
 	}
 }
 
-func (p *player) process() {
+func (p *player) process(ex, ey float64) {
 	p.count++
 	p.imgNo = (p.count / 6) % 4
 
@@ -90,6 +90,7 @@ func (p *player) process() {
 	switch p.state {
 	case stateNormal:
 		p.move()
+		// TODO option shot
 		p.plyrShot.Process(p.x, p.y, p.slow)
 		if inputs.CheckKey(dxlib.KEY_INPUT_X) == 1 {
 			if err := effect.Register(effect.Controller{

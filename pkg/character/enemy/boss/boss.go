@@ -8,8 +8,8 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/enemy/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
@@ -61,7 +61,7 @@ type Define struct {
 
 // Boss ...
 type Boss interface {
-	Process() bool
+	Process(px, py float64) bool
 	Draw()
 	Clear()
 }
@@ -111,7 +111,7 @@ func NewRiria(def Define, charImg []int32, hpImg [HPColMax]int32, backImgs []int
 }
 
 // Process ...
-func (r *Riria) Process() bool {
+func (r *Riria) Process(px, py float64) bool {
 	// 初期状態は待機モード
 	// 今が待機モードならwaitTime分待機する
 	// 待機が終了したら弾幕を登録し、弾幕モードにする
@@ -125,7 +125,7 @@ func (r *Riria) Process() bool {
 			return false
 		}
 	case modeBarr:
-		r.shotProc.Process(r.x, r.y)
+		r.shotProc.Process(r.x, r.y, px, py)
 
 		// Check bullet hit and dead
 		bullets := bullet.GetBullets()

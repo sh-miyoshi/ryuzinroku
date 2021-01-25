@@ -30,8 +30,8 @@ func Init() error {
 }
 
 // MgrProcess ...
-func MgrProcess() bool {
-	plyr.process()
+func MgrProcess(ex, ey float64) bool {
+	plyr.process(ex, ey)
 	bullets := bullet.GetBullets()
 	hits := plyr.hitProc(bullets)
 	if len(hits) > 0 {

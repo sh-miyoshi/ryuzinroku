@@ -8,15 +8,14 @@ import (
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/background"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/end"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/inputs"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/player"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/title"
@@ -48,8 +47,8 @@ func main() {
 		fmt.Printf("Failed to init bullet: %v\n", err)
 		os.Exit(1)
 	}
-	if err := player.Init(); err != nil {
-		fmt.Printf("Failed to init player: %v\n", err)
+	if err := character.Init(); err != nil {
+		fmt.Printf("Failed to init character: %v\n", err)
 		os.Exit(1)
 	}
 	if err := effect.Init(); err != nil {
@@ -70,8 +69,8 @@ func main() {
 	}
 
 	// TODO set per story
-	if err := enemy.StoryInit("data/story/story.yaml"); err != nil {
-		fmt.Printf("Failed to init enemy: %v\n", err)
+	if err := character.StoryInit("data/story/story.yaml"); err != nil {
+		fmt.Printf("Failed to story init character: %v\n", err)
 		os.Exit(1)
 	}
 	if err := title.StoryInit("data/story/story.yaml"); err != nil {
@@ -93,13 +92,13 @@ MAIN:
 
 		switch state {
 		case 0:
-			if player.MgrProcess() {
-				end.Init(false)
+			switch character.MgrProcess() {
+			case character.ResClear:
+				end.Init(true)
 				state = 1
 				continue
-			}
-			if enemy.MgrProcess() {
-				end.Init(true)
+			case character.ResGameOver:
+				end.Init(false)
 				state = 1
 				continue
 			}
@@ -143,8 +142,7 @@ func draw(count int) {
 
 	background.DrawBack(count)
 	item.MgrDraw()
-	enemy.MgrDraw()
-	player.MgrDraw()
+	character.MgrDraw()
 	bullet.MgrDraw()
 	laser.MgrDraw()
 	title.Draw()

@@ -6,9 +6,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/enemy/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/shot"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
@@ -58,7 +58,7 @@ func Init(m *Minion, imgs []int32) {
 }
 
 // Process ...
-func (e *Minion) Process() {
+func (e *Minion) Process(px, py float64) {
 	acts[e.MovePattern](e)
 
 	e.count++
@@ -113,7 +113,7 @@ func (e *Minion) Process() {
 	}
 
 	if e.shotProc != nil {
-		if e.shotProc.Process(e.X, e.Y) {
+		if e.shotProc.Process(e.X, e.Y, px, py) {
 			e.shotProc = nil
 		}
 	}

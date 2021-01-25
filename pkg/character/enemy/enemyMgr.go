@@ -6,9 +6,9 @@ import (
 
 	"github.com/sh-miyoshi/dxlib"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/bullet"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/enemy/boss"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/character/enemy/minion"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/boss"
-	"github.com/sh-miyoshi/ryuzinroku/pkg/enemy/minion"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -130,10 +130,10 @@ func StoryEnd() {
 }
 
 // MgrProcess ...
-func MgrProcess() bool {
+func MgrProcess(px, py float64) bool {
 	if bossInst != nil {
 		finish := false
-		if bossInst.Process() {
+		if bossInst.Process(px, py) {
 			bossInst.Clear()
 			bossInst = nil
 			finish = isFinal
@@ -145,7 +145,7 @@ func MgrProcess() bool {
 
 	// Minions process
 	minionApper()
-	minionProc()
+	minionProc(px, py)
 	count++
 
 	return false
@@ -161,6 +161,24 @@ func MgrDraw() {
 	for _, e := range minions {
 		e.Draw()
 	}
+}
+
+// GetClosestEnemy ...
+func GetClosestEnemy(x, y float64) (float64, float64) {
+	resX := -1.0
+	resY := -1.0
+	dist := float64(common.FiledSizeX*common.FiledSizeX + common.FiledSizeY*common.FiledSizeY)
+	for _, e := range minions {
+		tx := e.X - x
+		ty := e.Y - y
+		d := tx*tx + ty*ty
+		if d < dist {
+			resX = e.X
+			resY = e.Y
+		}
+	}
+
+	return resX, resY
 }
 
 func load(no int) error {
@@ -189,7 +207,7 @@ func minionApper() {
 	}
 }
 
-func minionProc() {
+func minionProc(px, py float64) {
 	newMinions := []*minion.Minion{}
 	bullets := bullet.GetBullets()
 	bombDm := bullet.PopBomb()
@@ -203,7 +221,7 @@ func minionProc() {
 			e.HP -= bombDm
 		}
 
-		e.Process()
+		e.Process(px, py)
 
 		if !e.IsDead() {
 			newMinions = append(newMinions, e)
