@@ -5,121 +5,669 @@ bgm:
   boss:
     file: "data/bgm/boss0.ogg"
     loopCnt: 27010
-# title:
-#   startCount: 60
-#   file: "data/image/background/title0.png"
-# boss:
-# - appearCount: 100
-#   type: 0
-#   final: true
-#   barrages:
-#   - type: 15
-#     hp: 1000
-#     spellcard: true
-#     bullet:
-#       type: 8
-#       color: 0
-#   - type: 10
-#     hp: 5000
-#     bullet:
-#       type: 4
-#       color: 0
-# enemies:
-# - appearCount: 60
-#   movePattern: 9
-#   type: 0
-#   x: 200
-#   y: 150
-#   hp: 100
-#   wait: 200
-#   speed: 0
-#   shot:
-#     startCount: 60
-#     type: 8
-#     bullet:
-#       type: 0
-#       color: 0
-#   items:
-#   - type: 0
-#   - type: 3
-# - appearCount: 200
-#   movePattern: 9
-#   type: 0
-#   x: 180
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   speed: 0
-#   shot:
-#     startCount: 60
-#     type: 1
-#     bullet:
-#       type: 8
-#       color: 0
-# - appearCount: 340
-#   movePattern: 9
-#   type: 0
-#   x: 200
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   speed: 0
-#   shot:
-#     startCount: 60
-#     type: 2
-#     bullet:
-#       type: 9
-#       color: 0
-# - appearCount: 480
-#   movePattern: 9
-#   type: 0
-#   x: 180
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   speed: 0
-#   shot:
-#     startCount: 60
-#     type: 3
-#     bullet:
-#       type: 0
-#       color: 0
-# - appearCount: 620
-#   movePattern: 9
-#   type: 0
-#   x: 200
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   shot:
-#     startCount: 60
-#     type: 4
-#     bullet:
-#       type: 7
-#       color: 0
-# - appearCount: 760
-#   movePattern: 9
-#   type: 0
-#   x: 180
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   shot:
-#     startCount: 60
-#     type: 5
-#     bullet:
-#       type: 8
-#       color: 0
-# - appearCount: 900
-#   movePattern: 9
-#   type: 0
-#   x: 180
-#   y: 150
-#   hp: 100
-#   wait: 120
-#   shot:
-#     startCount: 60
-#     type: 6
-#     bullet:
-#       type: 8
-#       color: 0
+title:
+  startCount: 200
+  file: "data/image/background/title0.png"
+boss:
+- appearCount: 1700
+  type: 0
+  final: false
+  barrages:
+  - type: 10
+    hp: 5000
+    spellcard: true
+    bullet:
+      type: 8
+      color: 0
+  - type: 12
+    hp: 10000
+- appearCount: 2850
+  type: 0
+  final: true
+  barrages:
+  - type: 11
+    hp: 8000
+    spellcard: false
+  - type: 14
+    hp: 20000
+  - type: 15
+    hp: 30000
+enemies:
+- appearCount: 100
+  movePattern: 0
+  type: 0
+  x: 40
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 90
+  movePattern: 0
+  type: 0
+  x: 80
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 80
+  movePattern: 0
+  type: 0
+  x: 120
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 70
+  movePattern: 0
+  type: 0
+  x: 160
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 70
+  movePattern: 0
+  type: 0
+  x: 240
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 80
+  movePattern: 0
+  type: 0
+  x: 280
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 90
+  movePattern: 0
+  type: 0
+  x: 320
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 100
+  movePattern: 0
+  type: 0
+  x: 360
+  y: -20
+  hp: 1
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 550
+  movePattern: 5
+  type: 0
+  x: 340
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 570
+  movePattern: 5
+  type: 0
+  x: 280
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 590
+  movePattern: 5
+  type: 0
+  x: 320
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 610
+  movePattern: 5
+  type: 0
+  x: 360
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 670
+  movePattern: 6
+  type: 0
+  x: 60
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 690
+  movePattern: 6
+  type: 0
+  x: 120
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 0
+- appearCount: 710
+  movePattern: 6
+  type: 0
+  x: 80
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 730
+  movePattern: 6
+  type: 0
+  x: 140
+  y: -20
+  hp: 50
+  wait: 180
+  speed: 0
+  shot:
+    type: 0
+    startCount: 60
+    bullet:
+      color: 0
+      type: 7
+  items:
+  - type: 1
+- appearCount: 850
+  movePattern: 5
+  type: 0
+  x: 340
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 0
+- appearCount: 870
+  movePattern: 5
+  type: 0
+  x: 280
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 0
+- appearCount: 890
+  movePattern: 5
+  type: 0
+  x: 320
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 1
+- appearCount: 910
+  movePattern: 5
+  type: 0
+  x: 360
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 1
+- appearCount: 970
+  movePattern: 6
+  type: 0
+  x: 60
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 0
+- appearCount: 990
+  movePattern: 6
+  type: 0
+  x: 120
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 0
+- appearCount: 1010
+  movePattern: 6
+  type: 0
+  x: 80
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 1
+- appearCount: 1030
+  movePattern: 6
+  type: 0
+  x: 140
+  y: -20
+  hp: 200
+  wait: 180
+  speed: 0
+  shot:
+    type: 2
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 1
+- appearCount: 1200
+  movePattern: 9
+  type: 0
+  x: 90
+  y: 100
+  hp: 1000
+  wait: 360
+  speed: 0
+  shot:
+    type: 4
+    startCount: 10
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
+- appearCount: 1200
+  movePattern: 9
+  type: 0
+  x: 290
+  y: 100
+  hp: 1000
+  wait: 360
+  speed: 0
+  shot:
+    type: 5
+    startCount: 60
+    bullet:
+      color: 0
+      type: 8
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
+- appearCount: 1700
+  movePattern: 0
+  type: 0
+  x: 40
+  y: -20
+  hp: 300
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 0
+- appearCount: 1720
+  movePattern: 0
+  type: 0
+  x: 80
+  y: -20
+  hp: 350
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 0
+- appearCount: 1740
+  movePattern: 0
+  type: 0
+  x: 120
+  y: -20
+  hp: 400
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 0
+- appearCount: 1760
+  movePattern: 0
+  type: 0
+  x: 160
+  y: -20
+  hp: 450
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 0
+- appearCount: 1780
+  movePattern: 0
+  type: 0
+  x: 240
+  y: -20
+  hp: 500
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 1
+- appearCount: 1800
+  movePattern: 0
+  type: 0
+  x: 280
+  y: -20
+  hp: 550
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 1
+- appearCount: 1820
+  movePattern: 0
+  type: 0
+  x: 320
+  y: -20
+  hp: 600
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 1
+- appearCount: 1840
+  movePattern: 0
+  type: 0
+  x: 360
+  y: -20
+  hp: 650
+  wait: 180
+  speed: 0
+  shot:
+    type: 1
+    startCount: 60
+    bullet:
+      color: 0
+      type: 3
+  items:
+  - type: 1
+- appearCount: 2000
+  movePattern: 9
+  type: 0
+  x: 90
+  y: 100
+  hp: 800
+  wait: 360
+  speed: 0
+  shot:
+    type: 4
+    startCount: 10
+    bullet:
+      color: 0
+      type: 5
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
+- appearCount: 2000
+  movePattern: 9
+  type: 0
+  x: 290
+  y: 100
+  hp: 800
+  wait: 360
+  speed: 0
+  shot:
+    type: 4
+    startCount: 10
+    bullet:
+      color: 0
+      type: 5
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
+- appearCount: 2400
+  movePattern: 9
+  type: 0
+  x: 140
+  y: 100
+  hp: 1000
+  wait: 360
+  speed: 0
+  shot:
+    type: 5
+    startCount: 10
+    bullet:
+      color: 0
+      type: 6
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
+- appearCount: 2400
+  movePattern: 9
+  type: 0
+  x: 230
+  y: 100
+  hp: 1000
+  wait: 360
+  speed: 0
+  shot:
+    type: 5
+    startCount: 10
+    bullet:
+      color: 0
+      type: 6
+  items:
+  - type: 4
+  - type: 0
+  - type: 1
+  - type: 0
+  - type: 1
+  - type: 0
