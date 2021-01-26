@@ -10,21 +10,28 @@ import (
 )
 
 var (
-	plyr   *player
-	hitImg int32
+	plyr *player
 )
 
 // Init ...
 func Init() error {
-	hitImg := dxlib.LoadGraph("data/image/effect/player_hit.png", dxlib.FALSE)
+	fname := "data/image/effect/player_hit.png"
+	hitImg := dxlib.LoadGraph(fname, dxlib.FALSE)
 	if hitImg == -1 {
-		return fmt.Errorf("Failed to load hit image: data/image/effect/player_hit.png")
+		return fmt.Errorf("Failed to load hit image: %s", fname)
+	}
+
+	fname = "data/image/etc/player_option.png"
+	optImg := dxlib.LoadGraph(fname, dxlib.FALSE)
+	if optImg == -1 {
+		return fmt.Errorf("Failed to load option image: %s", fname)
 	}
 
 	var err error
 	plyr, err = create(
 		common.ImageInfo{FileName: "data/image/char/player.png", AllNum: 12, XNum: 4, YNum: 3, XSize: 73, YSize: 73},
 		hitImg,
+		optImg,
 	)
 	return err
 }

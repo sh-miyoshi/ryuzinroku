@@ -14,10 +14,23 @@ type Shot struct {
 	Power int
 
 	count int
+	opt   option
+}
+
+// New ...
+func New(optImg int32, initPower int) *Shot {
+	return &Shot{
+		Power: initPower,
+		opt: option{
+			img: optImg,
+		},
+	}
 }
 
 // Process ...
-func (s *Shot) Process(px, py float64, slow bool) {
+func (s *Shot) Process(px, py, ex, ey float64, slow bool) {
+	s.opt.process(px, py, slow)
+
 	if inputs.CheckKey(dxlib.KEY_INPUT_Z) > 0 {
 		s.count++
 		if s.count%3 == 0 {
@@ -35,9 +48,18 @@ func (s *Shot) Process(px, py float64, slow bool) {
 					registerBullet(px+ofsx[i], py+ofsy[i], s.Power)
 				}
 			}
+
+			s.opt.registerOptShot(ex, ey, s.Power)
 		}
 	} else {
 		s.count = 0
+	}
+}
+
+// Draw ...
+func (s *Shot) Draw() {
+	if s.Power >= 100 {
+		s.opt.draw()
 	}
 }
 

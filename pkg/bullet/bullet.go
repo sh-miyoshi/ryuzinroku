@@ -35,12 +35,12 @@ type Bullet struct {
 var (
 	bullets    []*Bullet
 	bulletImgs [][]int32
-	hitRanges  = [16]float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 1, 2, 1.5, 4, 0.5, 6}
+	hitRanges  = [17]float64{17, 4, 2.5, 2, 2, 3.5, 2, 2.5, 1.5, 2, 1, 2, 1.5, 4, 0.5, 6, 1}
 )
 
 // Init ...
 func Init() error {
-	bulletImgs = make([][]int32, 16)
+	bulletImgs = make([][]int32, 17)
 	imgs := []common.ImageInfo{
 		{AllNum: 5, XNum: 5, YNum: 1, XSize: 76, YSize: 76},
 		{AllNum: 6, XNum: 6, YNum: 1, XSize: 22, YSize: 22},
@@ -72,6 +72,11 @@ func Init() error {
 	bulletImgs[15][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
 	if bulletImgs[15][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/player_b0.png")
+	}
+	bulletImgs[16] = make([]int32, 1)
+	bulletImgs[16][0] = dxlib.LoadGraph("data/image/bullet/player_b1.png", dxlib.FALSE)
+	if bulletImgs[16][0] == -1 {
+		return fmt.Errorf("Failed to load image: data/image/bullet/player_b1.png")
 	}
 
 	return nil

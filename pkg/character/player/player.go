@@ -46,7 +46,7 @@ type player struct {
 	gaveOver        bool
 }
 
-func create(img common.ImageInfo, hitImg int32) (*player, error) {
+func create(img common.ImageInfo, hitImg, optImg int32) (*player, error) {
 	if img.AllNum <= 0 {
 		return nil, fmt.Errorf("image num must be positive integer, but got %d", img.AllNum)
 	}
@@ -54,7 +54,7 @@ func create(img common.ImageInfo, hitImg int32) (*player, error) {
 	res := player{
 		x:        common.FiledSizeX / 2,
 		y:        common.FiledSizeY * 3 / 4,
-		plyrShot: &shot.Shot{Power: initShotPower},
+		plyrShot: shot.New(optImg, initShotPower),
 		state:    stateNormal,
 		hitImg:   hitImg,
 		gaveOver: false,
@@ -79,6 +79,8 @@ func (p *player) draw() {
 	if p.slow {
 		dxlib.DrawRotaGraphFast(int32(p.x)+common.FieldTopX, int32(p.y)+common.FieldTopY, 1, math.Pi*2*float32(p.count%120)/120, p.hitImg, dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
 	}
+
+	p.plyrShot.Draw()
 }
 
 func (p *player) process(ex, ey float64) {
@@ -90,8 +92,7 @@ func (p *player) process(ex, ey float64) {
 	switch p.state {
 	case stateNormal:
 		p.move()
-		// TODO option shot
-		p.plyrShot.Process(p.x, p.y, p.slow)
+		p.plyrShot.Process(p.x, p.y, ex, ey, p.slow)
 		if inputs.CheckKey(dxlib.KEY_INPUT_X) == 1 {
 			if err := effect.Register(effect.Controller{
 				Type: effect.ControllerTypeBomb,
