@@ -33,3 +33,12 @@ func Rotate(bx, by, x, y, angle float64) (float64, float64) {
 	ry := math.Sin(angle)*x + math.Cos(angle)*y
 	return rx + bx, ry + by
 }
+
+// UpMax ...
+func UpMax(current, upVal, max int) int {
+	current += upVal
+	if current > max {
+		return max
+	}
+	return current
+}

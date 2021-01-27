@@ -12,6 +12,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/laser"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/mover"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -220,6 +221,7 @@ func (r *Riria) hitProc(bullets []*bullet.Bullet) []int {
 			r.currentHP -= bl.Power
 			sound.PlaySound(sound.SEEnemyHit)
 			res = append(res, i)
+			score.Set(score.TypeScore, common.UpMax(score.Get(score.TypeScore), 1, 999999999))
 			continue
 		}
 
@@ -235,6 +237,7 @@ func (r *Riria) hitProc(bullets []*bullet.Bullet) []int {
 					r.currentHP -= bl.Power
 					sound.PlaySound(sound.SEEnemyHit)
 					res = append(res, i)
+					score.Set(score.TypeScore, common.UpMax(score.Get(score.TypeScore), 1, 999999999))
 					break
 				}
 				preX += math.Cos(bl.Angle) * bl.Speed

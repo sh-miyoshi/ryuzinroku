@@ -10,6 +10,7 @@ import (
 	"github.com/sh-miyoshi/ryuzinroku/pkg/common"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/effect"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/item"
+	"github.com/sh-miyoshi/ryuzinroku/pkg/score"
 	"github.com/sh-miyoshi/ryuzinroku/pkg/sound"
 )
 
@@ -140,6 +141,7 @@ func (e *Minion) HitProc(bullets []*bullet.Bullet) []int {
 			e.HP -= b.Power
 			sound.PlaySound(sound.SEEnemyHit)
 			res = append(res, i)
+			score.Set(score.TypeScore, common.UpMax(score.Get(score.TypeScore), 10, 999999999))
 			continue
 		}
 
@@ -155,6 +157,7 @@ func (e *Minion) HitProc(bullets []*bullet.Bullet) []int {
 					e.HP -= b.Power
 					sound.PlaySound(sound.SEEnemyHit)
 					res = append(res, i)
+					score.Set(score.TypeScore, common.UpMax(score.Get(score.TypeScore), 10, 999999999))
 					break
 				}
 				preX += math.Cos(b.Angle) * b.Speed
