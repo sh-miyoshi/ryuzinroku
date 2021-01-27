@@ -30,8 +30,10 @@ boss:
     spellcard: false
   - type: 14
     hp: 20000
+    spellcard: true
   - type: 15
     hp: 30000
+    spellcard: true
 enemies:
 - appearCount: 100
   movePattern: 0
