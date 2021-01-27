@@ -119,7 +119,21 @@ func MgrDraw() {
 
 	// Show bullets
 	dxlib.SetDrawMode(dxlib.DX_DRAWMODE_BILINEAR)
-	for _, b := range bullets {
+	// 時期ショットは先に描画する
+	drawed := []int{}
+	for i, b := range bullets {
+		if b.IsPlayer {
+			dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+			drawed = append(drawed, i)
+		}
+
+	}
+	for i, b := range bullets {
+		if len(drawed) > 0 && i == drawed[0] {
+			drawed = drawed[1:]
+			continue
+		}
+
 		ang := b.Angle + math.Pi/2
 		if b.Rotate {
 			ang = math.Pi * 2 * float64(b.Count%120) / 120
