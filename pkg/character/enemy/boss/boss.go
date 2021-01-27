@@ -64,6 +64,7 @@ type Boss interface {
 	Process(px, py float64) bool
 	Draw()
 	Clear()
+	GetPos() (float64, float64)
 }
 
 // Riria ...
@@ -194,6 +195,14 @@ func (r *Riria) Draw() {
 // Clear ...
 func (r *Riria) Clear() {
 	mover.CharRemove(r.charID)
+}
+
+// GetPos ...
+func (r *Riria) GetPos() (float64, float64) {
+	if r.mode == modeBarr {
+		return r.x, r.y
+	}
+	return -1, -1
 }
 
 func (r *Riria) hitProc(bullets []*bullet.Bullet) []int {

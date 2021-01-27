@@ -34,12 +34,12 @@ func MgrProcess() int {
 	px, py := player.GetPlayerPos()
 	ex, ey := enemy.GetClosestEnemy(px, py)
 
-	if player.MgrProcess(ex, ey) {
-		return ResGameOver
-	}
-
 	if enemy.MgrProcess(px, py) {
 		return ResClear
+	}
+
+	if player.MgrProcess(ex, ey) {
+		return ResGameOver
 	}
 
 	return ResContinue

@@ -58,7 +58,7 @@ func (o *option) registerOptShot(ex, ey float64, power int) {
 	for i := 0; i < num; i++ {
 		ang := baseAng[i]
 		if ex >= 0 && ey >= 0 {
-			// TODO
+			ang = math.Atan2(ey-o.viewY[i%2], ex-o.viewX[i%2])
 		}
 		b := bullet.Bullet{
 			Type:     16,

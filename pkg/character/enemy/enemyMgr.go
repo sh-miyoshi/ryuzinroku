@@ -165,9 +165,14 @@ func MgrDraw() {
 
 // GetClosestEnemy ...
 func GetClosestEnemy(x, y float64) (float64, float64) {
+	if bossInst != nil {
+		return bossInst.GetPos()
+	}
+
 	resX := -1.0
 	resY := -1.0
 	dist := float64(common.FiledSizeX*common.FiledSizeX + common.FiledSizeY*common.FiledSizeY)
+
 	for _, e := range minions {
 		tx := e.X - x
 		ty := e.Y - y
