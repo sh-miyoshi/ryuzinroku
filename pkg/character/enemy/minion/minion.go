@@ -2,6 +2,7 @@ package minion
 
 import (
 	"math"
+	"math/rand"
 
 	"github.com/google/uuid"
 	"github.com/sh-miyoshi/dxlib"
@@ -81,7 +82,7 @@ func (e *Minion) Process(px, py float64) {
 		sound.PlaySound(sound.SEEnemyDead)
 		effect.Register(effect.Controller{
 			Type:  effect.ControllerTypeDead,
-			Color: 0, // TODO set correct param
+			Color: rand.Intn(5),
 			X:     e.X,
 			Y:     e.Y,
 		})
