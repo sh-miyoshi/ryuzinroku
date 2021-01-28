@@ -151,6 +151,7 @@ func (r *Riria) Process(px, py float64) bool {
 				sound.PlaySound(sound.SEBossDead)
 				return true // finish
 			}
+			sound.PlaySound(sound.SEBossChange)
 			r.currentBarr++
 			r.mode = modeWait
 			r.count = 0

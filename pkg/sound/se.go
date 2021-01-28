@@ -30,6 +30,8 @@ const (
 	SEBossDead
 	// SEItemGet ...
 	SEItemGet
+	// SEBossChange ...
+	SEBossChange
 
 	// SEMax ...
 	SEMax
@@ -52,6 +54,7 @@ func Init() error {
 	soundEffects[SELaser] = dxlib.LoadSoundMem("data/se/lazer.wav", 3, -1)
 	soundEffects[SEBossDead] = dxlib.LoadSoundMem("data/se/boss_death.wav", 3, -1)
 	soundEffects[SEItemGet] = dxlib.LoadSoundMem("data/se/item_get.wav", 3, -1)
+	soundEffects[SEBossChange] = dxlib.LoadSoundMem("data/se/boss_change.wav", 3, -1)
 
 	for i, s := range soundEffects {
 		if s == -1 {
@@ -68,8 +71,9 @@ func Init() error {
 	dxlib.ChangeVolumeSoundMem(64, soundEffects[SEBombStart])
 	dxlib.ChangeVolumeSoundMem(64, soundEffects[SEBomb])
 	dxlib.ChangeVolumeSoundMem(64, soundEffects[SELaser])
-	dxlib.ChangeVolumeSoundMem(64, soundEffects[SEBossDead])
+	dxlib.ChangeVolumeSoundMem(128, soundEffects[SEBossDead])
 	dxlib.ChangeVolumeSoundMem(32, soundEffects[SEItemGet])
+	dxlib.ChangeVolumeSoundMem(96, soundEffects[SEBossChange])
 
 	return nil
 }
