@@ -38,11 +38,6 @@ func effectActBombMain(e *effect) bool {
 	if e.count == 60 {
 		sound.PlaySound(sound.SEBomb)
 		e.Speed = 0
-		// TODO
-		// dn.flag = 1
-		// dn.cnt = 0
-		// dn.size = 11
-		// dn.time = 20
 	}
 	// 明るさと大きさ計算
 	e.ExtRate += 0.015
