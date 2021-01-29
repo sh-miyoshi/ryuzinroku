@@ -266,6 +266,12 @@ func (p *player) itemProc(items []*item.Item) {
 
 func (p *player) death() {
 	sound.PlaySound(sound.SEPlayerDead)
+	effect.Register(effect.Controller{
+		Type:  effect.ControllerTypeDead,
+		Color: -1,
+		X:     p.x,
+		Y:     p.y,
+	})
 
 	remain := score.Get(score.TypeRemainNum)
 	remain--
