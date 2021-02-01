@@ -62,19 +62,19 @@ func Init() error {
 	for i, img := range imgs {
 		fname := fmt.Sprintf("data/image/bullet/b%d.png", i)
 		bulletImgs[i] = make([]int32, int(img.AllNum))
-		if res := dxlib.LoadDivGraph(fname, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, bulletImgs[i], dxlib.FALSE); res == -1 {
+		if res := dxlib.LoadDivGraph(fname, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, bulletImgs[i]); res == -1 {
 			return fmt.Errorf("Failed to load image: %s", fname)
 		}
 	}
 
 	// Load player bullet
 	bulletImgs[15] = make([]int32, 1)
-	bulletImgs[15][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png", dxlib.FALSE)
+	bulletImgs[15][0] = dxlib.LoadGraph("data/image/bullet/player_b0.png")
 	if bulletImgs[15][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/player_b0.png")
 	}
 	bulletImgs[16] = make([]int32, 1)
-	bulletImgs[16][0] = dxlib.LoadGraph("data/image/bullet/player_b1.png", dxlib.FALSE)
+	bulletImgs[16][0] = dxlib.LoadGraph("data/image/bullet/player_b1.png")
 	if bulletImgs[16][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/bullet/player_b1.png")
 	}
@@ -123,7 +123,7 @@ func MgrDraw() {
 	drawed := []int{}
 	for i, b := range bullets {
 		if b.IsPlayer {
-			dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+			dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(b.Angle+math.Pi/2), bulletImgs[b.Type][b.Color], dxlib.TRUE)
 			drawed = append(drawed, i)
 		}
 	}
@@ -138,7 +138,7 @@ func MgrDraw() {
 			ang = math.Pi * 2 * float64(b.Count%120) / 120
 		}
 
-		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(ang), bulletImgs[b.Type][b.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(b.X)+common.FieldTopX, int32(b.Y)+common.FieldTopY, 1, float32(ang), bulletImgs[b.Type][b.Color], dxlib.TRUE)
 	}
 	dxlib.SetDrawMode(dxlib.DX_DRAWMODE_NEAREST)
 }

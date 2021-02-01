@@ -23,18 +23,19 @@ func Init(win bool) error {
 	isWin = win
 
 	fname := "data/image/background/result_board.png"
-	boardImg = dxlib.LoadGraph(fname, dxlib.FALSE)
+	boardImg = dxlib.LoadGraph(fname)
 	if boardImg == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
 
 	fname = "data/image/etc/clear.png"
-	clearImg = dxlib.LoadGraph(fname, dxlib.FALSE)
+	clearImg = dxlib.LoadGraph(fname)
 	if boardImg == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
 
-	font = dxlib.CreateFontToHandle("", 20, -1, -1, -1, -1, dxlib.FALSE, -1)
+	size := int32(20)
+	font = dxlib.CreateFontToHandle(dxlib.CreateFontToHandleOption{Size: &size})
 
 	// background.SetBright(180)
 	count = 0
@@ -63,11 +64,11 @@ func Draw() {
 	if count > 300 {
 		if isWin {
 			dxlib.SetDrawMode(dxlib.DX_DRAWMODE_BILINEAR)
-			dxlib.DrawRotaGraph(300, 260, 1, -math.Pi/20, clearImg, dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+			dxlib.DrawRotaGraph(300, 260, 1, -math.Pi/20, clearImg, dxlib.TRUE)
 			dxlib.SetDrawMode(dxlib.DX_DRAWMODE_NEAREST)
 		} else {
 			dxlib.DrawBox(140, 240, 320, 280, 0x2f2f2f, dxlib.TRUE)
-			dxlib.DrawStringToHandle(160, 250, "Game Over ...", 0xff0000, font, 0, dxlib.FALSE)
+			dxlib.DrawStringToHandle(160, 250, "Game Over ...", 0xff0000, font)
 		}
 	}
 }

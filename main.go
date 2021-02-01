@@ -29,7 +29,7 @@ func main() {
 	dxlib.Init("DxLib.dll")
 
 	dxlib.ChangeWindowMode(dxlib.TRUE)
-	dxlib.SetGraphMode(common.ScreenX, common.ScreenY, 16, 60)
+	dxlib.SetGraphMode(common.ScreenX, common.ScreenY)
 	dxlib.SetOutApplicationLogValidFlag(dxlib.TRUE)
 
 	dxlib.DxLib_Init()

@@ -51,12 +51,12 @@ var (
 func Init() error {
 	imgMain = make([]int32, 2)
 	fname := "data/image/bullet/laser_main.png"
-	if res := dxlib.LoadDivGraph(fname, 2, 2, 1, 30, 460, imgMain, dxlib.FALSE); res == -1 {
+	if res := dxlib.LoadDivGraph(fname, 2, 2, 1, 30, 460, imgMain); res == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
 	imgOrigin = make([]int32, 2)
 	fname = "data/image/bullet/laser_origin.png"
-	if res := dxlib.LoadDivGraph(fname, 2, 2, 1, 70, 70, imgOrigin, dxlib.FALSE); res == -1 {
+	if res := dxlib.LoadDivGraph(fname, 2, 2, 1, 70, 70, imgOrigin); res == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
 
@@ -116,7 +116,7 @@ func MgrDraw() {
 	for _, l := range lasers {
 		fx := int32(common.FieldTopX)
 		fy := int32(common.FieldTopY)
-		dxlib.DrawRotaGraphFast(int32(l.viewOrigin.X)+fx, int32(l.viewOrigin.Y)+fy, 1, 0, imgOrigin[l.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(l.viewOrigin.X)+fx, int32(l.viewOrigin.Y)+fy, 1, 0, imgOrigin[l.Color], dxlib.TRUE)
 		dxlib.DrawModiGraph(
 			int32(l.viewRect[0].X)+fx, int32(l.viewRect[0].Y)+fy,
 			int32(l.viewRect[1].X)+fx, int32(l.viewRect[1].Y)+fy,

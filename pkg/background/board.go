@@ -16,10 +16,10 @@ type Board struct {
 
 func newBoard(imgTopFile, imtBottomFile, imgLeftFile, imgRightFile string) (*Board, error) {
 	res := Board{
-		imgTop:    dxlib.LoadGraph(imgTopFile, dxlib.FALSE),
-		imgBottom: dxlib.LoadGraph(imtBottomFile, dxlib.FALSE),
-		imgLeft:   dxlib.LoadGraph(imgLeftFile, dxlib.FALSE),
-		imgRight:  dxlib.LoadGraph(imgRightFile, dxlib.FALSE),
+		imgTop:    dxlib.LoadGraph(imgTopFile),
+		imgBottom: dxlib.LoadGraph(imtBottomFile),
+		imgLeft:   dxlib.LoadGraph(imgLeftFile),
+		imgRight:  dxlib.LoadGraph(imgRightFile),
 	}
 
 	if res.imgTop == -1 {

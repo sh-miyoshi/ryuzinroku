@@ -171,12 +171,12 @@ func (r *Riria) Draw() {
 	y := r.y + math.Sin(math.Pi*2/130*float64(cnt%130))*10
 
 	dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_ALPHA, 150)
-	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(y)+common.FieldTopY, float32(0.4+0.05*math.Sin(math.Pi*2/360*float64(cnt%360)))*3, float32(math.Pi*2*float64(cnt%580)/580), r.backImgs[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(y)+common.FieldTopY, float32(0.5+0.1*math.Sin(math.Pi*2/360*float64(cnt%360)))*2, 2*math.Pi*float32(cnt%340)/340, r.backImgs[0], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/153*float64(cnt%153))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/120*float64(cnt%120))+common.FieldTopY), float32(0.4+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%30)/30, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/200*float64((cnt+20)%200))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/177*float64((cnt+20)%177))+common.FieldTopY), float32(0.3+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%35)/35, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(y)+common.FieldTopY, float32(0.4+0.05*math.Sin(math.Pi*2/360*float64(cnt%360)))*3, float32(math.Pi*2*float64(cnt%580)/580), r.backImgs[1], dxlib.TRUE)
+	dxlib.DrawRotaGraphFast(int32(r.x)+common.FieldTopX, int32(y)+common.FieldTopY, float32(0.5+0.1*math.Sin(math.Pi*2/360*float64(cnt%360)))*2, 2*math.Pi*float32(cnt%340)/340, r.backImgs[0], dxlib.TRUE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/153*float64(cnt%153))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/120*float64(cnt%120))+common.FieldTopY), float32(0.4+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%30)/30, r.backImgs[2], dxlib.TRUE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/200*float64((cnt+20)%200))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/177*float64((cnt+20)%177))+common.FieldTopY), float32(0.3+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%35)/35, r.backImgs[2], dxlib.TRUE)
 	dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_NOBLEND, 0)
-	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/230*float64((cnt+40)%230))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/189*float64((cnt+40)%189))+common.FieldTopY), float32(0.6+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%40)/40, r.backImgs[2], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+	dxlib.DrawRotaGraphFast(int32(r.x+60*math.Sin(math.Pi*2/230*float64((cnt+40)%230))+common.FieldTopX), int32(y+80*math.Sin(math.Pi*2/189*float64((cnt+40)%189))+common.FieldTopY), float32(0.6+0.05*math.Sin(math.Pi*2/120*float64(cnt%120))), 2*math.Pi*float32(cnt%40)/40, r.backImgs[2], dxlib.TRUE)
 
 	common.CharDraw(r.x, y, r.images[0], dxlib.TRUE)
 

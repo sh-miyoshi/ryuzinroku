@@ -16,13 +16,13 @@ var (
 // Init ...
 func Init() error {
 	fname := "data/image/effect/player_hit.png"
-	hitImg := dxlib.LoadGraph(fname, dxlib.FALSE)
+	hitImg := dxlib.LoadGraph(fname)
 	if hitImg == -1 {
 		return fmt.Errorf("Failed to load hit image: %s", fname)
 	}
 
 	fname = "data/image/etc/player_option.png"
-	optImg := dxlib.LoadGraph(fname, dxlib.FALSE)
+	optImg := dxlib.LoadGraph(fname)
 	if optImg == -1 {
 		return fmt.Errorf("Failed to load option image: %s", fname)
 	}

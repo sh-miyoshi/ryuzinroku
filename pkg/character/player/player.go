@@ -60,7 +60,7 @@ func create(img common.ImageInfo, hitImg, optImg int32) (*player, error) {
 		gaveOver: false,
 	}
 	res.images = make([]int32, img.AllNum)
-	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images, dxlib.FALSE)
+	r := dxlib.LoadDivGraph(img.FileName, img.AllNum, img.XNum, img.YNum, img.XSize, img.YSize, res.images)
 	if r != 0 {
 		return nil, fmt.Errorf("Failed to load player image")
 	}
@@ -77,7 +77,7 @@ func (p *player) draw() {
 	}
 
 	if p.slow {
-		dxlib.DrawRotaGraphFast(int32(p.x)+common.FieldTopX, int32(p.y)+common.FieldTopY, 1, math.Pi*2*float32(p.count%120)/120, p.hitImg, dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(p.x)+common.FieldTopX, int32(p.y)+common.FieldTopY, 1, math.Pi*2*float32(p.count%120)/120, p.hitImg, dxlib.TRUE)
 	}
 
 	p.plyrShot.Draw()

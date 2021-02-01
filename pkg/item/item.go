@@ -82,7 +82,7 @@ func Init() error {
 	for i, def := range itemDefs {
 		itemDefs[i].images = make([]int32, 2)
 		fname := fmt.Sprintf("data/image/item/p%d.png", i)
-		if res := dxlib.LoadDivGraph(fname, 2, 2, 1, def.info.XSize, def.info.YSize, itemDefs[i].images, dxlib.FALSE); res == -1 {
+		if res := dxlib.LoadDivGraph(fname, 2, 2, 1, def.info.XSize, def.info.YSize, itemDefs[i].images); res == -1 {
 			return fmt.Errorf("Failed to load item image: %s", fname)
 		}
 	}
@@ -129,9 +129,9 @@ func MgrProcess() {
 func MgrDraw() {
 	for _, i := range items {
 		angle := math.Pi * 2 * float32(i.count%120) / 120
-		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate), angle, itemDefs[int(i.Type)].images[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate)*0.8, -angle, itemDefs[int(i.Type)].images[1], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
-		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate), 0, itemDefs[int(i.Type)].images[0], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate), angle, itemDefs[int(i.Type)].images[1], dxlib.TRUE)
+		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate)*0.8, -angle, itemDefs[int(i.Type)].images[1], dxlib.TRUE)
+		dxlib.DrawRotaGraphFast(int32(i.X)+common.FieldTopX, int32(i.Y)+common.FieldTopY, float32(i.extRate), 0, itemDefs[int(i.Type)].images[0], dxlib.TRUE)
 	}
 }
 

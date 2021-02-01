@@ -22,7 +22,7 @@ type Back struct {
 
 func newBack(filePath string, addImgs ...addImg) (*Back, error) {
 	res := &Back{}
-	res.image = dxlib.LoadGraph(filePath, dxlib.FALSE)
+	res.image = dxlib.LoadGraph(filePath)
 	if res.image == -1 {
 		return nil, fmt.Errorf("Failed to load image %s", filePath)
 	}
@@ -32,7 +32,7 @@ func newBack(filePath string, addImgs ...addImg) (*Back, error) {
 	}
 
 	for _, i := range addImgs {
-		i.image = dxlib.LoadGraph(i.filePath, dxlib.FALSE)
+		i.image = dxlib.LoadGraph(i.filePath)
 		if i.image == -1 {
 			return nil, fmt.Errorf("Failed to load image %s", i.filePath)
 		}

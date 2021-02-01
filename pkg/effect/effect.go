@@ -66,22 +66,22 @@ var (
 func Init() error {
 	effectImgs = make([][]int32, effectMax)
 	effectImgs[effectDead] = make([]int32, 5)
-	if res := dxlib.LoadDivGraph("data/image/effect/death.png", 5, 5, 1, 140, 140, effectImgs[effectDead], dxlib.FALSE); res == -1 {
+	if res := dxlib.LoadDivGraph("data/image/effect/death.png", 5, 5, 1, 140, 140, effectImgs[effectDead]); res == -1 {
 		return fmt.Errorf("Failed to load image: data/image/effect/death.png")
 	}
 
 	effectImgs[effectBombChar] = make([]int32, 1)
-	effectImgs[effectBombChar][0] = dxlib.LoadGraph("data/image/effect/bom_char.png", dxlib.FALSE)
+	effectImgs[effectBombChar][0] = dxlib.LoadGraph("data/image/effect/bom_char.png")
 	if effectImgs[effectBombChar][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/effect/bom_char.png")
 	}
 	effectImgs[effectBombTitle] = make([]int32, 1)
-	effectImgs[effectBombTitle][0] = dxlib.LoadGraph("data/image/effect/bom_title.png", dxlib.FALSE)
+	effectImgs[effectBombTitle][0] = dxlib.LoadGraph("data/image/effect/bom_title.png")
 	if effectImgs[effectBombTitle][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/effect/bom_title.png")
 	}
 	effectImgs[effectBombMain] = make([]int32, 1)
-	effectImgs[effectBombMain][0] = dxlib.LoadGraph("data/image/effect/bom_main.png", dxlib.FALSE)
+	effectImgs[effectBombMain][0] = dxlib.LoadGraph("data/image/effect/bom_main.png")
 	if effectImgs[effectBombMain][0] == -1 {
 		return fmt.Errorf("Failed to load image: data/image/effect/bom_main.png")
 	}
@@ -121,7 +121,7 @@ func MgrDraw() {
 			dxlib.SetDrawBlendMode(e.BlendType, int32(e.BlendParam))
 		}
 
-		dxlib.DrawRotaGraphFast(int32(e.X)+common.FieldTopX, int32(e.Y)+common.FieldTopY, float32(e.ExtRate), float32(e.Angle), effectImgs[e.Type][e.Color], dxlib.TRUE, dxlib.FALSE, dxlib.FALSE)
+		dxlib.DrawRotaGraphFast(int32(e.X)+common.FieldTopX, int32(e.Y)+common.FieldTopY, float32(e.ExtRate), float32(e.Angle), effectImgs[e.Type][e.Color], dxlib.TRUE)
 
 		if e.BlendType != dxlib.DX_BLENDMODE_NOBLEND {
 			dxlib.SetDrawBlendMode(dxlib.DX_BLENDMODE_NOBLEND, 0)

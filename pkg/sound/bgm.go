@@ -54,14 +54,14 @@ func BGMStoryInit(storyFile string) error {
 		return nil
 	}
 
-	bgm.handles[TypeNormal] = dxlib.LoadSoundMem(bgm.Define.Normal.File, 3, -1)
+	bgm.handles[TypeNormal] = dxlib.LoadSoundMem(bgm.Define.Normal.File)
 	if bgm.handles[TypeNormal] == -1 {
 		return fmt.Errorf("Failed to load BGM: %s", bgm.Define.Normal.File)
 	}
 	dxlib.SetLoopPosSoundMem(bgm.Define.Normal.LoopCount, bgm.handles[TypeNormal])
 	dxlib.ChangeVolumeSoundMem(128, bgm.handles[TypeNormal])
 
-	bgm.handles[TypeBoss] = dxlib.LoadSoundMem(bgm.Define.Boss.File, 3, -1)
+	bgm.handles[TypeBoss] = dxlib.LoadSoundMem(bgm.Define.Boss.File)
 	if bgm.handles[TypeBoss] == -1 {
 		return fmt.Errorf("Failed to load BGM: %s", bgm.Define.Boss.File)
 	}

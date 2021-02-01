@@ -44,17 +44,17 @@ var (
 // Init ...
 func Init() error {
 	soundEffects = make([]int32, int32(SEMax))
-	soundEffects[SEEnemyShot] = dxlib.LoadSoundMem("data/se/enemy_shot.wav", 3, -1)
-	soundEffects[SEPlayerShot] = dxlib.LoadSoundMem("data/se/cshot.wav", 3, -1)
-	soundEffects[SEEnemyDead] = dxlib.LoadSoundMem("data/se/enemy_death.wav", 3, -1)
-	soundEffects[SEEnemyHit] = dxlib.LoadSoundMem("data/se/hit.wav", 3, -1)
-	soundEffects[SEPlayerDead] = dxlib.LoadSoundMem("data/se/char_death.wav", 3, -1)
-	soundEffects[SEBombStart] = dxlib.LoadSoundMem("data/se/bom0.wav", 3, -1)
-	soundEffects[SEBomb] = dxlib.LoadSoundMem("data/se/bom1.wav", 3, -1)
-	soundEffects[SELaser] = dxlib.LoadSoundMem("data/se/lazer.wav", 3, -1)
-	soundEffects[SEBossDead] = dxlib.LoadSoundMem("data/se/boss_death.wav", 3, -1)
-	soundEffects[SEItemGet] = dxlib.LoadSoundMem("data/se/item_get.wav", 3, -1)
-	soundEffects[SEBossChange] = dxlib.LoadSoundMem("data/se/boss_change.wav", 3, -1)
+	soundEffects[SEEnemyShot] = dxlib.LoadSoundMem("data/se/enemy_shot.wav")
+	soundEffects[SEPlayerShot] = dxlib.LoadSoundMem("data/se/cshot.wav")
+	soundEffects[SEEnemyDead] = dxlib.LoadSoundMem("data/se/enemy_death.wav")
+	soundEffects[SEEnemyHit] = dxlib.LoadSoundMem("data/se/hit.wav")
+	soundEffects[SEPlayerDead] = dxlib.LoadSoundMem("data/se/char_death.wav")
+	soundEffects[SEBombStart] = dxlib.LoadSoundMem("data/se/bom0.wav")
+	soundEffects[SEBomb] = dxlib.LoadSoundMem("data/se/bom1.wav")
+	soundEffects[SELaser] = dxlib.LoadSoundMem("data/se/lazer.wav")
+	soundEffects[SEBossDead] = dxlib.LoadSoundMem("data/se/boss_death.wav")
+	soundEffects[SEItemGet] = dxlib.LoadSoundMem("data/se/item_get.wav")
+	soundEffects[SEBossChange] = dxlib.LoadSoundMem("data/se/boss_change.wav")
 
 	for i, s := range soundEffects {
 		if s == -1 {

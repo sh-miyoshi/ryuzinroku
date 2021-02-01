@@ -79,31 +79,31 @@ func StoryInit(storyFile string) error {
 	for i, b := range bossCharImgInfo {
 		bossCharImgInfo[i].images = make([]int32, int(b.info.AllNum))
 		fname := b.info.FileName
-		res := dxlib.LoadDivGraph(fname, b.info.AllNum, b.info.XNum, b.info.YNum, b.info.XSize, b.info.YSize, bossCharImgInfo[i].images, dxlib.FALSE)
+		res := dxlib.LoadDivGraph(fname, b.info.AllNum, b.info.XNum, b.info.YNum, b.info.XSize, b.info.YSize, bossCharImgInfo[i].images)
 		if res == -1 {
 			return fmt.Errorf("Failed to load boss image: %s", fname)
 		}
 	}
-	bossHPImg[boss.HPColNormal] = dxlib.LoadGraph("data/image/etc/boss_hp_normal.png", dxlib.FALSE)
+	bossHPImg[boss.HPColNormal] = dxlib.LoadGraph("data/image/etc/boss_hp_normal.png")
 	if bossHPImg[boss.HPColNormal] == -1 {
 		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_normal.png")
 	}
-	bossHPImg[boss.HPColBright] = dxlib.LoadGraph("data/image/etc/boss_hp_bright.png", dxlib.FALSE)
+	bossHPImg[boss.HPColBright] = dxlib.LoadGraph("data/image/etc/boss_hp_bright.png")
 	if bossHPImg[boss.HPColBright] == -1 {
 		return fmt.Errorf("Failed to load boss hp image: data/image/etc/boss_hp_bright.png")
 	}
 	// etc img
-	img := dxlib.LoadGraph("data/image/effect/bossback0.png", dxlib.FALSE)
+	img := dxlib.LoadGraph("data/image/effect/bossback0.png")
 	if img == -1 {
 		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback0.png")
 	}
 	bossEtcImgs = append(bossEtcImgs, img)
-	img = dxlib.LoadGraph("data/image/effect/bossback1.png", dxlib.FALSE)
+	img = dxlib.LoadGraph("data/image/effect/bossback1.png")
 	if img == -1 {
 		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback1.png")
 	}
 	bossEtcImgs = append(bossEtcImgs, img)
-	img = dxlib.LoadGraph("data/image/effect/bossback2.png", dxlib.FALSE)
+	img = dxlib.LoadGraph("data/image/effect/bossback2.png")
 	if img == -1 {
 		return fmt.Errorf("Failed to load boss etc image: data/image/effect/bossback2.png")
 	}
@@ -193,7 +193,7 @@ func load(no int) error {
 
 	minionImgInfo[no].images = make([]int32, int(minionImgInfo[no].info.AllNum))
 	fname := fmt.Sprintf("data/image/char/enemy/%d.png", no)
-	res := dxlib.LoadDivGraph(fname, minionImgInfo[no].info.AllNum, minionImgInfo[no].info.XNum, minionImgInfo[no].info.YNum, minionImgInfo[no].info.XSize, minionImgInfo[no].info.YSize, minionImgInfo[no].images, dxlib.FALSE)
+	res := dxlib.LoadDivGraph(fname, minionImgInfo[no].info.AllNum, minionImgInfo[no].info.XNum, minionImgInfo[no].info.YNum, minionImgInfo[no].info.XSize, minionImgInfo[no].info.YSize, minionImgInfo[no].images)
 	if res == -1 {
 		return fmt.Errorf("Failed to load image: %s", fname)
 	}
